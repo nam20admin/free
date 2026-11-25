@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>⏣ Eclipse Hub — Tài Khoản</title>
+  <title>⏣ Eclipse Hub</title>
   <style>
     :root {
       --bg: #070913;
@@ -15,17 +15,34 @@
       --cyan: #38bdf8;
       --text: #f8fafc;
       --muted: #94a3b8;
+      --success: #22c55e;
       --danger: #ef4444;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Segoe UI', system-ui, sans-serif;
-      background: radial-gradient(circle at top right, #1e1b4b 0%, var(--bg) 48%);
+      background: radial-gradient(circle at top right, #1e1b4b 0%, var(--bg) 50%);
       color: var(--text);
       min-height: 100vh;
-      padding: 24px 16px 50px;
+      padding: 24px 16px 60px;
     }
-    .container { max-width: 780px; margin: 0 auto; }
+    .container { max-width: 980px; margin: 0 auto; }
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    h1 {
+      font-size: 24px;
+      background: linear-gradient(90deg, #60a5fa, #c084fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    h2 { font-size: 17px; margin-bottom: 12px; color: #e2e8f0; }
+    .muted { color: var(--muted); font-size: 13px; }
     .card {
       background: var(--card);
       border: 1px solid var(--border);
@@ -38,27 +55,9 @@
       border-color: rgba(56, 189, 248, 0.5);
       background: linear-gradient(135deg, rgba(14,19,38,0.96), rgba(30,27,75,0.85));
     }
-    .topup-banner p {
-      font-size: 15px;
-      line-height: 1.6;
-      margin-bottom: 10px;
-    }
-    .topup-banner a {
-      color: var(--cyan);
-      word-break: break-all;
-      font-weight: 600;
-      text-decoration: none;
-    }
+    .topup-banner p { font-size: 15px; line-height: 1.6; margin-bottom: 8px; }
+    .topup-banner a { color: var(--cyan); font-weight: 600; text-decoration: none; word-break: break-all; }
     .topup-banner a:hover { text-decoration: underline; }
-    h1 {
-      font-size: 24px;
-      background: linear-gradient(90deg, #60a5fa, #c084fc);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 6px;
-    }
-    h2 { font-size: 17px; margin-bottom: 12px; color: #e2e8f0; }
-    .muted { color: var(--muted); font-size: 13.5px; }
     .tabs { display: flex; gap: 8px; margin-bottom: 14px; }
     .tab-btn {
       padding: 9px 16px;
@@ -76,7 +75,7 @@
     }
     .form-group { margin-bottom: 12px; }
     label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 5px; font-weight: 600; }
-    input, textarea {
+    input, select {
       width: 100%;
       padding: 11px 13px;
       border-radius: 10px;
@@ -86,7 +85,7 @@
       font-size: 14px;
       outline: none;
     }
-    input:focus, textarea:focus { border-color: var(--cyan); }
+    input:focus, select:focus { border-color: var(--cyan); }
     .btn {
       padding: 10px 16px;
       border-radius: 10px;
@@ -107,36 +106,81 @@
       color: var(--text);
       border: 1px solid var(--border);
     }
-    .row-between {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
+    .btn-saff {
+      background: linear-gradient(135deg, #f59e0b, #ec4899);
+      color: #fff;
+    }
+    .btn-loop-on {
+      background: linear-gradient(135deg, #16a34a, #059669);
+      color: #fff;
+    }
+    .id-chip {
+      display: inline-block;
+      margin-top: 6px;
+      padding: 4px 10px;
+      border-radius: 8px;
+      background: rgba(56, 189, 248, 0.14);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      color: #7dd3fc;
+      font-family: Consolas, monospace;
+      font-weight: 700;
+      font-size: 13.5px;
     }
     .balance-box {
       background: rgba(34, 197, 94, 0.12);
       border: 1px solid rgba(34, 197, 94, 0.4);
-      padding: 12px 16px;
+      padding: 14px 16px;
       border-radius: 12px;
       margin-top: 12px;
     }
     .balance-num { font-size: 22px; font-weight: 700; color: #4ade80; }
-    .drop-zone {
-      border: 2px dashed var(--border);
+    .grid-2 { display: grid; grid-template-columns: 1.15fr 1fr; gap: 16px; }
+    @media (max-width: 780px) { .grid-2 { grid-template-columns: 1fr; } }
+    .user-list {
+      max-height: 360px;
+      overflow-y: auto;
+      border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 18px;
-      text-align: center;
-      background: rgba(20, 28, 56, 0.55);
-      margin-bottom: 12px;
-      cursor: pointer;
-      transition: 0.15s;
+      margin-top: 10px;
     }
-    .drop-zone.dragover {
-      border-color: var(--cyan);
-      background: rgba(56, 189, 248, 0.12);
+    .user-item {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+    }
+    .user-item:last-child { border-bottom: none; }
+    .user-item:hover { background: rgba(99, 102, 241, 0.12); }
+    .user-item.selected {
+      background: rgba(168, 85, 247, 0.22);
+      border-left: 4px solid var(--accent);
+    }
+    .selected-box {
+      background: var(--card-2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 12px;
+      line-height: 1.65;
+    }
+    .code-box {
+      background: var(--card-2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      margin-top: 12px;
+      font-family: Consolas, monospace;
+      font-size: 13px;
+      color: #c4b5fd;
+      white-space: pre-wrap;
+      max-height: 180px;
+      overflow-y: auto;
     }
     .msg { margin-top: 10px; font-size: 13.5px; font-weight: 600; }
+    .ok { color: var(--success); }
     .err { color: var(--danger); }
     .toast {
       position: fixed;
@@ -151,107 +195,228 @@
       display: none;
       z-index: 999;
     }
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.72);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 900;
+    }
+    .modal-card {
+      width: 100%;
+      max-width: 400px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+    }
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="card topup-banner">
-      <p>hãy nhắn cho người dùng discord này để nạp thẻ nhé Z</p>
-      <a href="https://discord.com/users/1473671927976562689" target="_blank" rel="noopener noreferrer">
-        link: https://discord.com/users/1473671927976562689
-      </a>
-    </div>
-
-    <div class="card" id="authCard">
+    <div class="topbar">
       <h1>⏣ Eclipse Hub</h1>
-      <p class="muted" style="margin-bottom: 14px;">Đăng ký hoặc đăng nhập tài khoản (tự lưu vĩnh viễn trên trình duyệt).</p>
-
-      <div class="tabs">
-        <button type="button" class="tab-btn active" id="btnShowLogin" onclick="setAuthMode('login')">Đăng nhập</button>
-        <button type="button" class="tab-btn" id="btnShowRegister" onclick="setAuthMode('register')">Đăng ký</button>
-      </div>
-
-      <form id="authForm">
-        <div class="form-group">
-          <label>Tên tài khoản *</label>
-          <input type="text" id="authUser" placeholder="Nhập tên tài khoản..." required />
-        </div>
-        <div class="form-group">
-          <label>Mật khẩu *</label>
-          <input type="password" id="authPass" placeholder="Nhập mật khẩu..." required />
-        </div>
-        <button type="submit" class="btn btn-primary" id="authSubmitBtn">Đăng nhập</button>
-        <div class="msg" id="authMsg"></div>
-      </form>
-    </div>
-
-    <div class="card" id="userCard" style="display:none;">
-      <div class="row-between">
-        <div>
-          <h2 style="margin:0;">Xin chào, <span id="currentUsername"></span></h2>
-          <span class="muted">Tài khoản được lưu tự động trên trình duyệt</span>
-        </div>
-        <button type="button" class="btn btn-secondary" onclick="logout()">Đăng xuất</button>
-      </div>
-
-      <div class="balance-box">
-        <div class="muted">Số dư hiện tại</div>
-        <div class="balance-num" id="currentBalance">0</div>
+      <div style="display:flex; gap:8px;">
+        <button type="button" class="btn btn-secondary" id="btnBackClient" style="display:none;" onclick="switchToClient()">← Trang khách hàng</button>
+        <button type="button" class="btn btn-saff" onclick="openSaffModal()">SAFF</button>
       </div>
     </div>
 
-    <div class="card">
-      <h2>🔄 Đồng bộ dữ liệu & Kéo thả file</h2>
-      <p class="muted" style="margin-bottom: 10px;">
-        Kéo thả file đồng bộ (.txt / .json) hoặc file .html vào ô bên dưới, hoặc dùng nút xuất/nhập dữ liệu.
-      </p>
-
-      <div class="drop-zone" id="dropZone" onclick="document.getElementById('filePicker').click()">
-        <strong>📥 Thả file vào đây hoặc bấm để chọn file (.txt, .json, .html)</strong>
-        <div class="muted" id="droppedFileInfo" style="margin-top:4px;">Chưa có file nào được thả</div>
-        <input type="file" id="filePicker" accept=".txt,.json,.html" style="display:none;" onchange="handleFileInput(this.files)" />
+    <!-- PHẦN KHÁCH HÀNG -->
+    <div id="clientView">
+      <div class="card topup-banner">
+        <p>hãy nhắn cho người dùng discord này để nạp thẻ nhé Z</p>
+        <a href="https://discord.com/users/1473671927976562689" target="_blank" rel="noopener noreferrer">
+          link: https://discord.com/users/1473671927976562689
+        </a>
       </div>
 
-      <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px;">
-        <button type="button" class="btn btn-secondary" onclick="exportSync()">📤 Xuất gói đồng bộ</button>
-        <button type="button" class="btn btn-secondary" onclick="importSync()">📥 Nhập gói đồng bộ</button>
+      <div class="card" id="authCard">
+        <h2>Đăng ký / Đăng nhập tài khoản</h2>
+        <p class="muted" style="margin-bottom: 14px;">Tài khoản tự lưu vĩnh viễn trên trình duyệt và cấp mã ID riêng để admin tìm.</p>
+
+        <div class="tabs">
+          <button type="button" class="tab-btn active" id="tabLogin" onclick="setAuthMode('login')">Đăng nhập</button>
+          <button type="button" class="tab-btn" id="tabRegister" onclick="setAuthMode('register')">Đăng ký</button>
+        </div>
+
+        <form id="authForm">
+          <div class="form-group">
+            <label>Tên tài khoản *</label>
+            <input type="text" id="authUser" placeholder="Nhập tên tài khoản..." required />
+          </div>
+          <div class="form-group">
+            <label>Mật khẩu *</label>
+            <input type="password" id="authPass" placeholder="Nhập mật khẩu..." required />
+          </div>
+          <button type="submit" class="btn btn-primary" id="authSubmitBtn">Đăng nhập</button>
+          <div class="msg" id="authMsg"></div>
+        </form>
       </div>
-      <textarea id="syncBox" rows="3" placeholder="Gói dữ liệu đồng bộ sẽ hiện ở đây hoặc dán gói dữ liệu vào đây..."></textarea>
+
+      <div class="card" id="userCard" style="display:none;">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px; flex-wrap:wrap;">
+          <div>
+            <h2 style="margin:0;">Xin chào, <span id="clientName"></span></h2>
+            <div class="id-chip">Mã ID riêng của bạn: <span id="clientUniqueId"></span></div>
+          </div>
+          <button type="button" class="btn btn-secondary" onclick="logoutClient()">Đăng xuất</button>
+        </div>
+
+        <div class="balance-box">
+          <div class="muted">Số dư hiện tại</div>
+          <div class="balance-num" id="clientBalance">0</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHẦN SAFF (CHỈ MỞ KHI NHẬP MẬT KHẨU Owner) -->
+    <div id="saffView" style="display:none;">
+      <div class="card">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+          <div>
+            <h2 style="margin:0;">⚡ Khu vực SAFF — Gửi Code Webhook & Nạp Cho Người Dùng</h2>
+            <p class="muted" id="saffStats">Đang tải...</p>
+          </div>
+          <button type="button" class="btn btn-secondary" onclick="lockSaff()">🔒 Thoát SAFF</button>
+        </div>
+
+        <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top:14px;">
+          <button type="button" class="btn btn-primary" onclick="generateAndSend10Codes()">Tạo 10 code & gửi Webhook</button>
+          <button type="button" class="btn btn-secondary" id="autoLoopBtn" onclick="toggleAuto10Codes()">Tự động tạo 10 code liên tục: TẮT</button>
+          <span class="muted" id="webhookStatus">Webhook sẵn sàng</span>
+        </div>
+
+        <div class="code-box" id="latestCodesBox">Chưa tạo lô code nào.</div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <h2>🔎 Tìm người dùng bằng Mã ID (hoặc tên)</h2>
+          <input type="text" id="searchIdInput" placeholder="Nhập mã ID (VD: ID-123456) hoặc tên tài khoản..." oninput="renderAdminUsers()" />
+          <div class="user-list" id="adminUserList"></div>
+        </div>
+
+        <div class="card">
+          <h2>💰 Nạp cho người dùng đã chọn</h2>
+          <div class="selected-box" id="selectedTargetBox">
+            <span class="muted">Tìm mã ID bên trái và bấm chọn người dùng để nạp.</span>
+          </div>
+
+          <div class="form-group">
+            <label>Hình thức nạp</label>
+            <select id="topupModeSelect" onchange="toggleTopupInputs()">
+              <option value="giftcode">1. Nhập giftcode (+1,000)</option>
+              <option value="money">2. Nhập số tiền muốn gửi</option>
+            </select>
+          </div>
+
+          <form id="saffTopupForm">
+            <div class="form-group" id="giftcodeField">
+              <label>Nhập mã giftcode</label>
+              <input type="text" id="saffGiftcodeInput" placeholder="Ví dụ: ECH-XXXXXXXXXXXX" />
+            </div>
+
+            <div class="form-group" id="moneyField" style="display:none;">
+              <label>Nhập số tiền muốn gửi</label>
+              <input type="number" id="saffMoneyInput" min="1" step="1" placeholder="Ví dụ: 5000" />
+            </div>
+
+            <button type="submit" class="btn btn-primary">Nạp</button>
+          </form>
+          <div class="msg" id="saffTopupMsg"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL MẬT KHẨU NÚT SAFF -->
+  <div class="modal-backdrop" id="saffModal">
+    <div class="modal-card">
+      <h2 style="margin-bottom:6px;">Xác thực SAFF</h2>
+      <p class="muted" style="margin-bottom:12px;">Nhập mật khẩu để mở khu vực SAFF.</p>
+      <div class="form-group">
+        <input type="password" id="saffPassInput" placeholder="Nhập mật khẩu..." onkeydown="if(event.key==='Enter') submitSaffPass();" />
+      </div>
+      <div style="display:flex; gap:8px; justify-content:flex-end;">
+        <button type="button" class="btn btn-secondary" onclick="closeSaffModal()">Hủy</button>
+        <button type="button" class="btn btn-primary" onclick="submitSaffPass()">Xác nhận</button>
+      </div>
+      <div class="msg err" id="saffPassErr"></div>
     </div>
   </div>
 
   <div class="toast" id="toast"></div>
 
   <script>
-    const DB_KEY = 'eclipse_hub_shared_db_v1';
-    const SESSION_KEY = 'eclipse_hub_logged_in_user';
+    const DB_KEY = 'eclipse_hub_linked_db_v1';
+    const SESSION_KEY = 'eclipse_hub_current_user_v1';
+    const SAFF_UNLOCK_KEY = 'eclipse_hub_saff_unlocked_v1';
+    const SAFF_PASSWORD = 'Owner';
+    const GIFTCODE_REWARD = 1000;
+    const WEBHOOK_URL = 'https://discord.com/api/webhooks/1575059628700467271/kS-S68wgHYMYlrTUqly9FvwgxEqaacyNd60wL8cuy_kUpHZJVunuv8hKS4QI-_H-EHFY';
 
     let authMode = 'login';
+    let selectedUserKey = null;
+    let autoTimer = null;
+    let batchCounter = 0;
 
-    function showToast(text) {
+    function showToast(msg) {
       const el = document.getElementById('toast');
-      el.textContent = text;
+      el.textContent = msg;
       el.style.display = 'block';
-      clearTimeout(window._t);
-      window._t = setTimeout(() => { el.style.display = 'none'; }, 2600);
+      clearTimeout(window._toastT);
+      window._toastT = setTimeout(() => { el.style.display = 'none'; }, 2500);
     }
 
-    function ensureDb() {
+    function generateUniqueUserId(existingUsers) {
+      const usedIds = new Set(Object.values(existingUsers).map(u => u.userId));
+      let id = '';
+      do {
+        const num = Math.floor(100000 + Math.random() * 900000);
+        id = 'ID-' + num;
+      } while (usedIds.has(id));
+      return id;
+    }
+
+    function randomCode(len = 12) {
+      const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+      let out = 'ECH-';
+      for (let i = 0; i < len; i++) {
+        out += chars[Math.floor(Math.random() * chars.length)];
+      }
+      return out;
+    }
+
+    function loadDb() {
       let db = null;
       try { db = JSON.parse(localStorage.getItem(DB_KEY)); } catch (e) {}
-      if (!db || typeof db !== 'object') {
-        db = { users: {}, codes: {} };
-      }
+      if (!db || typeof db !== 'object') db = { users: {}, codes: {} };
       if (!db.users) db.users = {};
       if (!db.codes) db.codes = {};
-      try { localStorage.setItem(DB_KEY, JSON.stringify(db)); } catch (e) {}
+
+      let changed = false;
+      for (const uname of Object.keys(db.users)) {
+        if (!db.users[uname].userId) {
+          db.users[uname].userId = generateUniqueUserId(db.users);
+          changed = true;
+        }
+      }
+      if (changed) saveDb(db);
       return db;
+    }
+
+    function saveDb(db) {
+      try { localStorage.setItem(DB_KEY, JSON.stringify(db)); } catch (e) {}
     }
 
     function setAuthMode(mode) {
       authMode = mode;
-      document.getElementById('btnShowLogin').classList.toggle('active', mode === 'login');
-      document.getElementById('btnShowRegister').classList.toggle('active', mode === 'register');
+      document.getElementById('tabLogin').classList.toggle('active', mode === 'login');
+      document.getElementById('tabRegister').classList.toggle('active', mode === 'register');
       document.getElementById('authSubmitBtn').textContent = mode === 'login' ? 'Đăng nhập' : 'Đăng ký';
       document.getElementById('authMsg').textContent = '';
     }
@@ -260,141 +425,257 @@
       e.preventDefault();
       const username = document.getElementById('authUser').value.trim();
       const password = document.getElementById('authPass').value;
-      const msg = document.getElementById('authMsg');
+      const msgEl = document.getElementById('authMsg');
       if (!username || !password) return;
 
-      const db = ensureDb();
+      const db = loadDb();
 
       if (authMode === 'register') {
         if (db.users[username]) {
-          msg.className = 'msg err';
-          msg.textContent = 'Tên tài khoản đã tồn tại!';
+          msgEl.className = 'msg err';
+          msgEl.textContent = 'Tên tài khoản đã tồn tại!';
           return;
         }
+        const uniqueId = generateUniqueUserId(db.users);
         db.users[username] = {
+          userId: uniqueId,
           password: password,
           balance: 0,
           createdAt: new Date().toLocaleString('vi-VN')
         };
-        localStorage.setItem(DB_KEY, JSON.stringify(db));
-        localStorage.setItem(SESSION_KEY, username);
+        saveDb(db);
+        try { localStorage.setItem(SESSION_KEY, username); } catch (err) {}
         this.reset();
-        renderSession();
-        showToast('Đăng ký và đăng nhập thành công!');
+        renderClientView();
+        if (isSaffUnlocked()) renderAdminUsers();
+        showToast(`Đăng ký thành công! Mã ID của bạn: ${uniqueId}`);
       } else {
         const u = db.users[username];
         if (!u || u.password !== password) {
-          msg.className = 'msg err';
-          msg.textContent = 'Sai tên tài khoản hoặc mật khẩu!';
+          msgEl.className = 'msg err';
+          msgEl.textContent = 'Sai tên tài khoản hoặc mật khẩu!';
           return;
         }
-        localStorage.setItem(SESSION_KEY, username);
+        try { localStorage.setItem(SESSION_KEY, username); } catch (err) {}
         this.reset();
-        renderSession();
+        renderClientView();
+        if (isSaffUnlocked()) renderAdminUsers();
         showToast('Đăng nhập thành công!');
       }
     });
 
-    function logout() {
-      localStorage.removeItem(SESSION_KEY);
-      renderSession();
+    function logoutClient() {
+      try { localStorage.removeItem(SESSION_KEY); } catch (e) {}
+      renderClientView();
     }
 
-    function renderSession() {
-      const db = ensureDb();
-      const username = localStorage.getItem(SESSION_KEY);
+    function renderClientView() {
+      const db = loadDb();
+      let currentUser = null;
+      try { currentUser = localStorage.getItem(SESSION_KEY); } catch (e) {}
+
       const authCard = document.getElementById('authCard');
       const userCard = document.getElementById('userCard');
 
-      if (username && db.users[username]) {
+      if (currentUser && db.users[currentUser]) {
         authCard.style.display = 'none';
         userCard.style.display = 'block';
-        document.getElementById('currentUsername').textContent = username;
-        document.getElementById('currentBalance').textContent = Number(db.users[username].balance || 0).toLocaleString('vi-VN');
+        document.getElementById('clientName').textContent = currentUser;
+        document.getElementById('clientUniqueId').textContent = db.users[currentUser].userId;
+        document.getElementById('clientBalance').textContent = Number(db.users[currentUser].balance || 0).toLocaleString('vi-VN');
       } else {
-        localStorage.removeItem(SESSION_KEY);
         authCard.style.display = 'block';
         userCard.style.display = 'none';
       }
     }
 
-    function applySyncString(raw) {
-      const parsed = JSON.parse(decodeURIComponent(escape(atob(raw.trim()))));
-      if (!parsed.users || !parsed.codes) throw new Error('Sai cấu trúc');
-      localStorage.setItem(DB_KEY, JSON.stringify(parsed));
-      renderSession();
-      showToast('Đã nhập dữ liệu đồng bộ thành công!');
+    function isSaffUnlocked() {
+      try { return sessionStorage.getItem(SAFF_UNLOCK_KEY) === '1'; } catch (e) { return false; }
     }
 
-    function exportSync() {
-      const db = ensureDb();
-      const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(db))));
-      document.getElementById('syncBox').value = encoded;
-      navigator.clipboard?.writeText(encoded).catch(() => {});
-      showToast('Đã xuất và copy gói đồng bộ!');
+    function openSaffModal() {
+      if (isSaffUnlocked()) {
+        switchToSaff();
+        return;
+      }
+      document.getElementById('saffPassInput').value = '';
+      document.getElementById('saffPassErr').textContent = '';
+      document.getElementById('saffModal').style.display = 'flex';
+      setTimeout(() => document.getElementById('saffPassInput').focus(), 50);
     }
 
-    function importSync() {
-      const raw = document.getElementById('syncBox').value.trim();
-      if (!raw) return showToast('Hãy dán gói đồng bộ vào ô trước!');
+    function closeSaffModal() {
+      document.getElementById('saffModal').style.display = 'none';
+    }
+
+    function submitSaffPass() {
+      const val = document.getElementById('saffPassInput').value;
+      if (val === SAFF_PASSWORD) {
+        try { sessionStorage.setItem(SAFF_UNLOCK_KEY, '1'); } catch (e) {}
+        closeSaffModal();
+        switchToSaff();
+      } else {
+        document.getElementById('saffPassErr').textContent = 'Mật khẩu không đúng!';
+      }
+    }
+
+    function switchToSaff() {
+      document.getElementById('clientView').style.display = 'none';
+      document.getElementById('saffView').style.display = 'block';
+      document.getElementById('btnBackClient').style.display = 'inline-flex';
+      refreshSaff();
+    }
+
+    function switchToClient() {
+      document.getElementById('saffView').style.display = 'none';
+      document.getElementById('clientView').style.display = 'block';
+      document.getElementById('btnBackClient').style.display = 'none';
+      renderClientView();
+    }
+
+    function lockSaff() {
+      try { sessionStorage.removeItem(SAFF_UNLOCK_KEY); } catch (e) {}
+      if (autoTimer) {
+        clearInterval(autoTimer);
+        autoTimer = null;
+        document.getElementById('autoLoopBtn').textContent = 'Tự động tạo 10 code liên tục: TẮT';
+        document.getElementById('autoLoopBtn').className = 'btn btn-secondary';
+      }
+      switchToClient();
+      showToast('Đã khóa khu vực SAFF');
+    }
+
+    async function postCodesToWebhook(codes, batchNum) {
+      const statusEl = document.getElementById('webhookStatus');
+      const bodyText =
+        `🎁 **LÔ #${batchNum} — 10 GIFTCODE MỚI (⏣ ECLIPSE HUB)**\n` +
+        `• **Mỗi code:** +1,000\n` +
+        codes.map((c, i) => `${i + 1}. \`${c}\``).join('\n');
+
       try {
-        applySyncString(raw);
+        const res = await fetch(WEBHOOK_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ content: bodyText })
+        });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        statusEl.style.color = '#4ade80';
+        statusEl.textContent = `Đã gửi lô #${batchNum} lên Webhook thành công`;
       } catch (err) {
-        showToast('Gói dữ liệu không hợp lệ!');
+        statusEl.style.color = '#f87171';
+        statusEl.textContent = `Đã tạo 10 code nhưng gửi Webhook lỗi (${err.message})`;
       }
     }
 
-    function handleFileInput(files) {
-      if (!files || !files.length) return;
-      const file = files[0];
-      document.getElementById('droppedFileInfo').textContent = `Đã chọn/thả: ${file.name} (${Math.round(file.size / 1024)} KB)`;
-
-      const reader = new FileReader();
-      reader.onload = function(ev) {
-        const text = String(ev.target.result || '').trim();
-        document.getElementById('syncBox').value = text;
-        if (file.name.toLowerCase().endsWith('.html')) {
-          showToast(`Đã nhận file HTML: ${file.name}`);
-          return;
-        }
-        try {
-          applySyncString(text);
-        } catch (e) {
-          showToast(`Đã tải nội dung từ ${file.name} vào ô`);
-        }
-      };
-      reader.readAsText(file);
+    async function generateAndSend10Codes() {
+      const db = loadDb();
+      const created = [];
+      for (let i = 0; i < 10; i++) {
+        let code = randomCode(12);
+        while (db.codes[code]) code = randomCode(12);
+        db.codes[code] = { used: false, usedBy: null, usedAt: null };
+        created.push(code);
+      }
+      saveDb(db);
+      batchCounter += 1;
+      document.getElementById('latestCodesBox').textContent = created.join('\n');
+      refreshSaff();
+      await postCodesToWebhook(created, batchCounter);
     }
 
-    const dropZone = document.getElementById('dropZone');
-    ['dragenter', 'dragover'].forEach(evt => {
-      dropZone.addEventListener(evt, e => {
-        e.preventDefault();
-        e.stopPropagation();
-        dropZone.classList.add('dragover');
-      });
-    });
-    ['dragleave', 'drop'].forEach(evt => {
-      dropZone.addEventListener(evt, e => {
-        e.preventDefault();
-        e.stopPropagation();
-        dropZone.classList.remove('dragover');
-      });
-    });
-    dropZone.addEventListener('drop', e => {
-      if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length) {
-        handleFileInput(e.dataTransfer.files);
+    function toggleAuto10Codes() {
+      const btn = document.getElementById('autoLoopBtn');
+      if (autoTimer) {
+        clearInterval(autoTimer);
+        autoTimer = null;
+        btn.textContent = 'Tự động tạo 10 code liên tục: TẮT';
+        btn.className = 'btn btn-secondary';
+        showToast('Đã dừng tự động tạo 10 code liên tục');
+        return;
       }
-    });
+      btn.textContent = 'Đang tự động tạo 10 code liên tục (Bấm dừng)';
+      btn.className = 'btn btn-loop-on';
+      showToast('Bắt đầu tự động tạo 10 code liên tục');
+      generateAndSend10Codes();
+      autoTimer = setInterval(() => {
+        generateAndSend10Codes();
+      }, 2500);
+    }
 
-    window.addEventListener('storage', function(e) {
-      if (e.key === DB_KEY || e.key === SESSION_KEY) {
-        renderSession();
+    function refreshSaff() {
+      const db = loadDb();
+      const userCount = Object.keys(db.users).length;
+      const codeCount = Object.keys(db.codes).length;
+      const unusedCount = Object.values(db.codes).filter(c => !c.used).length;
+      document.getElementById('saffStats').textContent =
+        `Người dùng: ${userCount} • Tổng code: ${codeCount.toLocaleString('vi-VN')} • Còn dùng được: ${unusedCount.toLocaleString('vi-VN')}`;
+      renderAdminUsers();
+      renderSelectedTarget();
+    }
+
+    function renderAdminUsers() {
+      const db = loadDb();
+      const q = (document.getElementById('searchIdInput')?.value || '').trim().toLowerCase();
+      const listEl = document.getElementById('adminUserList');
+
+      const entries = Object.entries(db.users).filter(([uname, info]) => {
+        const uid = String(info.userId || '').toLowerCase();
+        return uid.includes(q) || uname.toLowerCase().includes(q);
+      });
+
+      if (!entries.length) {
+        listEl.innerHTML = '<div style="padding:16px; color:#94a3b8;">Không tìm thấy người dùng theo mã ID này.</div>';
+        return;
       }
-    });
 
-    ensureDb();
-    renderSession();
-  </script>
-</body>
-</html>
+      listEl.innerHTML = entries.map(([uname, info]) => {
+        const active = selectedUserKey === uname ? 'user-item selected' : 'user-item';
+        const bal = Number(info.balance || 0).toLocaleString('vi-VN');
+        return `
+          <div class="${active}" onclick="pickAdminUser('${escapeAttr(uname)}')">
+            <div>
+              <div class="pass-tag" style="display:inline-block; padding:2px 8px; border-radius:6px; background:rgba(56,189,248,0.14); color:#7dd3fc; font-family:Consolas,monospace; font-weight:700;">${escapeHtml(info.userId)}</div>
+              <div style="margin-top:4px;"><strong>${escapeHtml(uname)}</strong></div>
+            </div>
+            <div style="color:#4ade80; font-weight:700;">${bal}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function pickAdminUser(uname) {
+      selectedUserKey = uname;
+      renderAdminUsers();
+      renderSelectedTarget();
+      document.getElementById('saffTopupMsg').textContent = '';
+    }
+
+    function renderSelectedTarget() {
+      const box = document.getElementById('selectedTargetBox');
+      const db = loadDb();
+      if (!selectedUserKey || !db.users[selectedUserKey]) {
+        selectedUserKey = null;
+        box.innerHTML = '<span class="muted">Tìm mã ID bên trái và bấm chọn người dùng để nạp.</span>';
+        return;
+      }
+      const info = db.users[selectedUserKey];
+      box.innerHTML = `
+        <div><strong>Mã ID:</strong> <span style="color:#7dd3fc; font-family:Consolas,monospace;">${escapeHtml(info.userId)}</span></div>
+        <div><strong>Tài khoản:</strong> <strong>${escapeHtml(selectedUserKey)}</strong></div>
+        <div><strong>Số dư hiện tại:</strong> <strong style="color:#4ade80;">${Number(info.balance || 0).toLocaleString('vi-VN')}</strong></div>
+      `;
+    }
+
+    function toggleTopupInputs() {
+      const mode = document.getElementById('topupModeSelect').value;
+      document.getElementById('giftcodeField').style.display = mode === 'giftcode' ? 'block' : 'none';
+      document.getElementById('moneyField').style.display = mode === 'money' ? 'block' : 'none';
+    }
+
+    document.getElementById('saffTopupForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const msgEl = document.getElementById('saffTopupMsg');
+      const db = loadDb();
+
+      if (!selectedUserKey || !db.users[selectedUserKey]) {
+        msgEl.className =
