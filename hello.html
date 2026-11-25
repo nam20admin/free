@@ -20,7 +20,9 @@
       --danger: #fb7185;
     }
 
-    * {
+    *,
+    *::before,
+    *::after {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
@@ -39,7 +41,6 @@
       overflow-x: hidden;
     }
 
-    /* Aurora background orbs */
     .aurora {
       position: fixed;
       inset: 0;
@@ -416,7 +417,7 @@
     <div class="orb orb-3"></div>
   </div>
 
-  <main class="container">
+  <main id="studioApp" class="container">
     <div class="top-bar">
       <span class="pill-badge"><span class="dot-live"></span>Instant HTML Link Studio</span>
     </div>
@@ -464,155 +465,185 @@
   </main>
 
   <script>
-    (function renderSharedSite() {
-      const hash = window.location.hash;
-      if (hash && hash.startsWith("#site=")) {
-        try {
-          const encoded = hash.slice(6);
-          const binary = atob(encoded);
-          const bytes = new Uint8Array(binary.length);
-          for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
-          const html = new TextDecoder("utf-8").decode(bytes);
-          document.open();
-          document.write(html);
-          document.close();
-        } catch (err) {
-          console.error(err);
-        }
-      }
-    })();
+    function decodeSharedHtmlFromHash() {
+      const hash = window.location.hash || "";
+      if (!hash.startsWith("#site=")) return null;
+      const encoded = hash.slice(6).trim();
+      if (!encoded) return null;
 
-    const dropZone = document.getElementById("dropZone");
-    const fileInput = document.getElementById("fileInput");
-    const resultCard = document.getElementById("resultCard");
-    const fileChip = document.getElementById("fileChip");
-    const sizeTag = document.getElementById("sizeTag");
-    const urlOutput = document.getElementById("urlOutput");
-    const btnCopy = document.getElementById("btnCopy");
-    const btnLaunch = document.getElementById("btnLaunch");
-    const btnClear = document.getElementById("btnClear");
-    const previewFrame = document.getElementById("previewFrame");
-    const toast = document.getElementById("toast");
-
-    let currentHtml = "";
-
-    function showToast(msg, isError = false) {
-      toast.textContent = msg;
-      toast.className = isError ? "toast err" : "toast";
-    }
-
-    function encodeUtf8Base64(str) {
-      const bytes = new TextEncoder().encode(str);
-      let binary = "";
-      for (let i = 0; i < bytes.length; i++) {
-        binary += String.fromCharCode(bytes[i]);
-      }
-      return btoa(binary);
-    }
-
-    function formatSize(bytes) {
-      if (bytes < 1024) return `${bytes} B`;
-      if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
-      return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
-    }
-
-    function handleIncomingFile(file) {
-      if (!file) return;
-      if (!/\.(html|htm)$/i.test(file.name) && file.type !== "text/html") {
-        showToast("Vui lòng chỉ thả file .html hoặc .htm", true);
-        return;
-      }
-
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        currentHtml = String(e.target.result || "");
-        const base64 = encodeUtf8Base64(currentHtml);
-        const isHosted = window.location.protocol === "http:" || window.location.protocol === "https:";
-        const link = isHosted
-          ? `${window.location.origin}${window.location.pathname}#site=${base64}`
-          : `data:text/html;charset=utf-8;base64,${base64}`;
-
-        fileChip.textContent = file.name;
-        sizeTag.textContent = formatSize(file.size);
-        urlOutput.value = link;
-        btnLaunch.href = link;
-        previewFrame.srcdoc = currentHtml;
-
-        btnCopy.textContent = "Copy link";
-        btnCopy.classList.remove("copied");
-        resultCard.classList.add("show");
-        showToast("Đã tạo link thành công!");
-      };
-      reader.onerror = () => showToast("Không đọc được file này.", true);
-      reader.readAsText(file, "utf-8");
-    }
-
-    dropZone.addEventListener("click", () => fileInput.click());
-    dropZone.addEventListener("keydown", (e) => {
-      if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
-        fileInput.click();
-      }
-    });
-
-    fileInput.addEventListener("change", (e) => {
-      if (e.target.files[0]) handleIncomingFile(e.target.files[0]);
-      fileInput.value = "";
-    });
-
-    ["dragenter", "dragover"].forEach((ev) => {
-      dropZone.addEventListener(ev, (e) => {
-        e.preventDefault();
-        dropZone.classList.add("active");
-      });
-    });
-
-    ["dragleave", "drop"].forEach((ev) => {
-      dropZone.addEventListener(ev, (e) => {
-        e.preventDefault();
-        dropZone.classList.remove("active");
-      });
-    });
-
-    dropZone.addEventListener("drop", (e) => {
-      const file = e.dataTransfer && e.dataTransfer.files[0];
-      if (file) handleIncomingFile(file);
-    });
-
-    btnLaunch.addEventListener("click", (e) => {
-      if (urlOutput.value.startsWith("data:")) {
-        e.preventDefault();
-        const win = window.open("", "_blank");
-        if (win) {
-          win.document.open();
-          win.document.write(currentHtml);
-          win.document.close();
-        } else {
-          showToast("Trình duyệt đang chặn tab mới, hãy copy link dán lên thanh địa chỉ.", true);
-        }
-      }
-    });
-
-    btnCopy.addEventListener("click", async () => {
-      if (!urlOutput.value) return;
       try {
-        await navigator.clipboard.writeText(urlOutput.value);
-      } catch {
-        urlOutput.select();
-        document.execCommand("copy");
+        // Hỗ trợ cả base64 chuẩn và base64url
+        const normalized = encoded.replace(/-/g, "+").replace(/_/g, "/");
+        const padded = normalized + "=".repeat((4 - (normalized.length % 4)) % 4);
+        const binary = atob(padded);
+        const bytes = new Uint8Array(binary.length);
+        for (let i = 0; i < binary.length; i++) {
+          bytes[i] = binary.charCodeAt(i);
+        }
+        return new TextDecoder("utf-8", { fatal: false }).decode(bytes);
+      } catch (err) {
+        console.error("Lỗi giải mã #site=:", err);
+        return null;
       }
-      btnCopy.textContent = "Đã copy ✓";
-      btnCopy.classList.add("copied");
-      showToast("Đã sao chép đường link!");
-    });
+    }
 
-    btnClear.addEventListener("click", () => {
-      currentHtml = "";
-      urlOutput.value = "";
-      previewFrame.srcdoc = "";
-      resultCard.classList.remove("show");
-      showToast("");
-    });
+    function renderSharedPageIfNeeded() {
+      const sharedHtml = decodeSharedHtmlFromHash();
+      if (sharedHtml === null) return false;
+
+      document.open();
+      document.write(sharedHtml);
+      document.close();
+      return true;
+    }
+
+    if (!renderSharedPageIfNeeded()) {
+      window.addEventListener("hashchange", () => {
+        renderSharedPageIfNeeded();
+      });
+
+      const dropZone = document.getElementById("dropZone");
+      const fileInput = document.getElementById("fileInput");
+      const resultCard = document.getElementById("resultCard");
+      const fileChip = document.getElementById("fileChip");
+      const sizeTag = document.getElementById("sizeTag");
+      const urlOutput = document.getElementById("urlOutput");
+      const btnCopy = document.getElementById("btnCopy");
+      const btnLaunch = document.getElementById("btnLaunch");
+      const btnClear = document.getElementById("btnClear");
+      const previewFrame = document.getElementById("previewFrame");
+      const toast = document.getElementById("toast");
+
+      let currentHtml = "";
+      let currentBlobUrl = "";
+
+      function revokeCurrentBlob() {
+        if (currentBlobUrl) {
+          URL.revokeObjectURL(currentBlobUrl);
+          currentBlobUrl = "";
+        }
+      }
+
+      function showToast(msg, isError = false) {
+        toast.textContent = msg;
+        toast.className = isError ? "toast err" : "toast";
+      }
+
+      function encodeUtf8Base64(str) {
+        const bytes = new TextEncoder().encode(str);
+        const chunkSize = 0x8000;
+        let binary = "";
+        for (let i = 0; i < bytes.length; i += chunkSize) {
+          const slice = bytes.subarray(i, i + chunkSize);
+          binary += String.fromCharCode.apply(null, slice);
+        }
+        return btoa(binary);
+      }
+
+      function formatSize(bytes) {
+        if (bytes < 1024) return `${bytes} B`;
+        if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+        return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
+      }
+
+      function handleIncomingFile(file) {
+        if (!file) return;
+        if (!/\.(html|htm)$/i.test(file.name) && file.type !== "text/html") {
+          showToast("Vui lòng chỉ thả file .html hoặc .htm", true);
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          currentHtml = String(e.target.result || "");
+          revokeCurrentBlob();
+
+          const blob = new Blob([currentHtml], { type: "text/html;charset=utf-8" });
+          currentBlobUrl = URL.createObjectURL(blob);
+
+          const isHosted = window.location.protocol === "http:" || window.location.protocol === "https:";
+          let shareLink = currentBlobUrl;
+
+          if (isHosted) {
+            const base64 = encodeUtf8Base64(currentHtml);
+            shareLink = `${window.location.origin}${window.location.pathname}#site=${base64}`;
+          }
+
+          fileChip.textContent = file.name;
+          sizeTag.textContent = formatSize(file.size);
+          urlOutput.value = shareLink;
+          btnLaunch.href = currentBlobUrl;
+          previewFrame.srcdoc = currentHtml;
+
+          btnCopy.textContent = "Copy link";
+          btnCopy.classList.remove("copied");
+          resultCard.classList.add("show");
+
+          if (isHosted && shareLink.length > 65000) {
+            showToast("Đã tạo link (file hơi dài, một số trình duyệt có thể hạn chế link quá dài).", false);
+          } else {
+            showToast("Đã tạo link thành công!");
+          }
+        };
+        reader.onerror = () => showToast("Không đọc được file này.", true);
+        reader.readAsText(file, "utf-8");
+      }
+
+      dropZone.addEventListener("click", () => fileInput.click());
+      dropZone.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          fileInput.click();
+        }
+      });
+
+      fileInput.addEventListener("change", (e) => {
+        if (e.target.files[0]) handleIncomingFile(e.target.files[0]);
+        fileInput.value = "";
+      });
+
+      ["dragenter", "dragover"].forEach((ev) => {
+        dropZone.addEventListener(ev, (e) => {
+          e.preventDefault();
+          dropZone.classList.add("active");
+        });
+      });
+
+      ["dragleave", "drop"].forEach((ev) => {
+        dropZone.addEventListener(ev, (e) => {
+          e.preventDefault();
+          dropZone.classList.remove("active");
+        });
+      });
+
+      dropZone.addEventListener("drop", (e) => {
+        const file = e.dataTransfer && e.dataTransfer.files[0];
+        if (file) handleIncomingFile(file);
+      });
+
+      btnCopy.addEventListener("click", async () => {
+        if (!urlOutput.value) return;
+        try {
+          await navigator.clipboard.writeText(urlOutput.value);
+        } catch {
+          urlOutput.select();
+          document.execCommand("copy");
+        }
+        btnCopy.textContent = "Đã copy ✓";
+        btnCopy.classList.add("copied");
+        showToast("Đã sao chép đường link!");
+      });
+
+      btnClear.addEventListener("click", () => {
+        currentHtml = "";
+        revokeCurrentBlob();
+        urlOutput.value = "";
+        btnLaunch.href = "#";
+        previewFrame.srcdoc = "";
+        resultCard.classList.remove("show");
+        showToast("");
+      });
+    }
   </script>
 </body>
 </html>
