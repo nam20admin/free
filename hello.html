@@ -3,350 +3,587 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>⏣ Eclipse Hub</title>
+  <title>⏣ ECLIPSE HUB</title>
   <style>
     :root {
-      --bg: #070913;
-      --card: #0e1326;
-      --card-2: #141c38;
-      --border: #25305c;
-      --primary: #6366f1;
-      --accent: #a855f7;
-      --cyan: #38bdf8;
-      --text: #f8fafc;
-      --muted: #94a3b8;
+      --bg-base: #050711;
+      --bg-glow-1: rgba(99, 102, 241, 0.22);
+      --bg-glow-2: rgba(168, 85, 247, 0.18);
+      --surface: rgba(13, 18, 38, 0.78);
+      --surface-elevated: rgba(20, 28, 58, 0.85);
+      --border: rgba(129, 140, 248, 0.18);
+      --border-strong: rgba(56, 189, 248, 0.42);
+      --text-main: #f8fafc;
+      --text-sub: #94a3b8;
+      --accent-indigo: #6366f1;
+      --accent-purple: #a855f7;
+      --accent-cyan: #38bdf8;
+      --accent-gold: #f59e0b;
       --success: #22c55e;
-      --danger: #ef4444;
+      --danger: #f43f5e;
+      --radius-lg: 20px;
+      --radius-md: 12px;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
-      font-family: 'Segoe UI', system-ui, sans-serif;
-      background: radial-gradient(circle at top right, #1e1b4b 0%, var(--bg) 50%);
-      color: var(--text);
+      font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background-color: var(--bg-base);
+      background-image:
+        radial-gradient(ellipse 80% 50% at 12% -5%, var(--bg-glow-1), transparent 65%),
+        radial-gradient(ellipse 70% 50% at 92% 8%, var(--bg-glow-2), transparent 65%);
+      color: var(--text-main);
       min-height: 100vh;
-      padding: 24px 16px 60px;
+      padding: 28px 16px 72px;
+      line-height: 1.5;
     }
-    .container { max-width: 980px; margin: 0 auto; }
-    .topbar {
+
+    .app-shell {
+      max-width: 1020px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      padding: 16px 22px;
+      border-radius: var(--radius-lg);
+      background: var(--surface);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid var(--border);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+      margin-bottom: 20px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-mark {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      font-size: 20px;
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.25), rgba(168, 85, 247, 0.25));
+      border: 1px solid rgba(168, 85, 247, 0.45);
+      box-shadow: inset 0 0 14px rgba(99, 102, 241, 0.25);
+    }
+
+    .brand-title {
+      font-size: 19px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      background: linear-gradient(90deg, #e0e7ff, #93c5fd, #d8b4fe);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .brand-sub {
+      font-size: 12px;
+      color: var(--text-sub);
+      letter-spacing: 0.02em;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    /* Glass Panels */
+    .panel {
+      background: var(--surface);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      margin-bottom: 18px;
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
+    }
+
+    .panel-title {
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      color: #f1f5f9;
+      margin-bottom: 6px;
+    }
+
+    .panel-desc {
+      font-size: 13px;
+      color: var(--text-sub);
+      margin-bottom: 16px;
+    }
+
+    /* Topup Notice */
+    .topup-card {
+      position: relative;
+      overflow: hidden;
+      border-color: var(--border-strong);
+      background: linear-gradient(135deg, rgba(15, 23, 52, 0.9), rgba(35, 24, 72, 0.78));
+    }
+
+    .topup-card::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent-cyan), var(--accent-indigo), var(--accent-purple));
+    }
+
+    .topup-text {
+      font-size: 14.5px;
+      font-weight: 500;
+      color: #e2e8f0;
+      margin-bottom: 8px;
+    }
+
+    .topup-link {
+      display: inline-block;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--accent-cyan);
+      text-decoration: none;
+      word-break: break-all;
+      padding: 6px 12px;
+      border-radius: 10px;
+      background: rgba(56, 189, 248, 0.09);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      transition: all 0.2s ease;
+    }
+
+    .topup-link:hover {
+      background: rgba(56, 189, 248, 0.16);
+      border-color: rgba(56, 189, 248, 0.5);
+    }
+
+    /* Segmented Tabs */
+    .segmented {
+      display: inline-flex;
+      padding: 4px;
+      border-radius: 12px;
+      background: rgba(8, 12, 26, 0.85);
+      border: 1px solid var(--border);
+      margin-bottom: 18px;
+    }
+
+    .seg-btn {
+      padding: 8px 18px;
+      border-radius: 9px;
+      border: none;
+      background: transparent;
+      color: var(--text-sub);
+      font-size: 13.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.18s ease;
+    }
+
+    .seg-btn.active {
+      background: linear-gradient(135deg, var(--accent-indigo), var(--accent-purple));
+      color: #fff;
+      box-shadow: 0 6px 18px rgba(99, 102, 241, 0.35);
+    }
+
+    /* Inputs & Buttons */
+    .field {
+      margin-bottom: 14px;
+    }
+
+    .field label {
+      display: block;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: #cbd5e1;
+      margin-bottom: 6px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      background: var(--surface-elevated);
+      color: var(--text-main);
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    input:focus, select:focus {
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.14);
+    }
+
+    .btn {
+      padding: 10px 18px;
+      border-radius: var(--radius-md);
+      border: 1px solid transparent;
+      font-size: 13.5px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      transition: transform 0.14s ease, box-shadow 0.18s ease, background 0.18s ease;
+    }
+
+    .btn:active {
+      transform: translateY(1px);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent-indigo), var(--accent-purple));
+      color: #fff;
+      box-shadow: 0 8px 22px rgba(99, 102, 241, 0.32);
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 10px 26px rgba(168, 85, 247, 0.42);
+    }
+
+    .btn-ghost {
+      background: var(--surface-elevated);
+      color: #e2e8f0;
+      border-color: var(--border);
+    }
+
+    .btn-ghost:hover {
+      border-color: rgba(148, 163, 184, 0.45);
+      background: rgba(30, 41, 82, 0.9);
+    }
+
+    .btn-saff {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(236, 72, 153, 0.22));
+      border-color: rgba(245, 158, 11, 0.45);
+      color: #fde68a;
+      letter-spacing: 0.04em;
+    }
+
+    .btn-saff:hover {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.32), rgba(236, 72, 153, 0.34));
+      box-shadow: 0 0 20px rgba(245, 158, 11, 0.22);
+    }
+
+    .btn-loop-active {
+      background: linear-gradient(135deg, #16a34a, #059669);
+      color: #fff;
+      box-shadow: 0 0 22px rgba(34, 197, 94, 0.35);
+    }
+
+    /* Account Info */
+    .account-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .id-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 8px;
+      padding: 5px 12px;
+      border-radius: 999px;
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      color: #7dd3fc;
+      font-family: 'JetBrains Mono', Consolas, monospace;
+      font-size: 12.5px;
+      font-weight: 700;
+    }
+
+    .wallet-box {
+      margin-top: 16px;
+      padding: 16px 20px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.12), rgba(16, 185, 129, 0.05));
+      border: 1px solid rgba(34, 197, 94, 0.32);
+    }
+
+    .wallet-label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #86efac;
+      font-weight: 700;
+    }
+
+    .wallet-value {
+      font-size: 26px;
+      font-weight: 800;
+      color: #4ade80;
+      margin-top: 2px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* SAFF Layout */
+    .saff-auth-card {
+      border-color: rgba(245, 158, 11, 0.45);
+      background: linear-gradient(145deg, rgba(20, 24, 48, 0.9), rgba(38, 25, 48, 0.78));
+    }
+
+    .saff-controls {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-top: 14px;
+    }
+
+    .code-console {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: var(--radius-md);
+      background: rgba(6, 9, 20, 0.88);
+      border: 1px solid var(--border);
+      font-family: 'JetBrains Mono', Consolas, monospace;
+      font-size: 12.5px;
+      color: #c4b5fd;
+      white-space: pre-wrap;
+      max-height: 190px;
+      overflow-y: auto;
+    }
+
+    .grid-split {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 18px;
+    }
+
+    @media (max-width: 800px) {
+      .grid-split {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .user-directory {
+      margin-top: 12px;
+      max-height: 360px;
+      overflow-y: auto;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      background: rgba(8, 12, 26, 0.65);
+    }
+
+    .user-row {
+      padding: 13px 15px;
+      border-bottom: 1px solid rgba(129, 140, 248, 0.12);
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 12px;
-      margin-bottom: 16px;
-      flex-wrap: wrap;
-    }
-    h1 {
-      font-size: 24px;
-      background: linear-gradient(90deg, #60a5fa, #c084fc);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    h2 { font-size: 17px; margin-bottom: 12px; color: #e2e8f0; }
-    .muted { color: var(--muted); font-size: 13px; }
-    .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 20px;
-      margin-bottom: 16px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
-    }
-    .topup-banner {
-      border-color: rgba(56, 189, 248, 0.5);
-      background: linear-gradient(135deg, rgba(14,19,38,0.96), rgba(30,27,75,0.85));
-    }
-    .topup-banner p { font-size: 15px; line-height: 1.6; margin-bottom: 8px; }
-    .topup-banner a { color: var(--cyan); font-weight: 600; text-decoration: none; word-break: break-all; }
-    .topup-banner a:hover { text-decoration: underline; }
-    .tabs { display: flex; gap: 8px; margin-bottom: 14px; }
-    .tab-btn {
-      padding: 9px 16px;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      background: var(--card-2);
-      color: var(--muted);
-      font-weight: 600;
       cursor: pointer;
+      transition: background 0.15s ease;
     }
-    .tab-btn.active {
-      background: linear-gradient(135deg, var(--primary), var(--accent));
-      color: #fff;
-      border-color: transparent;
+
+    .user-row:last-child {
+      border-bottom: none;
     }
-    .form-group { margin-bottom: 12px; }
-    label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 5px; font-weight: 600; }
-    input, select {
-      width: 100%;
-      padding: 11px 13px;
-      border-radius: 10px;
+
+    .user-row:hover {
+      background: rgba(99, 102, 241, 0.12);
+    }
+
+    .user-row.selected {
+      background: linear-gradient(90deg, rgba(168, 85, 247, 0.22), rgba(99, 102, 241, 0.1));
+      box-shadow: inset 3px 0 0 var(--accent-purple);
+    }
+
+    .target-card {
+      padding: 14px 16px;
+      border-radius: var(--radius-md);
+      background: var(--surface-elevated);
       border: 1px solid var(--border);
-      background: var(--card-2);
-      color: var(--text);
-      font-size: 14px;
-      outline: none;
-    }
-    input:focus, select:focus { border-color: var(--cyan); }
-    .btn {
-      padding: 10px 16px;
-      border-radius: 10px;
-      border: none;
-      font-weight: 600;
-      font-size: 14px;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .btn-primary {
-      background: linear-gradient(135deg, var(--primary), var(--accent));
-      color: #fff;
-    }
-    .btn-secondary {
-      background: var(--card-2);
-      color: var(--text);
-      border: 1px solid var(--border);
-    }
-    .btn-saff {
-      background: linear-gradient(135deg, #f59e0b, #ec4899);
-      color: #fff;
-    }
-    .btn-loop-on {
-      background: linear-gradient(135deg, #16a34a, #059669);
-      color: #fff;
-    }
-    .id-chip {
-      display: inline-block;
-      margin-top: 6px;
-      padding: 4px 10px;
-      border-radius: 8px;
-      background: rgba(56, 189, 248, 0.14);
-      border: 1px solid rgba(56, 189, 248, 0.35);
-      color: #7dd3fc;
-      font-family: Consolas, monospace;
-      font-weight: 700;
+      margin-bottom: 14px;
       font-size: 13.5px;
     }
-    .balance-box {
-      background: rgba(34, 197, 94, 0.12);
-      border: 1px solid rgba(34, 197, 94, 0.4);
-      padding: 14px 16px;
-      border-radius: 12px;
-      margin-top: 12px;
+
+    .target-card > div + div {
+      margin-top: 5px;
     }
-    .balance-num { font-size: 22px; font-weight: 700; color: #4ade80; }
-    .grid-2 { display: grid; grid-template-columns: 1.15fr 1fr; gap: 16px; }
-    @media (max-width: 780px) { .grid-2 { grid-template-columns: 1fr; } }
-    .user-list {
-      max-height: 360px;
-      overflow-y: auto;
-      border: 1px solid var(--border);
-      border-radius: 12px;
+
+    .feedback {
       margin-top: 10px;
-    }
-    .user-item {
-      padding: 12px 14px;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      cursor: pointer;
-    }
-    .user-item:last-child { border-bottom: none; }
-    .user-item:hover { background: rgba(99, 102, 241, 0.12); }
-    .user-item.selected {
-      background: rgba(168, 85, 247, 0.22);
-      border-left: 4px solid var(--accent);
-    }
-    .selected-box {
-      background: var(--card-2);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 14px;
-      margin-bottom: 12px;
-      line-height: 1.65;
-    }
-    .code-box {
-      background: var(--card-2);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 12px;
-      margin-top: 12px;
-      font-family: Consolas, monospace;
       font-size: 13px;
-      color: #c4b5fd;
-      white-space: pre-wrap;
-      max-height: 180px;
-      overflow-y: auto;
+      font-weight: 600;
     }
-    .msg { margin-top: 10px; font-size: 13.5px; font-weight: 600; }
-    .ok { color: var(--success); }
-    .err { color: var(--danger); }
+
+    .feedback.ok { color: var(--success); }
+    .feedback.err { color: var(--danger); }
+
     .toast {
       position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: #1e293b;
-      border: 1px solid var(--primary);
-      color: #fff;
-      padding: 11px 16px;
-      border-radius: 10px;
-      font-size: 13.5px;
+      bottom: 22px;
+      right: 22px;
+      padding: 12px 18px;
+      border-radius: 12px;
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid var(--border-strong);
+      color: #f8fafc;
+      font-size: 13px;
+      font-weight: 600;
+      box-shadow: 0 14px 32px rgba(0, 0, 0, 0.5);
       display: none;
       z-index: 999;
-    }
-    .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.72);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-      z-index: 900;
-    }
-    .modal-card {
-      width: 100%;
-      max-width: 400px;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 20px;
+      pointer-events: none;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="topbar">
-      <h1>⏣ Eclipse Hub</h1>
-      <div style="display:flex; gap:8px;">
-        <button type="button" class="btn btn-secondary" id="btnBackClient" style="display:none;" onclick="switchToClient()">← Trang khách hàng</button>
-        <button type="button" class="btn btn-saff" onclick="openSaffModal()">SAFF</button>
+  <div class="app-shell">
+    <header class="header">
+      <div class="brand">
+        <div class="brand-mark">⏣</div>
+        <div>
+          <div class="brand-title">ECLIPSE HUB</div>
+          <div class="brand-sub">Member Portal & Control Suite</div>
+        </div>
       </div>
-    </div>
 
-    <!-- PHẦN KHÁCH HÀNG -->
-    <div id="clientView">
-      <div class="card topup-banner">
-        <p>hãy nhắn cho người dùng discord này để nạp thẻ nhé Z</p>
-        <a href="https://discord.com/users/1473671927976562689" target="_blank" rel="noopener noreferrer">
+      <div class="header-actions">
+        <button type="button" class="btn btn-ghost" id="btnBackClient" style="display:none;" onclick="switchToClient()">← Trang khách hàng</button>
+        <button type="button" class="btn btn-saff" id="btnSaffMain" onclick="toggleSaffLoginBox()">SAFF</button>
+      </div>
+    </header>
+
+    <!-- MỞ KHÓA SAFF -->
+    <section class="panel saff-auth-card" id="saffAuthCard" style="display:none;">
+      <div class="panel-title">Xác thực SAFF</div>
+      <div class="panel-desc">Nhập mật khẩu để truy cập bảng điều khiển SAFF.</div>
+      <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+        <input type="password" id="saffPassInput" placeholder="Nhập mật khẩu..." style="flex:1; min-width:210px;" onkeydown="if(event.key==='Enter') submitSaffPass();" />
+        <button type="button" class="btn btn-primary" onclick="submitSaffPass()">Xác nhận</button>
+        <button type="button" class="btn btn-ghost" onclick="hideSaffLoginBox()">Đóng</button>
+      </div>
+      <div class="feedback err" id="saffPassErr"></div>
+    </section>
+
+    <!-- GIAO DIỆN KHÁCH HÀNG -->
+    <main id="clientView">
+      <section class="panel topup-card">
+        <p class="topup-text">hãy nhắn cho người dùng discord này để nạp thẻ nhé Z</p>
+        <a class="topup-link" href="https://discord.com/users/1473671927976562689" target="_blank" rel="noopener noreferrer">
           link: https://discord.com/users/1473671927976562689
         </a>
-      </div>
+      </section>
 
-      <div class="card" id="authCard">
-        <h2>Đăng ký / Đăng nhập tài khoản</h2>
-        <p class="muted" style="margin-bottom: 14px;">Tài khoản tự lưu vĩnh viễn trên trình duyệt và cấp mã ID riêng để admin tìm.</p>
+      <section class="panel" id="authCard">
+        <div class="panel-title">Tài khoản thành viên</div>
+        <div class="panel-desc">Đăng ký hoặc đăng nhập để lưu tài khoản vĩnh viễn và nhận mã ID riêng.</div>
 
-        <div class="tabs">
-          <button type="button" class="tab-btn active" id="tabLogin" onclick="setAuthMode('login')">Đăng nhập</button>
-          <button type="button" class="tab-btn" id="tabRegister" onclick="setAuthMode('register')">Đăng ký</button>
+        <div class="segmented">
+          <button type="button" class="seg-btn active" id="tabLogin" onclick="setAuthMode('login')">Đăng nhập</button>
+          <button type="button" class="seg-btn" id="tabRegister" onclick="setAuthMode('register')">Đăng ký</button>
         </div>
 
-        <form id="authForm">
-          <div class="form-group">
-            <label>Tên tài khoản *</label>
-            <input type="text" id="authUser" placeholder="Nhập tên tài khoản..." required />
-          </div>
-          <div class="form-group">
-            <label>Mật khẩu *</label>
-            <input type="password" id="authPass" placeholder="Nhập mật khẩu..." required />
-          </div>
-          <button type="submit" class="btn btn-primary" id="authSubmitBtn">Đăng nhập</button>
-          <div class="msg" id="authMsg"></div>
-        </form>
-      </div>
+        <div class="field">
+          <label for="authUser">Tên tài khoản</label>
+          <input type="text" id="authUser" placeholder="Nhập tên tài khoản..." />
+        </div>
+        <div class="field">
+          <label for="authPass">Mật khẩu</label>
+          <input type="password" id="authPass" placeholder="Nhập mật khẩu..." onkeydown="if(event.key==='Enter') submitAuth();" />
+        </div>
 
-      <div class="card" id="userCard" style="display:none;">
-        <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px; flex-wrap:wrap;">
+        <button type="button" class="btn btn-primary" id="authSubmitBtn" onclick="submitAuth()">Đăng nhập</button>
+        <div class="feedback" id="authMsg"></div>
+      </section>
+
+      <section class="panel" id="userCard" style="display:none;">
+        <div class="account-header">
           <div>
-            <h2 style="margin:0;">Xin chào, <span id="clientName"></span></h2>
-            <div class="id-chip">Mã ID riêng của bạn: <span id="clientUniqueId"></span></div>
+            <div class="panel-title" style="margin-bottom:2px;">Xin chào, <span id="clientName"></span></div>
+            <div class="id-badge">ID: <span id="clientUniqueId"></span></div>
           </div>
-          <button type="button" class="btn btn-secondary" onclick="logoutClient()">Đăng xuất</button>
+          <button type="button" class="btn btn-ghost" onclick="logoutClient()">Đăng xuất</button>
         </div>
 
-        <div class="balance-box">
-          <div class="muted">Số dư hiện tại</div>
-          <div class="balance-num" id="clientBalance">0</div>
+        <div class="wallet-box">
+          <div class="wallet-label">Số dư hiện tại</div>
+          <div class="wallet-value" id="clientBalance">0</div>
         </div>
-      </div>
-    </div>
+      </section>
+    </main>
 
-    <!-- PHẦN SAFF (CHỈ MỞ KHI NHẬP MẬT KHẨU Owner) -->
-    <div id="saffView" style="display:none;">
-      <div class="card">
-        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+    <!-- GIAO DIỆN SAFF -->
+    <section id="saffView" style="display:none;">
+      <div class="panel">
+        <div class="account-header">
           <div>
-            <h2 style="margin:0;">⚡ Khu vực SAFF — Gửi Code Webhook & Nạp Cho Người Dùng</h2>
-            <p class="muted" id="saffStats">Đang tải...</p>
+            <div class="panel-title">SAFF — Giftcode Webhook & Nạp Tài Khoản</div>
+            <div class="panel-desc" style="margin-bottom:0;" id="saffStats">Đang tải...</div>
           </div>
-          <button type="button" class="btn btn-secondary" onclick="lockSaff()">🔒 Thoát SAFF</button>
+          <button type="button" class="btn btn-ghost" onclick="lockSaff()">Khóa SAFF</button>
         </div>
 
-        <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top:14px;">
+        <div class="saff-controls">
           <button type="button" class="btn btn-primary" onclick="generateAndSend10Codes()">Tạo 10 code & gửi Webhook</button>
-          <button type="button" class="btn btn-secondary" id="autoLoopBtn" onclick="toggleAuto10Codes()">Tự động tạo 10 code liên tục: TẮT</button>
-          <span class="muted" id="webhookStatus">Webhook sẵn sàng</span>
+          <button type="button" class="btn btn-ghost" id="autoLoopBtn" onclick="toggleAuto10Codes()">Tự động tạo 10 code liên tục: TẮT</button>
+          <span class="panel-desc" style="margin:0;" id="webhookStatus">Webhook sẵn sàng</span>
         </div>
 
-        <div class="code-box" id="latestCodesBox">Chưa tạo lô code nào.</div>
+        <div class="code-console" id="latestCodesBox">Chưa có lô code nào được tạo.</div>
       </div>
 
-      <div class="grid-2">
-        <div class="card">
-          <h2>🔎 Tìm người dùng bằng Mã ID (hoặc tên)</h2>
-          <input type="text" id="searchIdInput" placeholder="Nhập mã ID (VD: ID-123456) hoặc tên tài khoản..." oninput="renderAdminUsers()" />
-          <div class="user-list" id="adminUserList"></div>
+      <div class="grid-split">
+        <div class="panel">
+          <div class="panel-title">Tìm người dùng theo mã ID</div>
+          <div class="panel-desc">Nhập mã ID riêng hoặc tên tài khoản rồi bấm chọn.</div>
+          <input type="text" id="searchIdInput" placeholder="VD: ID-123456 hoặc tên tài khoản..." oninput="renderAdminUsers()" />
+          <div class="user-directory" id="adminUserList"></div>
         </div>
 
-        <div class="card">
-          <h2>💰 Nạp cho người dùng đã chọn</h2>
-          <div class="selected-box" id="selectedTargetBox">
-            <span class="muted">Tìm mã ID bên trái và bấm chọn người dùng để nạp.</span>
+        <div class="panel">
+          <div class="panel-title">Nạp cho người dùng</div>
+          <div class="panel-desc">Chọn 1 trong 2 hình thức nạp sau khi bấm chọn người dùng.</div>
+
+          <div class="target-card" id="selectedTargetBox">
+            <span class="panel-desc" style="margin:0;">Chưa chọn người dùng nào.</span>
           </div>
 
-          <div class="form-group">
-            <label>Hình thức nạp</label>
+          <div class="field">
+            <label for="topupModeSelect">Lựa chọn nạp</label>
             <select id="topupModeSelect" onchange="toggleTopupInputs()">
               <option value="giftcode">1. Nhập giftcode (+1,000)</option>
               <option value="money">2. Nhập số tiền muốn gửi</option>
             </select>
           </div>
 
-          <form id="saffTopupForm">
-            <div class="form-group" id="giftcodeField">
-              <label>Nhập mã giftcode</label>
-              <input type="text" id="saffGiftcodeInput" placeholder="Ví dụ: ECH-XXXXXXXXXXXX" />
-            </div>
+          <div class="field" id="giftcodeField">
+            <label for="saffGiftcodeInput">Mã giftcode</label>
+            <input type="text" id="saffGiftcodeInput" placeholder="Ví dụ: ECH-XXXXXXXXXXXX" />
+          </div>
 
-            <div class="form-group" id="moneyField" style="display:none;">
-              <label>Nhập số tiền muốn gửi</label>
-              <input type="number" id="saffMoneyInput" min="1" step="1" placeholder="Ví dụ: 5000" />
-            </div>
+          <div class="field" id="moneyField" style="display:none;">
+            <label for="saffMoneyInput">Số tiền muốn gửi</label>
+            <input type="number" id="saffMoneyInput" min="1" step="1" placeholder="Nhập số tiền..." />
+          </div>
 
-            <button type="submit" class="btn btn-primary">Nạp</button>
-          </form>
-          <div class="msg" id="saffTopupMsg"></div>
+          <button type="button" class="btn btn-primary" onclick="submitSaffTopup()">Nạp</button>
+          <div class="feedback" id="saffTopupMsg"></div>
         </div>
       </div>
-    </div>
-  </div>
-
-  <!-- MODAL MẬT KHẨU NÚT SAFF -->
-  <div class="modal-backdrop" id="saffModal">
-    <div class="modal-card">
-      <h2 style="margin-bottom:6px;">Xác thực SAFF</h2>
-      <p class="muted" style="margin-bottom:12px;">Nhập mật khẩu để mở khu vực SAFF.</p>
-      <div class="form-group">
-        <input type="password" id="saffPassInput" placeholder="Nhập mật khẩu..." onkeydown="if(event.key==='Enter') submitSaffPass();" />
-      </div>
-      <div style="display:flex; gap:8px; justify-content:flex-end;">
-        <button type="button" class="btn btn-secondary" onclick="closeSaffModal()">Hủy</button>
-        <button type="button" class="btn btn-primary" onclick="submitSaffPass()">Xác nhận</button>
-      </div>
-      <div class="msg err" id="saffPassErr"></div>
-    </div>
+    </section>
   </div>
 
   <div class="toast" id="toast"></div>
@@ -354,18 +591,34 @@
   <script>
     const DB_KEY = 'eclipse_hub_linked_db_v1';
     const SESSION_KEY = 'eclipse_hub_current_user_v1';
-    const SAFF_UNLOCK_KEY = 'eclipse_hub_saff_unlocked_v1';
     const SAFF_PASSWORD = 'Owner';
     const GIFTCODE_REWARD = 1000;
     const WEBHOOK_URL = 'https://discord.com/api/webhooks/1575059628700467271/kS-S68wgHYMYlrTUqly9FvwgxEqaacyNd60wL8cuy_kUpHZJVunuv8hKS4QI-_H-EHFY';
+
+    const memoryStore = {
+      db: { users: {}, codes: {} },
+      currentUser: null,
+      saffUnlocked: false
+    };
 
     let authMode = 'login';
     let selectedUserKey = null;
     let autoTimer = null;
     let batchCounter = 0;
 
+    function safeGetItem(key) {
+      try { return localStorage.getItem(key); } catch (e) { return null; }
+    }
+    function safeSetItem(key, val) {
+      try { localStorage.setItem(key, val); } catch (e) {}
+    }
+    function safeRemoveItem(key) {
+      try { localStorage.removeItem(key); } catch (e) {}
+    }
+
     function showToast(msg) {
       const el = document.getElementById('toast');
+      if (!el) return;
       el.textContent = msg;
       el.style.display = 'block';
       clearTimeout(window._toastT);
@@ -393,10 +646,15 @@
 
     function loadDb() {
       let db = null;
-      try { db = JSON.parse(localStorage.getItem(DB_KEY)); } catch (e) {}
-      if (!db || typeof db !== 'object') db = { users: {}, codes: {} };
-      if (!db.users) db.users = {};
-      if (!db.codes) db.codes = {};
+      const raw = safeGetItem(DB_KEY);
+      if (raw) {
+        try { db = JSON.parse(raw); } catch (e) { db = null; }
+      }
+      if (!db || typeof db !== 'object') {
+        db = memoryStore.db;
+      }
+      if (!db.users || typeof db.users !== 'object') db.users = {};
+      if (!db.codes || typeof db.codes !== 'object') db.codes = {};
 
       let changed = false;
       for (const uname of Object.keys(db.users)) {
@@ -405,12 +663,14 @@
           changed = true;
         }
       }
+      memoryStore.db = db;
       if (changed) saveDb(db);
       return db;
     }
 
     function saveDb(db) {
-      try { localStorage.setItem(DB_KEY, JSON.stringify(db)); } catch (e) {}
+      memoryStore.db = db;
+      safeSetItem(DB_KEY, JSON.stringify(db));
     }
 
     function setAuthMode(mode) {
@@ -421,18 +681,21 @@
       document.getElementById('authMsg').textContent = '';
     }
 
-    document.getElementById('authForm').addEventListener('submit', function(e) {
-      e.preventDefault();
+    function submitAuth() {
       const username = document.getElementById('authUser').value.trim();
       const password = document.getElementById('authPass').value;
       const msgEl = document.getElementById('authMsg');
-      if (!username || !password) return;
+      if (!username || !password) {
+        msgEl.className = 'feedback err';
+        msgEl.textContent = 'Vui lòng nhập đầy đủ tên tài khoản và mật khẩu!';
+        return;
+      }
 
       const db = loadDb();
 
       if (authMode === 'register') {
         if (db.users[username]) {
-          msgEl.className = 'msg err';
+          msgEl.className = 'feedback err';
           msgEl.textContent = 'Tên tài khoản đã tồn tại!';
           return;
         }
@@ -444,40 +707,44 @@
           createdAt: new Date().toLocaleString('vi-VN')
         };
         saveDb(db);
-        try { localStorage.setItem(SESSION_KEY, username); } catch (err) {}
-        this.reset();
+        memoryStore.currentUser = username;
+        safeSetItem(SESSION_KEY, username);
+        document.getElementById('authUser').value = '';
+        document.getElementById('authPass').value = '';
         renderClientView();
-        if (isSaffUnlocked()) renderAdminUsers();
-        showToast(`Đăng ký thành công! Mã ID của bạn: ${uniqueId}`);
+        if (memoryStore.saffUnlocked) renderAdminUsers();
+        showToast(`Đăng ký thành công • ${uniqueId}`);
       } else {
         const u = db.users[username];
         if (!u || u.password !== password) {
-          msgEl.className = 'msg err';
+          msgEl.className = 'feedback err';
           msgEl.textContent = 'Sai tên tài khoản hoặc mật khẩu!';
           return;
         }
-        try { localStorage.setItem(SESSION_KEY, username); } catch (err) {}
-        this.reset();
+        memoryStore.currentUser = username;
+        safeSetItem(SESSION_KEY, username);
+        document.getElementById('authUser').value = '';
+        document.getElementById('authPass').value = '';
         renderClientView();
-        if (isSaffUnlocked()) renderAdminUsers();
-        showToast('Đăng nhập thành công!');
+        if (memoryStore.saffUnlocked) renderAdminUsers();
+        showToast('Đăng nhập thành công');
       }
-    });
+    }
 
     function logoutClient() {
-      try { localStorage.removeItem(SESSION_KEY); } catch (e) {}
+      memoryStore.currentUser = null;
+      safeRemoveItem(SESSION_KEY);
       renderClientView();
     }
 
     function renderClientView() {
       const db = loadDb();
-      let currentUser = null;
-      try { currentUser = localStorage.getItem(SESSION_KEY); } catch (e) {}
-
+      const currentUser = safeGetItem(SESSION_KEY) || memoryStore.currentUser;
       const authCard = document.getElementById('authCard');
       const userCard = document.getElementById('userCard');
 
       if (currentUser && db.users[currentUser]) {
+        memoryStore.currentUser = currentUser;
         authCard.style.display = 'none';
         userCard.style.display = 'block';
         document.getElementById('clientName').textContent = currentUser;
@@ -489,30 +756,31 @@
       }
     }
 
-    function isSaffUnlocked() {
-      try { return sessionStorage.getItem(SAFF_UNLOCK_KEY) === '1'; } catch (e) { return false; }
-    }
-
-    function openSaffModal() {
-      if (isSaffUnlocked()) {
+    function toggleSaffLoginBox() {
+      if (memoryStore.saffUnlocked) {
         switchToSaff();
         return;
       }
-      document.getElementById('saffPassInput').value = '';
+      const box = document.getElementById('saffAuthCard');
+      const isOpen = box.style.display === 'block';
+      box.style.display = isOpen ? 'none' : 'block';
       document.getElementById('saffPassErr').textContent = '';
-      document.getElementById('saffModal').style.display = 'flex';
-      setTimeout(() => document.getElementById('saffPassInput').focus(), 50);
+      if (!isOpen) {
+        document.getElementById('saffPassInput').value = '';
+        document.getElementById('saffPassInput').focus();
+      }
     }
 
-    function closeSaffModal() {
-      document.getElementById('saffModal').style.display = 'none';
+    function hideSaffLoginBox() {
+      document.getElementById('saffAuthCard').style.display = 'none';
     }
 
     function submitSaffPass() {
       const val = document.getElementById('saffPassInput').value;
       if (val === SAFF_PASSWORD) {
-        try { sessionStorage.setItem(SAFF_UNLOCK_KEY, '1'); } catch (e) {}
-        closeSaffModal();
+        memoryStore.saffUnlocked = true;
+        document.getElementById('saffAuthCard').style.display = 'none';
+        document.getElementById('saffPassErr').textContent = '';
         switchToSaff();
       } else {
         document.getElementById('saffPassErr').textContent = 'Mật khẩu không đúng!';
@@ -520,6 +788,7 @@
     }
 
     function switchToSaff() {
+      document.getElementById('saffAuthCard').style.display = 'none';
       document.getElementById('clientView').style.display = 'none';
       document.getElementById('saffView').style.display = 'block';
       document.getElementById('btnBackClient').style.display = 'inline-flex';
@@ -534,15 +803,15 @@
     }
 
     function lockSaff() {
-      try { sessionStorage.removeItem(SAFF_UNLOCK_KEY); } catch (e) {}
+      memoryStore.saffUnlocked = false;
       if (autoTimer) {
         clearInterval(autoTimer);
         autoTimer = null;
         document.getElementById('autoLoopBtn').textContent = 'Tự động tạo 10 code liên tục: TẮT';
-        document.getElementById('autoLoopBtn').className = 'btn btn-secondary';
+        document.getElementById('autoLoopBtn').className = 'btn btn-ghost';
       }
       switchToClient();
-      showToast('Đã khóa khu vực SAFF');
+      showToast('Đã khóa SAFF');
     }
 
     async function postCodesToWebhook(codes, batchNum) {
@@ -560,10 +829,10 @@
         });
         if (!res.ok) throw new Error('HTTP ' + res.status);
         statusEl.style.color = '#4ade80';
-        statusEl.textContent = `Đã gửi lô #${batchNum} lên Webhook thành công`;
+        statusEl.textContent = `Đã gửi lô #${batchNum} lên Webhook`;
       } catch (err) {
-        statusEl.style.color = '#f87171';
-        statusEl.textContent = `Đã tạo 10 code nhưng gửi Webhook lỗi (${err.message})`;
+        statusEl.style.color = '#fb7185';
+        statusEl.textContent = `Lỗi gửi Webhook (${err.message})`;
       }
     }
 
@@ -589,13 +858,13 @@
         clearInterval(autoTimer);
         autoTimer = null;
         btn.textContent = 'Tự động tạo 10 code liên tục: TẮT';
-        btn.className = 'btn btn-secondary';
-        showToast('Đã dừng tự động tạo 10 code liên tục');
+        btn.className = 'btn btn-ghost';
+        showToast('Đã dừng tự động tạo 10 code');
         return;
       }
       btn.textContent = 'Đang tự động tạo 10 code liên tục (Bấm dừng)';
-      btn.className = 'btn btn-loop-on';
-      showToast('Bắt đầu tự động tạo 10 code liên tục');
+      btn.className = 'btn btn-loop-active';
+      showToast('Đang tự động tạo 10 code liên tục');
       generateAndSend10Codes();
       autoTimer = setInterval(() => {
         generateAndSend10Codes();
@@ -608,7 +877,7 @@
       const codeCount = Object.keys(db.codes).length;
       const unusedCount = Object.values(db.codes).filter(c => !c.used).length;
       document.getElementById('saffStats').textContent =
-        `Người dùng: ${userCount} • Tổng code: ${codeCount.toLocaleString('vi-VN')} • Còn dùng được: ${unusedCount.toLocaleString('vi-VN')}`;
+        `Người dùng: ${userCount} • Tổng code: ${codeCount.toLocaleString('vi-VN')} • Khả dụng: ${unusedCount.toLocaleString('vi-VN')}`;
       renderAdminUsers();
       renderSelectedTarget();
     }
@@ -624,20 +893,20 @@
       });
 
       if (!entries.length) {
-        listEl.innerHTML = '<div style="padding:16px; color:#94a3b8;">Không tìm thấy người dùng theo mã ID này.</div>';
+        listEl.innerHTML = '<div style="padding:16px; color:#94a3b8; font-size:13px;">Không tìm thấy người dùng nào.</div>';
         return;
       }
 
       listEl.innerHTML = entries.map(([uname, info]) => {
-        const active = selectedUserKey === uname ? 'user-item selected' : 'user-item';
+        const active = selectedUserKey === uname ? 'user-row selected' : 'user-row';
         const bal = Number(info.balance || 0).toLocaleString('vi-VN');
         return `
           <div class="${active}" onclick="pickAdminUser('${escapeAttr(uname)}')">
             <div>
-              <div class="pass-tag" style="display:inline-block; padding:2px 8px; border-radius:6px; background:rgba(56,189,248,0.14); color:#7dd3fc; font-family:Consolas,monospace; font-weight:700;">${escapeHtml(info.userId)}</div>
-              <div style="margin-top:4px;"><strong>${escapeHtml(uname)}</strong></div>
+              <span class="id-badge" style="margin-top:0;">${escapeHtml(info.userId)}</span>
+              <div style="margin-top:6px; font-weight:600; color:#f1f5f9;">${escapeHtml(uname)}</div>
             </div>
-            <div style="color:#4ade80; font-weight:700;">${bal}</div>
+            <div style="color:#4ade80; font-weight:700; font-variant-numeric:tabular-nums;">${bal}</div>
           </div>
         `;
       }).join('');
@@ -655,12 +924,12 @@
       const db = loadDb();
       if (!selectedUserKey || !db.users[selectedUserKey]) {
         selectedUserKey = null;
-        box.innerHTML = '<span class="muted">Tìm mã ID bên trái và bấm chọn người dùng để nạp.</span>';
+        box.innerHTML = '<span class="panel-desc" style="margin:0;">Chưa chọn người dùng nào.</span>';
         return;
       }
       const info = db.users[selectedUserKey];
       box.innerHTML = `
-        <div><strong>Mã ID:</strong> <span style="color:#7dd3fc; font-family:Consolas,monospace;">${escapeHtml(info.userId)}</span></div>
+        <div><strong>Mã ID:</strong> <span style="color:#7dd3fc; font-family:Consolas,monospace; font-weight:700;">${escapeHtml(info.userId)}</span></div>
         <div><strong>Tài khoản:</strong> <strong>${escapeHtml(selectedUserKey)}</strong></div>
         <div><strong>Số dư hiện tại:</strong> <strong style="color:#4ade80;">${Number(info.balance || 0).toLocaleString('vi-VN')}</strong></div>
       `;
@@ -672,10 +941,75 @@
       document.getElementById('moneyField').style.display = mode === 'money' ? 'block' : 'none';
     }
 
-    document.getElementById('saffTopupForm').addEventListener('submit', function(e) {
-      e.preventDefault();
+    function submitSaffTopup() {
       const msgEl = document.getElementById('saffTopupMsg');
       const db = loadDb();
 
       if (!selectedUserKey || !db.users[selectedUserKey]) {
-        msgEl.className =
+        msgEl.className = 'feedback err';
+        msgEl.textContent = 'Hãy tìm và bấm chọn người dùng trước!';
+        return;
+      }
+
+      const mode = document.getElementById('topupModeSelect').value;
+
+      if (mode === 'giftcode') {
+        const code = document.getElementById('saffGiftcodeInput').value.trim().toUpperCase();
+        if (!db.codes[code]) {
+          msgEl.className = 'feedback err';
+          msgEl.textContent = 'Giftcode không tồn tại!';
+          return;
+        }
+        if (db.codes[code].used) {
+          msgEl.className = 'feedback err';
+          msgEl.textContent = `Giftcode này đã được dùng bởi ${db.codes[code].usedBy || 'người khác'}!`;
+          return;
+        }
+        db.codes[code].used = true;
+        db.codes[code].usedBy = selectedUserKey;
+        db.codes[code].usedAt = new Date().toLocaleString('vi-VN');
+        db.users[selectedUserKey].balance = Number(db.users[selectedUserKey].balance || 0) + GIFTCODE_REWARD;
+        saveDb(db);
+        document.getElementById('saffGiftcodeInput').value = '';
+        refreshSaff();
+        renderClientView();
+        msgEl.className = 'feedback ok';
+        msgEl.textContent = `Đã nạp code ${code} (+1,000) cho ${selectedUserKey} (${db.users[selectedUserKey].userId})`;
+        showToast('Đã cộng +1,000');
+      } else {
+        const amount = parseInt(document.getElementById('saffMoneyInput').value, 10);
+        if (isNaN(amount) || amount <= 0) {
+          msgEl.className = 'feedback err';
+          msgEl.textContent = 'Vui lòng nhập số tiền lớn hơn 0!';
+          return;
+        }
+        db.users[selectedUserKey].balance = Number(db.users[selectedUserKey].balance || 0) + amount;
+        saveDb(db);
+        document.getElementById('saffMoneyInput').value = '';
+        refreshSaff();
+        renderClientView();
+        msgEl.className = 'feedback ok';
+        msgEl.textContent = `Đã gửi +${amount.toLocaleString('vi-VN')} cho ${selectedUserKey} (${db.users[selectedUserKey].userId})`;
+        showToast(`Đã gửi +${amount.toLocaleString('vi-VN')}`);
+      }
+    }
+
+    function escapeHtml(str) {
+      return String(str).replace(/[&<>"']/g, m => ({'&':'&','<':'<','>':'>','"':'"',"'":'''}[m]));
+    }
+    function escapeAttr(str) {
+      return String(str).replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+    }
+
+    window.addEventListener('storage', function(e) {
+      if (e.key === DB_KEY || e.key === SESSION_KEY) {
+        renderClientView();
+        if (memoryStore.saffUnlocked) refreshSaff();
+      }
+    });
+
+    loadDb();
+    renderClientView();
+  </script>
+</body>
+</html>
