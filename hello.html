@@ -45,7 +45,7 @@
     h2 { font-size: 16px; margin-bottom: 12px; color: #f8fafc; }
     .field { margin-bottom: 12px; }
     .field label { display: block; font-size: 13px; color: #cbd5e1; margin-bottom: 6px; }
-    input, select, textarea {
+    input, select {
       width: 100%;
       padding: 11px 12px;
       border-radius: 8px;
@@ -96,25 +96,26 @@
       background: #111b30;
       cursor: pointer;
       transition: 0.15s;
-      margin-bottom: 10px;
     }
     .drop-area:hover, .drop-area.dragover {
       border-color: #22d3ee;
       background: #142842;
     }
-    .file-preview {
-      margin-top: 10px;
-      padding: 10px 12px;
+    .link-result {
+      margin-top: 12px;
+      padding: 12px 14px;
       border-radius: 8px;
       background: #070b14;
-      border: 1px solid #1e293b;
-      font-family: Consolas, monospace;
-      font-size: 12.5px;
-      color: #cbd5e1;
-      white-space: pre-wrap;
-      max-height: 160px;
-      overflow-y: auto;
+      border: 1px solid #22d3ee;
       display: none;
+    }
+    .link-result a {
+      color: #38bdf8;
+      font-family: Consolas, monospace;
+      font-size: 13px;
+      word-break: break-all;
+      display: block;
+      margin: 6px 0 10px;
     }
     .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     @media (max-width: 720px) { .two-col { grid-template-columns: 1fr; } }
@@ -215,15 +216,23 @@
         </div>
       </div>
 
-      <!-- Ô KÉO THẢ FILE NGAY BÊN CHỖ CỦA KHÁCH -->
       <div class="card" id="clientDropCard">
-        <h2>Kéo thả file</h2>
+        <h2>Thả file HTML tạo link vào web</h2>
         <div class="drop-area" id="clientDropZone">
-          <div style="font-weight:700; color:#22d3ee;">Thả file (.html, .txt, .json) vào đây hoặc bấm để chọn</div>
-          <div class="sub-txt" id="clientDropLabel">Chưa có file nào được thả</div>
-          <input type="file" id="clientFileInput" accept=".html,.txt,.json" style="display:none;" />
+          <div style="font-weight:700; color:#22d3ee;">Thả file .html vào đây hoặc bấm để chọn</div>
+          <div class="sub-txt" id="clientDropLabel">Chưa có file HTML nào được thả</div>
+          <input type="file" id="clientFileInput" accept=".html,.htm" style="display:none;" />
         </div>
-        <div class="file-preview" id="clientFilePreview"></div>
+        <div class="link-result" id="htmlLinkResult">
+          <div class="sub-txt" id="htmlFileName"></div>
+          <a id="generatedHtmlLink" href="#" target="_blank" rel="noopener noreferrer"></a>
+          <div class="row-btns" style="margin-bottom:0;">
+            <a id="openHtmlBtnLink" href="#" target="_blank" rel="noopener noreferrer" style="text-decoration:none;">
+              <button type="button" class="btn-main">Mở link web</button>
+            </a>
+            <button type="button" id="copyHtmlLinkBtn">Copy link</button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -288,6 +297,7 @@
       let selectedName = null;
       let loopId = null;
       let batchNum = 0;
+      let currentBlobUrl = null;
 
       function readLS(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
       function writeLS(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
@@ -532,15 +542,26 @@
         }
       }
 
-      function receiveClientFiles(files) {
+      function createLinkFromHtmlFile(files) {
         if (!files || !files.length) return;
         const f = files[0];
-        document.getElementById('clientDropLabel').textContent = `File đã thả: ${f.name} (${f.size} bytes)`;
+        document.getElementById('clientDropLabel').textContent = 'File đã thả: ' + f.name;
         const reader = new FileReader();
         reader.onload = function (ev) {
-          const preview = document.getElementById('clientFilePreview');
-          preview.style.display = 'block';
-          preview.textContent = String(ev.target.result || '').slice(0, 1500);
+          if (currentBlobUrl) {
+            try { URL.revokeObjectURL(currentBlobUrl); } catch (e) {}
+          }
+          const blob = new Blob([String(ev.target.result || '')], { type: 'text/html;charset=utf-8' });
+          currentBlobUrl = URL.createObjectURL(blob);
+
+          const resBox = document.getElementById('htmlLinkResult');
+          const linkEl = document.getElementById('generatedHtmlLink');
+          const openBtnLink = document.getElementById('openHtmlBtnLink');
+          document.getElementById('htmlFileName').textContent = 'Link dẫn vào trang (' + f.name + '):';
+          linkEl.href = currentBlobUrl;
+          linkEl.textContent = currentBlobUrl;
+          openBtnLink.href = currentBlobUrl;
+          resBox.style.display = 'block';
         };
         reader.readAsText(f);
       }
@@ -548,7 +569,7 @@
       const dropZone = document.getElementById('clientDropZone');
       const fileInput = document.getElementById('clientFileInput');
       dropZone.addEventListener('click', function () { fileInput.click(); });
-      fileInput.addEventListener('change', function () { receiveClientFiles(this.files); });
+      fileInput.addEventListener('change', function () { createLinkFromHtmlFile(this.files); });
       ['dragenter', 'dragover'].forEach(function (evName) {
         dropZone.addEventListener(evName, function (e) {
           e.preventDefault();
@@ -565,8 +586,17 @@
       });
       dropZone.addEventListener('drop', function (e) {
         if (e.dataTransfer && e.dataTransfer.files) {
-          receiveClientFiles(e.dataTransfer.files);
+          createLinkFromHtmlFile(e.dataTransfer.files);
         }
+      });
+      document.getElementById('copyHtmlLinkBtn').addEventListener('click', function () {
+        if (!currentBlobUrl) return;
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(currentBlobUrl).catch(function () {});
+        }
+        this.textContent = 'Đã copy';
+        const self = this;
+        setTimeout(function () { self.textContent = 'Copy link'; }, 1500);
       });
 
       document.getElementById('openSaffBtn').addEventListener('click', openSaffGate);
