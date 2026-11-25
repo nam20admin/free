@@ -463,10 +463,10 @@
     .preview-frame {
       width: 100%;
       min-width: 100%;
-      height: 76vh;
-      min-height: 540px;
+      height: 78vh;
+      min-height: 560px;
       border: none;
-      background: #ffffff;
+      background: #050811;
       display: block;
     }
 
@@ -485,7 +485,7 @@
     @media (max-width: 640px) {
       .container { padding: 20px 14px; border-radius: 20px; }
       .cta-row { grid-template-columns: 1fr; }
-      .preview-frame { height: 68vh; min-height: 420px; }
+      .preview-frame { height: 70vh; min-height: 440px; }
     }
   </style>
 </head>
@@ -581,28 +581,56 @@
       }
     }
 
-    function expandSharedPageLayout(doc) {
+    function fitSharedContentToViewport(doc) {
       if (!doc || !doc.documentElement || !doc.body) return;
+
       const styleTag = doc.createElement("style");
+      styleTag.id = "__aether_fit_style";
       styleTag.textContent = `
         html, body {
-          width: 100vw !important;
+          width: 100% !important;
           min-width: 100% !important;
-          height: 100vh !important;
+          height: 100% !important;
           min-height: 100% !important;
           margin: 0 !important;
           padding: 0 !important;
           max-width: none !important;
         }
-        body > *:only-child {
+        body > *:not(script):not(style) {
           width: 100% !important;
-          height: 100% !important;
           min-width: 100% !important;
-          min-height: 100% !important;
           max-width: none !important;
+          min-height: 100vh !important;
+          margin: 0 !important;
+          border-radius: 0 !important;
         }
       `;
       (doc.head || doc.documentElement).appendChild(styleTag);
+
+      // Nếu nội dung có chiều rộng/cao nội tại cố định lớn hơn khung nhìn, tự scale cho vừa khít
+      const applyScaleIfNeeded = () => {
+        const vw = doc.documentElement.clientWidth || window.innerWidth;
+        const vh = doc.documentElement.clientHeight || window.innerHeight;
+        const sw = doc.documentElement.scrollWidth;
+        const sh = doc.documentElement.scrollHeight;
+        const ratioW = vw / Math.max(sw, 1);
+        const ratioH = vh / Math.max(sh, 1);
+        const scale = Math.min(1, ratioW, ratioH);
+
+        if (scale < 0.99) {
+          doc.body.style.transformOrigin = "top left";
+          doc.body.style.transform = `scale(${scale})`;
+          doc.body.style.width = `${100 / scale}%`;
+          doc.body.style.height = `${100 / scale}%`;
+        } else {
+          doc.body.style.transform = "";
+          doc.body.style.width = "100%";
+          doc.body.style.height = "100%";
+        }
+      };
+
+      setTimeout(applyScaleIfNeeded, 80);
+      window.addEventListener("resize", applyScaleIfNeeded);
     }
 
     function renderSharedPageIfNeeded() {
@@ -621,8 +649,8 @@
       document.write(sharedHtml);
       document.close();
 
-      window.addEventListener("DOMContentLoaded", () => expandSharedPageLayout(document), { once: true });
-      expandSharedPageLayout(document);
+      window.addEventListener("DOMContentLoaded", () => fitSharedContentToViewport(document), { once: true });
+      fitSharedContentToViewport(document);
       return true;
     }
 
@@ -732,6 +760,14 @@
 
         throw new Error("Không thể rút gọn link lúc này (có thể do link quá dài hoặc bị chặn mạng).");
       }
+
+      previewFrame.addEventListener("load", () => {
+        try {
+          if (previewFrame.contentDocument) {
+            fitSharedContentToViewport(previewFrame.contentDocument);
+          }
+        } catch {}
+      });
 
       function handleIncomingFile(file) {
         if (!file) return;
