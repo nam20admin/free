@@ -37,7 +37,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 28px 16px;
+      padding: 24px 16px;
       position: relative;
       overflow-x: hidden;
     }
@@ -94,18 +94,18 @@
       position: relative;
       z-index: 1;
       width: 100%;
-      max-width: 920px;
+      max-width: 1320px;
       background: var(--surface);
       backdrop-filter: blur(22px) saturate(150%);
       -webkit-backdrop-filter: blur(22px) saturate(150%);
       border: 1px solid var(--border);
       border-radius: 26px;
-      padding: 32px 26px;
+      padding: 28px 24px;
       box-shadow:
         0 30px 80px rgba(0, 0, 0, 0.6),
         inset 0 1px 0 rgba(255, 255, 255, 0.14);
       display: grid;
-      gap: 22px;
+      gap: 20px;
     }
 
     .top-bar {
@@ -186,14 +186,14 @@
       color: var(--muted);
       font-size: 0.94rem;
       line-height: 1.55;
-      max-width: 480px;
+      max-width: 520px;
       margin: 0 auto;
     }
 
     .dropzone {
       position: relative;
       border-radius: 20px;
-      padding: 46px 22px;
+      padding: 44px 22px;
       text-align: center;
       background:
         linear-gradient(var(--surface-2), var(--surface-2)) padding-box,
@@ -414,6 +414,7 @@
       overflow: hidden;
       border: 1px solid rgba(255, 255, 255, 0.12);
       background: #0b0f19;
+      width: 100%;
     }
 
     .preview-head {
@@ -461,7 +462,9 @@
 
     .preview-frame {
       width: 100%;
-      height: 460px;
+      min-width: 100%;
+      height: 76vh;
+      min-height: 540px;
       border: none;
       background: #ffffff;
       display: block;
@@ -479,16 +482,10 @@
       color: var(--danger);
     }
 
-    @media (min-width: 768px) {
-      .preview-frame {
-        height: 540px;
-      }
-    }
-
-    @media (max-width: 520px) {
-      .container { padding: 24px 16px; border-radius: 20px; }
+    @media (max-width: 640px) {
+      .container { padding: 20px 14px; border-radius: 20px; }
       .cta-row { grid-template-columns: 1fr; }
-      .preview-frame { height: 340px; }
+      .preview-frame { height: 68vh; min-height: 420px; }
     }
   </style>
 </head>
@@ -551,7 +548,7 @@
             <span class="mac-dot mac-r"></span>
             <span class="mac-dot mac-y"></span>
             <span class="mac-dot mac-g"></span>
-            <span style="margin-left: 6px;">Xem trước màn hình lớn</span>
+            <span style="margin-left: 6px;">Xem trước toàn khung ngang dọc</span>
           </div>
           <button id="btnExpand" class="btn-expand" type="button">Toàn màn hình</button>
         </div>
@@ -584,11 +581,34 @@
       }
     }
 
+    function expandSharedPageLayout(doc) {
+      if (!doc || !doc.documentElement || !doc.body) return;
+      const styleTag = doc.createElement("style");
+      styleTag.textContent = `
+        html, body {
+          width: 100vw !important;
+          min-width: 100% !important;
+          height: 100vh !important;
+          min-height: 100% !important;
+          margin: 0 !important;
+          padding: 0 !important;
+          max-width: none !important;
+        }
+        body > *:only-child {
+          width: 100% !important;
+          height: 100% !important;
+          min-width: 100% !important;
+          min-height: 100% !important;
+          max-width: none !important;
+        }
+      `;
+      (doc.head || doc.documentElement).appendChild(styleTag);
+    }
+
     function renderSharedPageIfNeeded() {
       const sharedHtml = decodeSharedHtmlFromHash();
       if (sharedHtml === null) return false;
 
-      // Xóa sạch mọi element và style của trang dropzone trước khi render file HTML
       document.documentElement.removeAttribute("style");
       document.documentElement.className = "";
       if (document.body) {
@@ -600,6 +620,9 @@
       document.open("text/html", "replace");
       document.write(sharedHtml);
       document.close();
+
+      window.addEventListener("DOMContentLoaded", () => expandSharedPageLayout(document), { once: true });
+      expandSharedPageLayout(document);
       return true;
     }
 
