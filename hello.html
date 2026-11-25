@@ -3,628 +3,647 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ECLIPSE HUB</title>
+  <title>AetherDrop — Thả File HTML Tạo Link Đẹp Nhất Trái Đất</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg-dark: #050811;
+      --surface: rgba(15, 23, 42, 0.72);
+      --surface-2: rgba(9, 13, 24, 0.85);
+      --border: rgba(255, 255, 255, 0.11);
+      --border-glow: rgba(56, 189, 248, 0.55);
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --cyan: #38bdf8;
+      --violet: #a855f7;
+      --pink: #ec4899;
+      --emerald: #10b981;
+      --danger: #fb7185;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Plus Jakarta Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+    }
+
     body {
-      font-family: 'Segoe UI', Arial, sans-serif;
-      background: #060a12;
-      color: #eef2ff;
       min-height: 100vh;
-      padding: 24px 16px 60px;
-    }
-    .box-wrap { max-width: 920px; margin: 0 auto; }
-    .bar {
+      color: var(--text);
+      background: var(--bg-dark);
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-      background: #0d1526;
-      border: 1px solid #1e3a5f;
-      border-top: 3px solid #06b6d4;
-      border-radius: 12px;
-      padding: 16px 20px;
-      margin-bottom: 16px;
+      justify-content: center;
+      padding: 28px 16px;
+      position: relative;
+      overflow-x: hidden;
     }
-    .brand-txt { font-size: 20px; font-weight: 800; letter-spacing: 1px; color: #22d3ee; }
-    .sub-txt { font-size: 12px; color: #94a3b8; margin-top: 2px; }
-    .card {
-      background: #0d1526;
-      border: 1px solid #1e293b;
-      border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 16px;
+
+    .aurora {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
     }
-    .nap-box {
-      border-color: #f59e0b;
-      background: #171618;
+
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(95px);
+      opacity: 0.42;
+      animation: floatOrb 14s ease-in-out infinite alternate;
     }
-    .nap-box p { font-size: 15px; margin-bottom: 8px; }
-    .nap-box a { color: #fbbf24; font-weight: 700; text-decoration: underline; word-break: break-all; }
-    h2 { font-size: 16px; margin-bottom: 12px; color: #f8fafc; }
-    .field { margin-bottom: 12px; }
-    .field label { display: block; font-size: 13px; color: #cbd5e1; margin-bottom: 6px; }
-    input, select {
+
+    .orb-1 {
+      width: 420px;
+      height: 420px;
+      background: radial-gradient(circle, var(--cyan), transparent 70%);
+      top: -110px;
+      left: -80px;
+    }
+
+    .orb-2 {
+      width: 460px;
+      height: 460px;
+      background: radial-gradient(circle, var(--violet), transparent 70%);
+      bottom: -140px;
+      right: -90px;
+      animation-delay: -5s;
+    }
+
+    .orb-3 {
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, var(--pink), transparent 70%);
+      top: 45%;
+      left: 55%;
+      opacity: 0.22;
+      animation-delay: -9s;
+    }
+
+    @keyframes floatOrb {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(35px, -25px) scale(1.12); }
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
       width: 100%;
-      padding: 11px 12px;
-      border-radius: 8px;
-      border: 1px solid #334155;
-      background: #162036;
-      color: #fff;
-      font-size: 14px;
+      max-width: 640px;
+      background: var(--surface);
+      backdrop-filter: blur(22px) saturate(150%);
+      -webkit-backdrop-filter: blur(22px) saturate(150%);
+      border: 1px solid var(--border);
+      border-radius: 26px;
+      padding: 32px 26px;
+      box-shadow:
+        0 30px 80px rgba(0, 0, 0, 0.6),
+        inset 0 1px 0 rgba(255, 255, 255, 0.14);
+      display: grid;
+      gap: 22px;
     }
-    button {
-      padding: 10px 16px;
-      border-radius: 8px;
-      border: 1px solid #334155;
-      background: #1e293b;
-      color: #fff;
-      font-size: 14px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-    button:hover { border-color: #22d3ee; }
-    .btn-main { background: #0891b2; border-color: #22d3ee; }
-    .btn-saff { background: #b45309; border-color: #fbbf24; color: #fef3c7; }
-    .btn-on { background: #15803d; border-color: #4ade80; }
-    .row-btns { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
-    .id-box {
-      display: inline-block;
-      margin-top: 6px;
-      padding: 5px 10px;
-      border-radius: 6px;
-      background: #132a44;
-      border: 1px solid #22d3ee;
-      color: #67e8f9;
-      font-family: Consolas, monospace;
-      font-weight: 700;
-    }
-    .bal-box {
-      margin-top: 14px;
-      padding: 14px;
-      border-radius: 8px;
-      background: #0f291e;
-      border: 1px solid #22c55e;
-    }
-    .bal-num { font-size: 24px; font-weight: 800; color: #4ade80; }
-    .drop-area {
-      border: 2px dashed #334155;
-      border-radius: 10px;
-      padding: 18px 14px;
-      text-align: center;
-      background: #111b30;
-      cursor: pointer;
-      transition: 0.15s;
-    }
-    .drop-area:hover, .drop-area.dragover {
-      border-color: #22d3ee;
-      background: #142842;
-    }
-    .link-result {
-      margin-top: 12px;
-      padding: 12px 14px;
-      border-radius: 8px;
-      background: #070b14;
-      border: 1px solid #22d3ee;
-      display: none;
-    }
-    .link-result a {
-      color: #38bdf8;
-      font-family: Consolas, monospace;
-      font-size: 13px;
-      word-break: break-all;
-      display: block;
-      margin: 6px 0 10px;
-    }
-    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-    @media (max-width: 720px) { .two-col { grid-template-columns: 1fr; } }
-    .u-list {
-      margin-top: 10px;
-      max-height: 300px;
-      overflow-y: auto;
-      border: 1px solid #334155;
-      border-radius: 8px;
-    }
-    .u-row {
-      padding: 10px 12px;
-      border-bottom: 1px solid #1e293b;
+
+    .top-bar {
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
+    }
+
+    .pill-badge {
+      display: inline-flex;
       align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #e0f2fe;
+      background: linear-gradient(90deg, rgba(56, 189, 248, 0.18), rgba(168, 85, 247, 0.18));
+      border: 1px solid rgba(255, 255, 255, 0.16);
+    }
+
+    .dot-live {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--emerald);
+      box-shadow: 0 0 10px var(--emerald);
+    }
+
+    .hero {
+      text-align: center;
+      display: grid;
+      gap: 10px;
+    }
+
+    h1 {
+      font-size: clamp(1.6rem, 4vw, 2.15rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      background: linear-gradient(110deg, #ffffff 15%, #7dd3fc 50%, #d8b4fe 85%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      color: var(--muted);
+      font-size: 0.94rem;
+      line-height: 1.55;
+      max-width: 460px;
+      margin: 0 auto;
+    }
+
+    .dropzone {
+      position: relative;
+      border-radius: 20px;
+      padding: 42px 22px;
+      text-align: center;
+      background:
+        linear-gradient(var(--surface-2), var(--surface-2)) padding-box,
+        repeating-linear-gradient(
+          90deg,
+          rgba(148, 163, 184, 0.35) 0 10px,
+          transparent 10px 18px
+        ) border-box;
+      border: 1.5px dashed transparent;
       cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+      display: grid;
+      gap: 10px;
+      justify-items: center;
     }
-    .u-row.picked { background: #173354; border-left: 4px solid #22d3ee; }
-    .code-out {
-      margin-top: 12px;
-      padding: 12px;
-      border-radius: 8px;
-      background: #070b14;
-      border: 1px solid #334155;
-      font-family: Consolas, monospace;
-      font-size: 13px;
-      color: #fde68a;
-      white-space: pre-wrap;
-      max-height: 170px;
-      overflow-y: auto;
+
+    .dropzone:hover,
+    .dropzone.active {
+      transform: translateY(-2px);
+      background:
+        linear-gradient(rgba(14, 24, 46, 0.92), rgba(14, 24, 46, 0.92)) padding-box,
+        linear-gradient(120deg, var(--cyan), var(--violet), var(--pink)) border-box;
+      box-shadow: 0 18px 40px rgba(56, 189, 248, 0.16);
     }
-    .note { margin-top: 10px; font-size: 13px; font-weight: 700; }
-    .ok { color: #4ade80; }
-    .err { color: #f87171; }
+
+    .icon-ring {
+      width: 64px;
+      height: 64px;
+      border-radius: 20px;
+      display: grid;
+      place-items: center;
+      font-size: 1.8rem;
+      font-weight: 300;
+      color: #fff;
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.25), rgba(168, 85, 247, 0.25));
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
+      transition: transform 0.25s ease;
+    }
+
+    .dropzone:hover .icon-ring,
+    .dropzone.active .icon-ring {
+      transform: scale(1.06) rotate(4deg);
+    }
+
+    .drop-main {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #f8fafc;
+    }
+
+    .drop-sub {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .result-card {
+      display: none;
+      background: var(--surface-2);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 20px;
+      padding: 20px;
+      gap: 16px;
+      animation: popUp 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .result-card.show {
+      display: grid;
+    }
+
+    @keyframes popUp {
+      from { opacity: 0; transform: translateY(10px) scale(0.99); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .meta-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .file-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      max-width: 100%;
+      padding: 6px 13px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #a7f3d0;
+      background: rgba(16, 185, 129, 0.14);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .size-tag {
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .url-group {
+      display: flex;
+      gap: 8px;
+    }
+
+    .url-field {
+      flex: 1;
+      min-width: 0;
+      background: #050811;
+      border: 1px solid rgba(148, 163, 184, 0.22);
+      border-radius: 12px;
+      padding: 12px 14px;
+      color: #7dd3fc;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.8rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .url-field:focus {
+      border-color: var(--cyan);
+    }
+
+    .btn {
+      border: none;
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      transition: all 0.18s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.07);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .btn-copy {
+      background: rgba(255, 255, 255, 0.08);
+      color: #f8fafc;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      padding: 10px 15px;
+      font-size: 0.84rem;
+      white-space: nowrap;
+    }
+
+    .btn-copy.copied {
+      background: rgba(16, 185, 129, 0.2);
+      border-color: rgba(16, 185, 129, 0.5);
+      color: #6ee7b7;
+    }
+
+    .cta-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+    }
+
+    .btn-launch {
+      background: linear-gradient(135deg, #38bdf8 0%, #818cf8 55%, #c084fc 100%);
+      color: #060913;
+      font-weight: 800;
+      box-shadow: 0 12px 28px rgba(99, 102, 241, 0.32);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid rgba(148, 163, 184, 0.22);
+      padding: 10px 15px;
+      font-size: 0.84rem;
+    }
+
+    .btn-ghost:hover {
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+
+    .preview-box {
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: #0b0f19;
+    }
+
+    .preview-head {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 12px;
+      background: rgba(255, 255, 255, 0.03);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 0.74rem;
+      color: var(--muted);
+    }
+
+    .mac-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+    .mac-r { background: #fb7185; }
+    .mac-y { background: #fbbf24; }
+    .mac-g { background: #34d399; }
+
+    .preview-frame {
+      width: 100%;
+      height: 190px;
+      border: none;
+      background: #ffffff;
+      display: block;
+    }
+
+    .toast {
+      text-align: center;
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: #7dd3fc;
+      min-height: 20px;
+    }
+
+    .toast.err {
+      color: var(--danger);
+    }
+
+    @media (max-width: 520px) {
+      .container { padding: 24px 16px; border-radius: 20px; }
+      .cta-row { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
-  <div class="box-wrap">
-    <div class="bar">
-      <div>
-        <div class="brand-txt">ECLIPSE HUB</div>
-        <div class="sub-txt" id="appState">Đang khởi động...</div>
-      </div>
-      <div class="row-btns" style="margin-bottom:0;">
-        <button type="button" id="goClientBtn" style="display:none;">Trang khách hàng</button>
-        <button type="button" class="btn-saff" id="openSaffBtn">SAFF</button>
-      </div>
-    </div>
-
-    <div class="card" id="saffAuthPanel" style="display:none; border-color:#fbbf24;">
-      <h2>Nhập mật khẩu SAFF</h2>
-      <div class="row-btns">
-        <input type="password" id="saffPwInput" placeholder="Nhập mật khẩu..." style="flex:1; min-width:180px;" />
-        <button type="button" class="btn-main" id="saffPwOk">Mở</button>
-        <button type="button" id="saffPwHide">Đóng</button>
-      </div>
-      <div class="note err" id="saffPwErr"></div>
-    </div>
-
-    <div id="clientSection">
-      <div class="card nap-box">
-        <p>hãy nhắn cho người dùng discord này để nạp thẻ nhé Z</p>
-        <a href="https://discord.com/users/1473671927976562689" target="_blank" rel="noopener noreferrer">
-          link: https://discord.com/users/1473671927976562689
-        </a>
-      </div>
-
-      <div class="card" id="authSection">
-        <h2>Đăng ký / Đăng nhập</h2>
-        <div class="row-btns">
-          <button type="button" class="btn-main" id="tabLogin">Đăng nhập</button>
-          <button type="button" id="tabRegister">Đăng ký</button>
-        </div>
-        <div class="field">
-          <label>Tên tài khoản</label>
-          <input type="text" id="loginUser" placeholder="Nhập tên tài khoản..." />
-        </div>
-        <div class="field">
-          <label>Mật khẩu</label>
-          <input type="password" id="loginPass" placeholder="Nhập mật khẩu..." />
-        </div>
-        <button type="button" class="btn-main" id="submitAuthBtn">Đăng nhập</button>
-        <div class="note" id="authStatus"></div>
-      </div>
-
-      <div class="card" id="meSection" style="display:none;">
-        <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px; flex-wrap:wrap;">
-          <div>
-            <h2 id="meGreeting" style="margin-bottom:4px;"></h2>
-            <div class="id-box" id="meIdBox"></div>
-          </div>
-          <button type="button" id="logoutBtn">Đăng xuất</button>
-        </div>
-        <div class="bal-box">
-          <div class="sub-txt">Số dư hiện tại</div>
-          <div class="bal-num" id="meBalance">0</div>
-        </div>
-      </div>
-
-      <div class="card" id="clientDropCard">
-        <h2>Thả file HTML tạo link vào web</h2>
-        <div class="drop-area" id="clientDropZone">
-          <div style="font-weight:700; color:#22d3ee;">Thả file .html vào đây hoặc bấm để chọn</div>
-          <div class="sub-txt" id="clientDropLabel">Chưa có file HTML nào được thả</div>
-          <input type="file" id="clientFileInput" accept=".html,.htm" style="display:none;" />
-        </div>
-        <div class="link-result" id="htmlLinkResult">
-          <div class="sub-txt" id="htmlFileName"></div>
-          <a id="generatedHtmlLink" href="#" target="_blank" rel="noopener noreferrer"></a>
-          <div class="row-btns" style="margin-bottom:0;">
-            <a id="openHtmlBtnLink" href="#" target="_blank" rel="noopener noreferrer" style="text-decoration:none;">
-              <button type="button" class="btn-main">Mở link web</button>
-            </a>
-            <button type="button" id="copyHtmlLinkBtn">Copy link</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div id="saffSection" style="display:none;">
-      <div class="card">
-        <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;">
-          <div>
-            <h2 style="margin-bottom:2px;">Quản trị SAFF</h2>
-            <div class="sub-txt" id="saffCounts"></div>
-          </div>
-          <button type="button" id="lockSaffBtn">Khóa</button>
-        </div>
-        <div class="row-btns" style="margin-top:12px;">
-          <button type="button" class="btn-main" id="btnGen10">Tạo 10 code & gửi Webhook</button>
-          <button type="button" id="btnLoop10">Tự động tạo 10 code liên tục: TẮT</button>
-        </div>
-        <div class="sub-txt" id="hookStatus">Webhook sẵn sàng</div>
-        <div class="code-out" id="codeOutput">Chưa có lô code nào.</div>
-      </div>
-
-      <div class="two-col">
-        <div class="card">
-          <h2>Tìm người dùng theo mã ID</h2>
-          <input type="text" id="searchId" placeholder="Nhập mã ID (VD: ID-123456) hoặc tên..." />
-          <div class="u-list" id="usersBox"></div>
-        </div>
-
-        <div class="card">
-          <h2>Nạp cho người dùng</h2>
-          <div class="card" id="pickedCard" style="padding:12px; background:#162036;">Chưa chọn người dùng.</div>
-          <div class="field">
-            <label>Lựa chọn nạp</label>
-            <select id="topupChoice">
-              <option value="code">1. Nhập giftcode (+1,000)</option>
-              <option value="money">2. Nhập số tiền muốn gửi</option>
-            </select>
-          </div>
-          <div class="field" id="boxCode">
-            <label>Mã giftcode</label>
-            <input type="text" id="valCode" placeholder="ECH-XXXXXXXXXXXX" />
-          </div>
-          <div class="field" id="boxMoney" style="display:none;">
-            <label>Số tiền muốn gửi</label>
-            <input type="number" id="valMoney" min="1" placeholder="Nhập số tiền..." />
-          </div>
-          <button type="button" class="btn-main" id="doTopupBtn">Nạp</button>
-          <div class="note" id="topupStatus"></div>
-        </div>
-      </div>
-    </div>
+  <div class="aurora" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
   </div>
 
+  <main id="studioApp" class="container">
+    <div class="top-bar">
+      <span class="pill-badge"><span class="dot-live"></span>Instant HTML Link Studio</span>
+    </div>
+
+    <header class="hero">
+      <h1>Thả File HTML Tạo Link</h1>
+      <p>Kéo thả file <strong>.html</strong> vào khung để tạo đường link mở nhanh và xem trước trực tiếp</p>
+    </header>
+
+    <div id="dropZone" class="dropzone" tabindex="0" role="button" aria-label="Kéo thả hoặc chọn file HTML">
+      <div class="icon-ring">+</div>
+      <div class="drop-main">Kéo & thả file .html vào đây</div>
+      <div class="drop-sub">Hoặc bấm để chọn file từ thiết bị của bạn</div>
+      <input id="fileInput" type="file" accept=".html,.htm,text/html" hidden />
+    </div>
+
+    <section id="resultCard" class="result-card" aria-live="polite">
+      <div class="meta-row">
+        <span id="fileChip" class="file-chip">page.html</span>
+        <span id="sizeTag" class="size-tag">0 KB</span>
+      </div>
+
+      <div class="url-group">
+        <input id="urlOutput" class="url-field" type="text" readonly />
+        <button id="btnCopy" class="btn btn-copy" type="button">Copy link</button>
+      </div>
+
+      <div class="cta-row">
+        <a id="btnLaunch" class="btn btn-launch" href="#" target="_blank" rel="noopener">Mở link ngay</a>
+        <button id="btnClear" class="btn btn-ghost" type="button">Thả file khác</button>
+      </div>
+
+      <div class="preview-box">
+        <div class="preview-head">
+          <span class="mac-dot mac-r"></span>
+          <span class="mac-dot mac-y"></span>
+          <span class="mac-dot mac-g"></span>
+          <span style="margin-left: 6px;">Xem trước nhanh</span>
+        </div>
+        <iframe id="previewFrame" class="preview-frame" title="Xem trước trang HTML"></iframe>
+      </div>
+    </section>
+
+    <div id="toast" class="toast"></div>
+  </main>
+
   <script>
-    (function () {
-      const KEY_DB = 'eclipse_hub_final_db';
-      const KEY_USER = 'eclipse_hub_final_user';
-      const PASS_SAFF = 'Owner';
-      const HOOK = 'https://discord.com/api/webhooks/1575059628700467271/kS-S68wgHYMYlrTUqly9FvwgxEqaacyNd60wL8cuy_kUpHZJVunuv8hKS4QI-_H-EHFY';
+    function decodeSharedHtmlFromHash() {
+      const hash = window.location.hash || "";
+      if (!hash.startsWith("#site=")) return null;
+      const encoded = hash.slice(6).trim();
+      if (!encoded) return null;
 
-      const store = { db: { users: {}, codes: {} }, user: null, saff: false };
-      let authMode = 'login';
-      let selectedName = null;
-      let loopId = null;
-      let batchNum = 0;
-      let currentBlobUrl = null;
-
-      function readLS(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
-      function writeLS(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
-      function clearLS(k) { try { localStorage.removeItem(k); } catch (e) {} }
-
-      function genId(users) {
-        const used = new Set(Object.values(users).map(x => x.id));
-        let id = '';
-        do { id = 'ID-' + Math.floor(100000 + Math.random() * 900000); } while (used.has(id));
-        return id;
-      }
-
-      function genCode() {
-        const ch = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-        let r = 'ECH-';
-        for (let i = 0; i < 12; i++) r += ch[Math.floor(Math.random() * ch.length)];
-        return r;
-      }
-
-      function loadDB() {
-        let d = null;
-        const raw = readLS(KEY_DB);
-        if (raw) { try { d = JSON.parse(raw); } catch (e) { d = null; } }
-        if (!d || typeof d !== 'object') d = store.db;
-        if (!d.users) d.users = {};
-        if (!d.codes) d.codes = {};
-        for (const u of Object.keys(d.users)) {
-          if (!d.users[u].id) d.users[u].id = genId(d.users);
+      try {
+        // Hỗ trợ cả base64 chuẩn và base64url
+        const normalized = encoded.replace(/-/g, "+").replace(/_/g, "/");
+        const padded = normalized + "=".repeat((4 - (normalized.length % 4)) % 4);
+        const binary = atob(padded);
+        const bytes = new Uint8Array(binary.length);
+        for (let i = 0; i < binary.length; i++) {
+          bytes[i] = binary.charCodeAt(i);
         }
-        store.db = d;
-        writeLS(KEY_DB, JSON.stringify(d));
-        return d;
+        return new TextDecoder("utf-8", { fatal: false }).decode(bytes);
+      } catch (err) {
+        console.error("Lỗi giải mã #site=:", err);
+        return null;
       }
+    }
 
-      function saveDB(d) {
-        store.db = d;
-        writeLS(KEY_DB, JSON.stringify(d));
-      }
+    function renderSharedPageIfNeeded() {
+      const sharedHtml = decodeSharedHtmlFromHash();
+      if (sharedHtml === null) return false;
 
-      function renderClient() {
-        const d = loadDB();
-        const cur = readLS(KEY_USER) || store.user;
-        if (cur && d.users[cur]) {
-          store.user = cur;
-          document.getElementById('authSection').style.display = 'none';
-          document.getElementById('meSection').style.display = 'block';
-          document.getElementById('meGreeting').textContent = 'Xin chào, ' + cur;
-          document.getElementById('meIdBox').textContent = 'Mã ID: ' + d.users[cur].id;
-          document.getElementById('meBalance').textContent = Number(d.users[cur].balance || 0).toLocaleString('vi-VN');
-        } else {
-          document.getElementById('authSection').style.display = 'block';
-          document.getElementById('meSection').style.display = 'none';
+      document.open();
+      document.write(sharedHtml);
+      document.close();
+      return true;
+    }
+
+    if (!renderSharedPageIfNeeded()) {
+      window.addEventListener("hashchange", () => {
+        renderSharedPageIfNeeded();
+      });
+
+      const dropZone = document.getElementById("dropZone");
+      const fileInput = document.getElementById("fileInput");
+      const resultCard = document.getElementById("resultCard");
+      const fileChip = document.getElementById("fileChip");
+      const sizeTag = document.getElementById("sizeTag");
+      const urlOutput = document.getElementById("urlOutput");
+      const btnCopy = document.getElementById("btnCopy");
+      const btnLaunch = document.getElementById("btnLaunch");
+      const btnClear = document.getElementById("btnClear");
+      const previewFrame = document.getElementById("previewFrame");
+      const toast = document.getElementById("toast");
+
+      let currentHtml = "";
+      let currentBlobUrl = "";
+
+      function revokeCurrentBlob() {
+        if (currentBlobUrl) {
+          URL.revokeObjectURL(currentBlobUrl);
+          currentBlobUrl = "";
         }
       }
 
-      function setMode(m) {
-        authMode = m;
-        document.getElementById('tabLogin').className = m === 'login' ? 'btn-main' : '';
-        document.getElementById('tabRegister').className = m === 'register' ? 'btn-main' : '';
-        document.getElementById('submitAuthBtn').textContent = m === 'login' ? 'Đăng nhập' : 'Đăng ký';
-        document.getElementById('authStatus').textContent = '';
+      function showToast(msg, isError = false) {
+        toast.textContent = msg;
+        toast.className = isError ? "toast err" : "toast";
       }
 
-      function handleAuth() {
-        const u = document.getElementById('loginUser').value.trim();
-        const p = document.getElementById('loginPass').value;
-        const st = document.getElementById('authStatus');
-        if (!u || !p) { st.className = 'note err'; st.textContent = 'Nhập đủ tên tài khoản và mật khẩu!'; return; }
-        const d = loadDB();
-        if (authMode === 'register') {
-          if (d.users[u]) { st.className = 'note err'; st.textContent = 'Tên tài khoản đã tồn tại!'; return; }
-          d.users[u] = { id: genId(d.users), password: p, balance: 0 };
-          saveDB(d);
-          store.user = u;
-          writeLS(KEY_USER, u);
-          document.getElementById('loginUser').value = '';
-          document.getElementById('loginPass').value = '';
-          renderClient();
-          if (store.saff) renderUsers();
-        } else {
-          if (!d.users[u] || d.users[u].password !== p) { st.className = 'note err'; st.textContent = 'Sai tên tài khoản hoặc mật khẩu!'; return; }
-          store.user = u;
-          writeLS(KEY_USER, u);
-          document.getElementById('loginUser').value = '';
-          document.getElementById('loginPass').value = '';
-          renderClient();
-          if (store.saff) renderUsers();
+      function encodeUtf8Base64(str) {
+        const bytes = new TextEncoder().encode(str);
+        const chunkSize = 0x8000;
+        let binary = "";
+        for (let i = 0; i < bytes.length; i += chunkSize) {
+          const slice = bytes.subarray(i, i + chunkSize);
+          binary += String.fromCharCode.apply(null, slice);
         }
+        return btoa(binary);
       }
 
-      function openSaffGate() {
-        if (store.saff) { enterSaff(); return; }
-        const p = document.getElementById('saffAuthPanel');
-        p.style.display = p.style.display === 'none' ? 'block' : 'none';
-        document.getElementById('saffPwErr').textContent = '';
-        document.getElementById('saffPwInput').value = '';
-        document.getElementById('saffPwInput').focus();
+      function formatSize(bytes) {
+        if (bytes < 1024) return `${bytes} B`;
+        if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+        return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
       }
 
-      function checkSaffGate() {
-        if (document.getElementById('saffPwInput').value === PASS_SAFF) {
-          store.saff = true;
-          document.getElementById('saffAuthPanel').style.display = 'none';
-          document.getElementById('saffPwErr').textContent = '';
-          enterSaff();
-        } else {
-          document.getElementById('saffPwErr').textContent = 'Mật khẩu không đúng!';
-        }
-      }
-
-      function enterSaff() {
-        document.getElementById('saffAuthPanel').style.display = 'none';
-        document.getElementById('clientSection').style.display = 'none';
-        document.getElementById('saffSection').style.display = 'block';
-        document.getElementById('goClientBtn').style.display = 'inline-block';
-        renderSaff();
-      }
-
-      function backClient() {
-        document.getElementById('saffSection').style.display = 'none';
-        document.getElementById('clientSection').style.display = 'block';
-        document.getElementById('goClientBtn').style.display = 'none';
-        renderClient();
-      }
-
-      async function sendHook(list, n) {
-        const st = document.getElementById('hookStatus');
-        const txt = `LÔ #${n} - 10 GIFTCODE (+1,000)\n` + list.map((c, i) => `${i + 1}. \`${c}\``).join('\n');
-        try {
-          const res = await fetch(HOOK, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ content: txt })
-          });
-          if (!res.ok) throw new Error('HTTP ' + res.status);
-          st.style.color = '#4ade80';
-          st.textContent = `Đã gửi lô #${n} lên Webhook`;
-        } catch (e) {
-          st.style.color = '#f87171';
-          st.textContent = `Lỗi Webhook (${e.message})`;
-        }
-      }
-
-      async function create10() {
-        const d = loadDB();
-        const arr = [];
-        for (let i = 0; i < 10; i++) {
-          let c = genCode();
-          while (d.codes[c]) c = genCode();
-          d.codes[c] = { used: false, usedBy: null };
-          arr.push(c);
-        }
-        saveDB(d);
-        batchNum += 1;
-        document.getElementById('codeOutput').textContent = arr.join('\n');
-        renderSaff();
-        await sendHook(arr, batchNum);
-      }
-
-      function toggleLoop() {
-        const b = document.getElementById('btnLoop10');
-        if (loopId) {
-          clearInterval(loopId);
-          loopId = null;
-          b.textContent = 'Tự động tạo 10 code liên tục: TẮT';
-          b.className = '';
+      function handleIncomingFile(file) {
+        if (!file) return;
+        if (!/\.(html|htm)$/i.test(file.name) && file.type !== "text/html") {
+          showToast("Vui lòng chỉ thả file .html hoặc .htm", true);
           return;
         }
-        b.textContent = 'Đang tự động tạo 10 code liên tục (Bấm dừng)';
-        b.className = 'btn-on';
-        create10();
-        loopId = setInterval(create10, 2500);
-      }
 
-      function renderSaff() {
-        const d = loadDB();
-        document.getElementById('saffCounts').textContent =
-          `Người dùng: ${Object.keys(d.users).length} • Tổng code: ${Object.keys(d.codes).length.toLocaleString('vi-VN')}`;
-        renderUsers();
-        renderPicked();
-      }
-
-      function renderUsers() {
-        const d = loadDB();
-        const q = (document.getElementById('searchId').value || '').trim().toLowerCase();
-        const box = document.getElementById('usersBox');
-        const list = Object.entries(d.users).filter(([u, info]) =>
-          String(info.id || '').toLowerCase().includes(q) || u.toLowerCase().includes(q)
-        );
-        if (!list.length) { box.innerHTML = '<div style="padding:12px; color:#94a3b8;">Không tìm thấy.</div>'; return; }
-        box.innerHTML = '';
-        list.forEach(([u, info]) => {
-          const row = document.createElement('div');
-          row.className = selectedName === u ? 'u-row picked' : 'u-row';
-          row.innerHTML = `<div><b>${info.id}</b> — ${u}</div><div style="color:#4ade80; font-weight:700;">${Number(info.balance || 0).toLocaleString('vi-VN')}</div>`;
-          row.addEventListener('click', function () {
-            selectedName = u;
-            document.getElementById('topupStatus').textContent = '';
-            renderUsers();
-            renderPicked();
-          });
-          box.appendChild(row);
-        });
-      }
-
-      function renderPicked() {
-        const card = document.getElementById('pickedCard');
-        const d = loadDB();
-        if (!selectedName || !d.users[selectedName]) { selectedName = null; card.textContent = 'Chưa chọn người dùng.'; return; }
-        const info = d.users[selectedName];
-        card.innerHTML = `<div><b>Mã ID:</b> ${info.id}</div><div><b>Tài khoản:</b> ${selectedName}</div><div><b>Số dư:</b> ${Number(info.balance || 0).toLocaleString('vi-VN')}</div>`;
-      }
-
-      function handleTopup() {
-        const st = document.getElementById('topupStatus');
-        const d = loadDB();
-        if (!selectedName || !d.users[selectedName]) { st.className = 'note err'; st.textContent = 'Tìm và bấm chọn người dùng trước!'; return; }
-        const choice = document.getElementById('topupChoice').value;
-        if (choice === 'code') {
-          const gc = document.getElementById('valCode').value.trim().toUpperCase();
-          if (!d.codes[gc]) { st.className = 'note err'; st.textContent = 'Giftcode không tồn tại!'; return; }
-          if (d.codes[gc].used) { st.className = 'note err'; st.textContent = 'Giftcode đã dùng!'; return; }
-          d.codes[gc].used = true;
-          d.codes[gc].usedBy = selectedName;
-          d.users[selectedName].balance = Number(d.users[selectedName].balance || 0) + 1000;
-          saveDB(d);
-          document.getElementById('valCode').value = '';
-          renderSaff();
-          renderClient();
-          st.className = 'note ok';
-          st.textContent = `Đã nạp giftcode ${gc} (+1,000) cho ${selectedName}!`;
-        } else {
-          const m = parseInt(document.getElementById('valMoney').value, 10);
-          if (isNaN(m) || m <= 0) { st.className = 'note err'; st.textContent = 'Nhập số tiền > 0!'; return; }
-          d.users[selectedName].balance = Number(d.users[selectedName].balance || 0) + m;
-          saveDB(d);
-          document.getElementById('valMoney').value = '';
-          renderSaff();
-          renderClient();
-          st.className = 'note ok';
-          st.textContent = `Đã gửi +${m.toLocaleString('vi-VN')} cho ${selectedName}!`;
-        }
-      }
-
-      function createLinkFromHtmlFile(files) {
-        if (!files || !files.length) return;
-        const f = files[0];
-        document.getElementById('clientDropLabel').textContent = 'File đã thả: ' + f.name;
         const reader = new FileReader();
-        reader.onload = function (ev) {
-          if (currentBlobUrl) {
-            try { URL.revokeObjectURL(currentBlobUrl); } catch (e) {}
-          }
-          const blob = new Blob([String(ev.target.result || '')], { type: 'text/html;charset=utf-8' });
+        reader.onload = (e) => {
+          currentHtml = String(e.target.result || "");
+          revokeCurrentBlob();
+
+          const blob = new Blob([currentHtml], { type: "text/html;charset=utf-8" });
           currentBlobUrl = URL.createObjectURL(blob);
 
-          const resBox = document.getElementById('htmlLinkResult');
-          const linkEl = document.getElementById('generatedHtmlLink');
-          const openBtnLink = document.getElementById('openHtmlBtnLink');
-          document.getElementById('htmlFileName').textContent = 'Link dẫn vào trang (' + f.name + '):';
-          linkEl.href = currentBlobUrl;
-          linkEl.textContent = currentBlobUrl;
-          openBtnLink.href = currentBlobUrl;
-          resBox.style.display = 'block';
+          const isHosted = window.location.protocol === "http:" || window.location.protocol === "https:";
+          let shareLink = currentBlobUrl;
+
+          if (isHosted) {
+            const base64 = encodeUtf8Base64(currentHtml);
+            shareLink = `${window.location.origin}${window.location.pathname}#site=${base64}`;
+          }
+
+          fileChip.textContent = file.name;
+          sizeTag.textContent = formatSize(file.size);
+          urlOutput.value = shareLink;
+          btnLaunch.href = currentBlobUrl;
+          previewFrame.srcdoc = currentHtml;
+
+          btnCopy.textContent = "Copy link";
+          btnCopy.classList.remove("copied");
+          resultCard.classList.add("show");
+
+          if (isHosted && shareLink.length > 65000) {
+            showToast("Đã tạo link (file hơi dài, một số trình duyệt có thể hạn chế link quá dài).", false);
+          } else {
+            showToast("Đã tạo link thành công!");
+          }
         };
-        reader.readAsText(f);
+        reader.onerror = () => showToast("Không đọc được file này.", true);
+        reader.readAsText(file, "utf-8");
       }
 
-      const dropZone = document.getElementById('clientDropZone');
-      const fileInput = document.getElementById('clientFileInput');
-      dropZone.addEventListener('click', function () { fileInput.click(); });
-      fileInput.addEventListener('change', function () { createLinkFromHtmlFile(this.files); });
-      ['dragenter', 'dragover'].forEach(function (evName) {
-        dropZone.addEventListener(evName, function (e) {
+      dropZone.addEventListener("click", () => fileInput.click());
+      dropZone.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
-          e.stopPropagation();
-          dropZone.classList.add('dragover');
-        });
-      });
-      ['dragleave', 'drop'].forEach(function (evName) {
-        dropZone.addEventListener(evName, function (e) {
-          e.preventDefault();
-          e.stopPropagation();
-          dropZone.classList.remove('dragover');
-        });
-      });
-      dropZone.addEventListener('drop', function (e) {
-        if (e.dataTransfer && e.dataTransfer.files) {
-          createLinkFromHtmlFile(e.dataTransfer.files);
+          fileInput.click();
         }
       });
-      document.getElementById('copyHtmlLinkBtn').addEventListener('click', function () {
-        if (!currentBlobUrl) return;
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(currentBlobUrl).catch(function () {});
+
+      fileInput.addEventListener("change", (e) => {
+        if (e.target.files[0]) handleIncomingFile(e.target.files[0]);
+        fileInput.value = "";
+      });
+
+      ["dragenter", "dragover"].forEach((ev) => {
+        dropZone.addEventListener(ev, (e) => {
+          e.preventDefault();
+          dropZone.classList.add("active");
+        });
+      });
+
+      ["dragleave", "drop"].forEach((ev) => {
+        dropZone.addEventListener(ev, (e) => {
+          e.preventDefault();
+          dropZone.classList.remove("active");
+        });
+      });
+
+      dropZone.addEventListener("drop", (e) => {
+        const file = e.dataTransfer && e.dataTransfer.files[0];
+        if (file) handleIncomingFile(file);
+      });
+
+      btnCopy.addEventListener("click", async () => {
+        if (!urlOutput.value) return;
+        try {
+          await navigator.clipboard.writeText(urlOutput.value);
+        } catch {
+          urlOutput.select();
+          document.execCommand("copy");
         }
-        this.textContent = 'Đã copy';
-        const self = this;
-        setTimeout(function () { self.textContent = 'Copy link'; }, 1500);
+        btnCopy.textContent = "Đã copy ✓";
+        btnCopy.classList.add("copied");
+        showToast("Đã sao chép đường link!");
       });
 
-      document.getElementById('openSaffBtn').addEventListener('click', openSaffGate);
-      document.getElementById('saffPwOk').addEventListener('click', checkSaffGate);
-      document.getElementById('saffPwHide').addEventListener('click', function () { document.getElementById('saffAuthPanel').style.display = 'none'; });
-      document.getElementById('goClientBtn').addEventListener('click', backClient);
-      document.getElementById('lockSaffBtn').addEventListener('click', function () {
-        store.saff = false;
-        if (loopId) { clearInterval(loopId); loopId = null; }
-        backClient();
+      btnClear.addEventListener("click", () => {
+        currentHtml = "";
+        revokeCurrentBlob();
+        urlOutput.value = "";
+        btnLaunch.href = "#";
+        previewFrame.srcdoc = "";
+        resultCard.classList.remove("show");
+        showToast("");
       });
-      document.getElementById('tabLogin').addEventListener('click', function () { setMode('login'); });
-      document.getElementById('tabRegister').addEventListener('click', function () { setMode('register'); });
-      document.getElementById('submitAuthBtn').addEventListener('click', handleAuth);
-      document.getElementById('logoutBtn').addEventListener('click', function () { store.user = null; clearLS(KEY_USER); renderClient(); });
-      document.getElementById('btnGen10').addEventListener('click', create10);
-      document.getElementById('btnLoop10').addEventListener('click', toggleLoop);
-      document.getElementById('searchId').addEventListener('input', renderUsers);
-      document.getElementById('topupChoice').addEventListener('change', function () {
-        const isC = this.value === 'code';
-        document.getElementById('boxCode').style.display = isC ? 'block' : 'none';
-        document.getElementById('boxMoney').style.display = isC ? 'none' : 'block';
-      });
-      document.getElementById('doTopupBtn').addEventListener('click', handleTopup);
-
-      renderClient();
-      document.getElementById('appState').textContent = 'Sẵn sàng';
-    })();
+    }
   </script>
 </body>
 </html>
