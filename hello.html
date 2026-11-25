@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>⏣ Eclipse Hub — Tài Khoản & Giftcode</title>
+  <title>⏣ Eclipse Hub — Tài Khoản</title>
   <style>
     :root {
       --bg: #070913;
@@ -15,7 +15,6 @@
       --cyan: #38bdf8;
       --text: #f8fafc;
       --muted: #94a3b8;
-      --success: #22c55e;
       --danger: #ef4444;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -120,11 +119,10 @@
       border: 1px solid rgba(34, 197, 94, 0.4);
       padding: 12px 16px;
       border-radius: 12px;
-      margin: 12px 0;
+      margin-top: 12px;
     }
     .balance-num { font-size: 22px; font-weight: 700; color: #4ade80; }
     .msg { margin-top: 10px; font-size: 13.5px; font-weight: 600; }
-    .ok { color: var(--success); }
     .err { color: var(--danger); }
     .toast {
       position: fixed;
@@ -155,8 +153,8 @@
       <p class="muted" style="margin-bottom: 14px;">Đăng ký hoặc đăng nhập tài khoản (tự lưu vĩnh viễn trên trình duyệt).</p>
 
       <div class="tabs">
-        <button class="tab-btn active" id="btnShowLogin" onclick="setAuthMode('login')">Đăng nhập</button>
-        <button class="tab-btn" id="btnShowRegister" onclick="setAuthMode('register')">Đăng ký</button>
+        <button type="button" class="tab-btn active" id="btnShowLogin" onclick="setAuthMode('login')">Đăng nhập</button>
+        <button type="button" class="tab-btn" id="btnShowRegister" onclick="setAuthMode('register')">Đăng ký</button>
       </div>
 
       <form id="authForm">
@@ -179,21 +177,13 @@
           <h2 style="margin:0;">Xin chào, <span id="currentUsername"></span></h2>
           <span class="muted">Tài khoản được lưu tự động trên trình duyệt</span>
         </div>
-        <button class="btn btn-secondary" onclick="logout()">Đăng xuất</button>
+        <button type="button" class="btn btn-secondary" onclick="logout()">Đăng xuất</button>
       </div>
 
       <div class="balance-box">
         <div class="muted">Số dư hiện tại</div>
         <div class="balance-num" id="currentBalance">0</div>
       </div>
-
-      <h2 style="margin-top: 16px;">🎁 Nhập Giftcode</h2>
-      <p class="muted" style="margin-bottom: 10px;">Mỗi code hợp lệ chưa sử dụng sẽ cộng <strong>1,000</strong> vào tài khoản.</p>
-      <form id="redeemForm" style="display:flex; gap:10px; flex-wrap:wrap;">
-        <input type="text" id="giftCodeInput" placeholder="Nhập mã giftcode của bạn..." style="flex:1; min-width:200px;" required />
-        <button type="submit" class="btn btn-primary">Áp dụng code</button>
-      </form>
-      <div class="msg" id="redeemMsg"></div>
     </div>
 
     <div class="card">
@@ -202,8 +192,8 @@
         Nếu mở 2 web trên cùng trình duyệt thì dữ liệu tự đồng bộ. Nếu mở khác trình duyệt/thiết bị, hãy copy gói dữ liệu dưới đây để dán vào web quản trị (hoặc dán gói từ web quản trị vào đây).
       </p>
       <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px;">
-        <button class="btn btn-secondary" onclick="exportSync()">📤 Xuất gói đồng bộ</button>
-        <button class="btn btn-secondary" onclick="importSync()">📥 Nhập gói đồng bộ</button>
+        <button type="button" class="btn btn-secondary" onclick="exportSync()">📤 Xuất gói đồng bộ</button>
+        <button type="button" class="btn btn-secondary" onclick="importSync()">📥 Nhập gói đồng bộ</button>
       </div>
       <textarea id="syncBox" rows="3" placeholder="Gói dữ liệu đồng bộ sẽ hiện ở đây hoặc dán gói dữ liệu vào đây..."></textarea>
     </div>
@@ -214,7 +204,6 @@
   <script>
     const DB_KEY = 'eclipse_hub_shared_db_v1';
     const SESSION_KEY = 'eclipse_hub_logged_in_user';
-    const REWARD_AMOUNT = 1000;
     const INITIAL_CODE_COUNT = 50000;
 
     let authMode = 'login';
@@ -327,44 +316,6 @@
       }
     }
 
-    document.getElementById('redeemForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const username = localStorage.getItem(SESSION_KEY);
-      const code = document.getElementById('giftCodeInput').value.trim().toUpperCase();
-      const msg = document.getElementById('redeemMsg');
-      const db = ensureDb();
-
-      if (!username || !db.users[username]) {
-        msg.className = 'msg err';
-        msg.textContent = 'Vui lòng đăng nhập trước!';
-        return;
-      }
-
-      if (!db.codes[code]) {
-        msg.className = 'msg err';
-        msg.textContent = 'Giftcode không tồn tại!';
-        return;
-      }
-
-      if (db.codes[code].used) {
-        msg.className = 'msg err';
-        msg.textContent = 'Giftcode này đã được sử dụng!';
-        return;
-      }
-
-      db.codes[code].used = true;
-      db.codes[code].usedBy = username;
-      db.codes[code].usedAt = new Date().toLocaleString('vi-VN');
-      db.users[username].balance = Number(db.users[username].balance || 0) + REWARD_AMOUNT;
-
-      localStorage.setItem(DB_KEY, JSON.stringify(db));
-      document.getElementById('giftCodeInput').value = '';
-      renderSession();
-      msg.className = 'msg ok';
-      msg.textContent = 'Nhập code thành công! Bạn được cộng +1,000.';
-      showToast('+1,000 vào tài khoản!');
-    });
-
     function exportSync() {
       const db = ensureDb();
       const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(db))));
@@ -386,6 +337,12 @@
         showToast('Gói dữ liệu không hợp lệ!');
       }
     }
+
+    window.addEventListener('storage', function(e) {
+      if (e.key === DB_KEY || e.key === SESSION_KEY) {
+        renderSession();
+      }
+    });
 
     ensureDb();
     renderSession();
