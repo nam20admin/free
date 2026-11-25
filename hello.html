@@ -122,6 +122,20 @@
       margin-top: 12px;
     }
     .balance-num { font-size: 22px; font-weight: 700; color: #4ade80; }
+    .drop-zone {
+      border: 2px dashed var(--border);
+      border-radius: 12px;
+      padding: 18px;
+      text-align: center;
+      background: rgba(20, 28, 56, 0.55);
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: 0.15s;
+    }
+    .drop-zone.dragover {
+      border-color: var(--cyan);
+      background: rgba(56, 189, 248, 0.12);
+    }
     .msg { margin-top: 10px; font-size: 13.5px; font-weight: 600; }
     .err { color: var(--danger); }
     .toast {
@@ -187,10 +201,17 @@
     </div>
 
     <div class="card">
-      <h2>🔄 Đồng bộ dữ liệu giữa Web Người Dùng & Web Quản Trị</h2>
+      <h2>🔄 Đồng bộ dữ liệu & Kéo thả file</h2>
       <p class="muted" style="margin-bottom: 10px;">
-        Nếu mở 2 web trên cùng trình duyệt thì dữ liệu tự đồng bộ. Nếu mở khác trình duyệt/thiết bị, hãy copy gói dữ liệu dưới đây để dán vào web quản trị (hoặc dán gói từ web quản trị vào đây).
+        Kéo thả file đồng bộ (.txt / .json) hoặc file .html vào ô bên dưới, hoặc dùng nút xuất/nhập dữ liệu.
       </p>
+
+      <div class="drop-zone" id="dropZone" onclick="document.getElementById('filePicker').click()">
+        <strong>📥 Thả file vào đây hoặc bấm để chọn file (.txt, .json, .html)</strong>
+        <div class="muted" id="droppedFileInfo" style="margin-top:4px;">Chưa có file nào được thả</div>
+        <input type="file" id="filePicker" accept=".txt,.json,.html" style="display:none;" onchange="handleFileInput(this.files)" />
+      </div>
+
       <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px;">
         <button type="button" class="btn btn-secondary" onclick="exportSync()">📤 Xuất gói đồng bộ</button>
         <button type="button" class="btn btn-secondary" onclick="importSync()">📥 Nhập gói đồng bộ</button>
@@ -204,7 +225,6 @@
   <script>
     const DB_KEY = 'eclipse_hub_shared_db_v1';
     const SESSION_KEY = 'eclipse_hub_logged_in_user';
-    const INITIAL_CODE_COUNT = 50000;
 
     let authMode = 'login';
 
@@ -216,15 +236,6 @@
       window._t = setTimeout(() => { el.style.display = 'none'; }, 2600);
     }
 
-    function randomCode(len = 12) {
-      const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-      let out = 'ECH-';
-      for (let i = 0; i < len; i++) {
-        out += chars[Math.floor(Math.random() * chars.length)];
-      }
-      return out;
-    }
-
     function ensureDb() {
       let db = null;
       try { db = JSON.parse(localStorage.getItem(DB_KEY)); } catch (e) {}
@@ -233,16 +244,7 @@
       }
       if (!db.users) db.users = {};
       if (!db.codes) db.codes = {};
-
-      if (Object.keys(db.codes).length < INITIAL_CODE_COUNT) {
-        const needed = INITIAL_CODE_COUNT - Object.keys(db.codes).length;
-        for (let i = 0; i < needed; i++) {
-          let c = randomCode(12);
-          while (db.codes[c]) c = randomCode(12);
-          db.codes[c] = { used: false, usedBy: null, usedAt: null };
-        }
-      }
-      localStorage.setItem(DB_KEY, JSON.stringify(db));
+      try { localStorage.setItem(DB_KEY, JSON.stringify(db)); } catch (e) {}
       return db;
     }
 
@@ -316,6 +318,14 @@
       }
     }
 
+    function applySyncString(raw) {
+      const parsed = JSON.parse(decodeURIComponent(escape(atob(raw.trim()))));
+      if (!parsed.users || !parsed.codes) throw new Error('Sai cấu trúc');
+      localStorage.setItem(DB_KEY, JSON.stringify(parsed));
+      renderSession();
+      showToast('Đã nhập dữ liệu đồng bộ thành công!');
+    }
+
     function exportSync() {
       const db = ensureDb();
       const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(db))));
@@ -328,15 +338,54 @@
       const raw = document.getElementById('syncBox').value.trim();
       if (!raw) return showToast('Hãy dán gói đồng bộ vào ô trước!');
       try {
-        const parsed = JSON.parse(decodeURIComponent(escape(atob(raw))));
-        if (!parsed.users || !parsed.codes) throw new Error('Sai cấu trúc');
-        localStorage.setItem(DB_KEY, JSON.stringify(parsed));
-        renderSession();
-        showToast('Đã nhập dữ liệu đồng bộ thành công!');
+        applySyncString(raw);
       } catch (err) {
         showToast('Gói dữ liệu không hợp lệ!');
       }
     }
+
+    function handleFileInput(files) {
+      if (!files || !files.length) return;
+      const file = files[0];
+      document.getElementById('droppedFileInfo').textContent = `Đã chọn/thả: ${file.name} (${Math.round(file.size / 1024)} KB)`;
+
+      const reader = new FileReader();
+      reader.onload = function(ev) {
+        const text = String(ev.target.result || '').trim();
+        document.getElementById('syncBox').value = text;
+        if (file.name.toLowerCase().endsWith('.html')) {
+          showToast(`Đã nhận file HTML: ${file.name}`);
+          return;
+        }
+        try {
+          applySyncString(text);
+        } catch (e) {
+          showToast(`Đã tải nội dung từ ${file.name} vào ô`);
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    const dropZone = document.getElementById('dropZone');
+    ['dragenter', 'dragover'].forEach(evt => {
+      dropZone.addEventListener(evt, e => {
+        e.preventDefault();
+        e.stopPropagation();
+        dropZone.classList.add('dragover');
+      });
+    });
+    ['dragleave', 'drop'].forEach(evt => {
+      dropZone.addEventListener(evt, e => {
+        e.preventDefault();
+        e.stopPropagation();
+        dropZone.classList.remove('dragover');
+      });
+    });
+    dropZone.addEventListener('drop', e => {
+      if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length) {
+        handleFileInput(e.dataTransfer.files);
+      }
+    });
 
     window.addEventListener('storage', function(e) {
       if (e.key === DB_KEY || e.key === SESSION_KEY) {
