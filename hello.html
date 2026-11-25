@@ -3,647 +3,392 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AetherDrop — Thả File HTML Tạo Link Đẹp Nhất Trái Đất</title>
+  <title>⏣ Eclipse Hub — Tài Khoản & Giftcode</title>
   <style>
     :root {
-      --bg-dark: #050811;
-      --surface: rgba(15, 23, 42, 0.72);
-      --surface-2: rgba(9, 13, 24, 0.85);
-      --border: rgba(255, 255, 255, 0.11);
-      --border-glow: rgba(56, 189, 248, 0.55);
+      --bg: #070913;
+      --card: #0e1326;
+      --card-2: #141c38;
+      --border: #25305c;
+      --primary: #6366f1;
+      --accent: #a855f7;
+      --cyan: #38bdf8;
       --text: #f8fafc;
       --muted: #94a3b8;
-      --cyan: #38bdf8;
-      --violet: #a855f7;
-      --pink: #ec4899;
-      --emerald: #10b981;
-      --danger: #fb7185;
+      --success: #22c55e;
+      --danger: #ef4444;
     }
-
-    *,
-    *::before,
-    *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: "Plus Jakarta Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
-    }
-
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      min-height: 100vh;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: radial-gradient(circle at top right, #1e1b4b 0%, var(--bg) 48%);
       color: var(--text);
-      background: var(--bg-dark);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 28px 16px;
-      position: relative;
-      overflow-x: hidden;
+      min-height: 100vh;
+      padding: 24px 16px 50px;
     }
-
-    .aurora {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 0;
-      overflow: hidden;
-    }
-
-    .orb {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(95px);
-      opacity: 0.42;
-      animation: floatOrb 14s ease-in-out infinite alternate;
-    }
-
-    .orb-1 {
-      width: 420px;
-      height: 420px;
-      background: radial-gradient(circle, var(--cyan), transparent 70%);
-      top: -110px;
-      left: -80px;
-    }
-
-    .orb-2 {
-      width: 460px;
-      height: 460px;
-      background: radial-gradient(circle, var(--violet), transparent 70%);
-      bottom: -140px;
-      right: -90px;
-      animation-delay: -5s;
-    }
-
-    .orb-3 {
-      width: 300px;
-      height: 300px;
-      background: radial-gradient(circle, var(--pink), transparent 70%);
-      top: 45%;
-      left: 55%;
-      opacity: 0.22;
-      animation-delay: -9s;
-    }
-
-    @keyframes floatOrb {
-      0% { transform: translate(0, 0) scale(1); }
-      100% { transform: translate(35px, -25px) scale(1.12); }
-    }
-
-    .container {
-      position: relative;
-      z-index: 1;
-      width: 100%;
-      max-width: 640px;
-      background: var(--surface);
-      backdrop-filter: blur(22px) saturate(150%);
-      -webkit-backdrop-filter: blur(22px) saturate(150%);
+    .container { max-width: 780px; margin: 0 auto; }
+    .card {
+      background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 26px;
-      padding: 32px 26px;
-      box-shadow:
-        0 30px 80px rgba(0, 0, 0, 0.6),
-        inset 0 1px 0 rgba(255, 255, 255, 0.14);
-      display: grid;
-      gap: 22px;
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
     }
-
-    .top-bar {
-      display: flex;
-      justify-content: center;
+    .topup-banner {
+      border-color: rgba(56, 189, 248, 0.5);
+      background: linear-gradient(135deg, rgba(14,19,38,0.96), rgba(30,27,75,0.85));
     }
-
-    .pill-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 6px 14px;
-      border-radius: 999px;
-      font-size: 0.74rem;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: #e0f2fe;
-      background: linear-gradient(90deg, rgba(56, 189, 248, 0.18), rgba(168, 85, 247, 0.18));
-      border: 1px solid rgba(255, 255, 255, 0.16);
+    .topup-banner p {
+      font-size: 15px;
+      line-height: 1.6;
+      margin-bottom: 10px;
     }
-
-    .dot-live {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: var(--emerald);
-      box-shadow: 0 0 10px var(--emerald);
+    .topup-banner a {
+      color: var(--cyan);
+      word-break: break-all;
+      font-weight: 600;
+      text-decoration: none;
     }
-
-    .hero {
-      text-align: center;
-      display: grid;
-      gap: 10px;
-    }
-
+    .topup-banner a:hover { text-decoration: underline; }
     h1 {
-      font-size: clamp(1.6rem, 4vw, 2.15rem);
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      line-height: 1.15;
-      background: linear-gradient(110deg, #ffffff 15%, #7dd3fc 50%, #d8b4fe 85%);
+      font-size: 24px;
+      background: linear-gradient(90deg, #60a5fa, #c084fc);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      margin-bottom: 6px;
     }
-
-    .hero p {
+    h2 { font-size: 17px; margin-bottom: 12px; color: #e2e8f0; }
+    .muted { color: var(--muted); font-size: 13.5px; }
+    .tabs { display: flex; gap: 8px; margin-bottom: 14px; }
+    .tab-btn {
+      padding: 9px 16px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--card-2);
       color: var(--muted);
-      font-size: 0.94rem;
-      line-height: 1.55;
-      max-width: 460px;
-      margin: 0 auto;
-    }
-
-    .dropzone {
-      position: relative;
-      border-radius: 20px;
-      padding: 42px 22px;
-      text-align: center;
-      background:
-        linear-gradient(var(--surface-2), var(--surface-2)) padding-box,
-        repeating-linear-gradient(
-          90deg,
-          rgba(148, 163, 184, 0.35) 0 10px,
-          transparent 10px 18px
-        ) border-box;
-      border: 1.5px dashed transparent;
+      font-weight: 600;
       cursor: pointer;
-      transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
-      display: grid;
-      gap: 10px;
-      justify-items: center;
     }
-
-    .dropzone:hover,
-    .dropzone.active {
-      transform: translateY(-2px);
-      background:
-        linear-gradient(rgba(14, 24, 46, 0.92), rgba(14, 24, 46, 0.92)) padding-box,
-        linear-gradient(120deg, var(--cyan), var(--violet), var(--pink)) border-box;
-      box-shadow: 0 18px 40px rgba(56, 189, 248, 0.16);
-    }
-
-    .icon-ring {
-      width: 64px;
-      height: 64px;
-      border-radius: 20px;
-      display: grid;
-      place-items: center;
-      font-size: 1.8rem;
-      font-weight: 300;
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
       color: #fff;
-      background: linear-gradient(135deg, rgba(56, 189, 248, 0.25), rgba(168, 85, 247, 0.25));
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
-      transition: transform 0.25s ease;
+      border-color: transparent;
     }
-
-    .dropzone:hover .icon-ring,
-    .dropzone.active .icon-ring {
-      transform: scale(1.06) rotate(4deg);
+    .form-group { margin-bottom: 12px; }
+    label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 5px; font-weight: 600; }
+    input, textarea {
+      width: 100%;
+      padding: 11px 13px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--card-2);
+      color: var(--text);
+      font-size: 14px;
+      outline: none;
     }
-
-    .drop-main {
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: #f8fafc;
-    }
-
-    .drop-sub {
-      font-size: 0.85rem;
-      color: var(--muted);
-    }
-
-    .result-card {
-      display: none;
-      background: var(--surface-2);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 20px;
-      padding: 20px;
-      gap: 16px;
-      animation: popUp 0.28s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    .result-card.show {
-      display: grid;
-    }
-
-    @keyframes popUp {
-      from { opacity: 0; transform: translateY(10px) scale(0.99); }
-      to { opacity: 1; transform: translateY(0) scale(1); }
-    }
-
-    .meta-row {
-      display: flex;
+    input:focus, textarea:focus { border-color: var(--cyan); }
+    .btn {
+      padding: 10px 16px;
+      border-radius: 10px;
+      border: none;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      display: inline-flex;
       align-items: center;
+      gap: 6px;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #fff;
+    }
+    .btn-secondary {
+      background: var(--card-2);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .row-between {
+      display: flex;
       justify-content: space-between;
+      align-items: center;
       gap: 10px;
       flex-wrap: wrap;
     }
-
-    .file-chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      max-width: 100%;
-      padding: 6px 13px;
-      border-radius: 999px;
-      font-size: 0.82rem;
-      font-weight: 700;
-      color: #a7f3d0;
-      background: rgba(16, 185, 129, 0.14);
-      border: 1px solid rgba(16, 185, 129, 0.3);
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .size-tag {
-      font-size: 0.78rem;
-      color: var(--muted);
-      font-variant-numeric: tabular-nums;
-    }
-
-    .url-group {
-      display: flex;
-      gap: 8px;
-    }
-
-    .url-field {
-      flex: 1;
-      min-width: 0;
-      background: #050811;
-      border: 1px solid rgba(148, 163, 184, 0.22);
-      border-radius: 12px;
-      padding: 12px 14px;
-      color: #7dd3fc;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-      font-size: 0.8rem;
-      outline: none;
-      transition: border-color 0.2s;
-    }
-
-    .url-field:focus {
-      border-color: var(--cyan);
-    }
-
-    .btn {
-      border: none;
-      border-radius: 12px;
+    .balance-box {
+      background: rgba(34, 197, 94, 0.12);
+      border: 1px solid rgba(34, 197, 94, 0.4);
       padding: 12px 16px;
-      font-size: 0.88rem;
-      font-weight: 700;
-      cursor: pointer;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 7px;
-      transition: all 0.18s ease;
+      border-radius: 12px;
+      margin: 12px 0;
     }
-
-    .btn:hover {
-      transform: translateY(-1px);
-      filter: brightness(1.07);
-    }
-
-    .btn:active {
-      transform: translateY(0);
-    }
-
-    .btn-copy {
-      background: rgba(255, 255, 255, 0.08);
-      color: #f8fafc;
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      padding: 10px 15px;
-      font-size: 0.84rem;
-      white-space: nowrap;
-    }
-
-    .btn-copy.copied {
-      background: rgba(16, 185, 129, 0.2);
-      border-color: rgba(16, 185, 129, 0.5);
-      color: #6ee7b7;
-    }
-
-    .cta-row {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 10px;
-    }
-
-    .btn-launch {
-      background: linear-gradient(135deg, #38bdf8 0%, #818cf8 55%, #c084fc 100%);
-      color: #060913;
-      font-weight: 800;
-      box-shadow: 0 12px 28px rgba(99, 102, 241, 0.32);
-    }
-
-    .btn-ghost {
-      background: transparent;
-      color: var(--muted);
-      border: 1px solid rgba(148, 163, 184, 0.22);
-      padding: 10px 15px;
-      font-size: 0.84rem;
-    }
-
-    .btn-ghost:hover {
-      color: #fff;
-      border-color: rgba(255, 255, 255, 0.4);
-    }
-
-    .preview-box {
-      border-radius: 14px;
-      overflow: hidden;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      background: #0b0f19;
-    }
-
-    .preview-head {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 8px 12px;
-      background: rgba(255, 255, 255, 0.03);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      font-size: 0.74rem;
-      color: var(--muted);
-    }
-
-    .mac-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-    }
-    .mac-r { background: #fb7185; }
-    .mac-y { background: #fbbf24; }
-    .mac-g { background: #34d399; }
-
-    .preview-frame {
-      width: 100%;
-      height: 190px;
-      border: none;
-      background: #ffffff;
-      display: block;
-    }
-
+    .balance-num { font-size: 22px; font-weight: 700; color: #4ade80; }
+    .msg { margin-top: 10px; font-size: 13.5px; font-weight: 600; }
+    .ok { color: var(--success); }
+    .err { color: var(--danger); }
     .toast {
-      text-align: center;
-      font-size: 0.84rem;
-      font-weight: 600;
-      color: #7dd3fc;
-      min-height: 20px;
-    }
-
-    .toast.err {
-      color: var(--danger);
-    }
-
-    @media (max-width: 520px) {
-      .container { padding: 24px 16px; border-radius: 20px; }
-      .cta-row { grid-template-columns: 1fr; }
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #1e293b;
+      border: 1px solid var(--primary);
+      color: #fff;
+      padding: 11px 16px;
+      border-radius: 10px;
+      font-size: 13.5px;
+      display: none;
+      z-index: 999;
     }
   </style>
 </head>
 <body>
-  <div class="aurora" aria-hidden="true">
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
-    <div class="orb orb-3"></div>
+  <div class="container">
+    <div class="card topup-banner">
+      <p>hãy nhắn cho người dùng discord này để nạp thẻ nhé Z</p>
+      <a href="https://discord.com/users/1473671927976562689" target="_blank" rel="noopener noreferrer">
+        link: https://discord.com/users/1473671927976562689
+      </a>
+    </div>
+
+    <div class="card" id="authCard">
+      <h1>⏣ Eclipse Hub</h1>
+      <p class="muted" style="margin-bottom: 14px;">Đăng ký hoặc đăng nhập tài khoản (tự lưu vĩnh viễn trên trình duyệt).</p>
+
+      <div class="tabs">
+        <button class="tab-btn active" id="btnShowLogin" onclick="setAuthMode('login')">Đăng nhập</button>
+        <button class="tab-btn" id="btnShowRegister" onclick="setAuthMode('register')">Đăng ký</button>
+      </div>
+
+      <form id="authForm">
+        <div class="form-group">
+          <label>Tên tài khoản *</label>
+          <input type="text" id="authUser" placeholder="Nhập tên tài khoản..." required />
+        </div>
+        <div class="form-group">
+          <label>Mật khẩu *</label>
+          <input type="password" id="authPass" placeholder="Nhập mật khẩu..." required />
+        </div>
+        <button type="submit" class="btn btn-primary" id="authSubmitBtn">Đăng nhập</button>
+        <div class="msg" id="authMsg"></div>
+      </form>
+    </div>
+
+    <div class="card" id="userCard" style="display:none;">
+      <div class="row-between">
+        <div>
+          <h2 style="margin:0;">Xin chào, <span id="currentUsername"></span></h2>
+          <span class="muted">Tài khoản được lưu tự động trên trình duyệt</span>
+        </div>
+        <button class="btn btn-secondary" onclick="logout()">Đăng xuất</button>
+      </div>
+
+      <div class="balance-box">
+        <div class="muted">Số dư hiện tại</div>
+        <div class="balance-num" id="currentBalance">0</div>
+      </div>
+
+      <h2 style="margin-top: 16px;">🎁 Nhập Giftcode</h2>
+      <p class="muted" style="margin-bottom: 10px;">Mỗi code hợp lệ chưa sử dụng sẽ cộng <strong>1,000</strong> vào tài khoản.</p>
+      <form id="redeemForm" style="display:flex; gap:10px; flex-wrap:wrap;">
+        <input type="text" id="giftCodeInput" placeholder="Nhập mã giftcode của bạn..." style="flex:1; min-width:200px;" required />
+        <button type="submit" class="btn btn-primary">Áp dụng code</button>
+      </form>
+      <div class="msg" id="redeemMsg"></div>
+    </div>
+
+    <div class="card">
+      <h2>🔄 Đồng bộ dữ liệu giữa Web Người Dùng & Web Quản Trị</h2>
+      <p class="muted" style="margin-bottom: 10px;">
+        Nếu mở 2 web trên cùng trình duyệt thì dữ liệu tự đồng bộ. Nếu mở khác trình duyệt/thiết bị, hãy copy gói dữ liệu dưới đây để dán vào web quản trị (hoặc dán gói từ web quản trị vào đây).
+      </p>
+      <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px;">
+        <button class="btn btn-secondary" onclick="exportSync()">📤 Xuất gói đồng bộ</button>
+        <button class="btn btn-secondary" onclick="importSync()">📥 Nhập gói đồng bộ</button>
+      </div>
+      <textarea id="syncBox" rows="3" placeholder="Gói dữ liệu đồng bộ sẽ hiện ở đây hoặc dán gói dữ liệu vào đây..."></textarea>
+    </div>
   </div>
 
-  <main id="studioApp" class="container">
-    <div class="top-bar">
-      <span class="pill-badge"><span class="dot-live"></span>Instant HTML Link Studio</span>
-    </div>
-
-    <header class="hero">
-      <h1>Thả File HTML Tạo Link</h1>
-      <p>Kéo thả file <strong>.html</strong> vào khung để tạo đường link mở nhanh và xem trước trực tiếp</p>
-    </header>
-
-    <div id="dropZone" class="dropzone" tabindex="0" role="button" aria-label="Kéo thả hoặc chọn file HTML">
-      <div class="icon-ring">+</div>
-      <div class="drop-main">Kéo & thả file .html vào đây</div>
-      <div class="drop-sub">Hoặc bấm để chọn file từ thiết bị của bạn</div>
-      <input id="fileInput" type="file" accept=".html,.htm,text/html" hidden />
-    </div>
-
-    <section id="resultCard" class="result-card" aria-live="polite">
-      <div class="meta-row">
-        <span id="fileChip" class="file-chip">page.html</span>
-        <span id="sizeTag" class="size-tag">0 KB</span>
-      </div>
-
-      <div class="url-group">
-        <input id="urlOutput" class="url-field" type="text" readonly />
-        <button id="btnCopy" class="btn btn-copy" type="button">Copy link</button>
-      </div>
-
-      <div class="cta-row">
-        <a id="btnLaunch" class="btn btn-launch" href="#" target="_blank" rel="noopener">Mở link ngay</a>
-        <button id="btnClear" class="btn btn-ghost" type="button">Thả file khác</button>
-      </div>
-
-      <div class="preview-box">
-        <div class="preview-head">
-          <span class="mac-dot mac-r"></span>
-          <span class="mac-dot mac-y"></span>
-          <span class="mac-dot mac-g"></span>
-          <span style="margin-left: 6px;">Xem trước nhanh</span>
-        </div>
-        <iframe id="previewFrame" class="preview-frame" title="Xem trước trang HTML"></iframe>
-      </div>
-    </section>
-
-    <div id="toast" class="toast"></div>
-  </main>
+  <div class="toast" id="toast"></div>
 
   <script>
-    function decodeSharedHtmlFromHash() {
-      const hash = window.location.hash || "";
-      if (!hash.startsWith("#site=")) return null;
-      const encoded = hash.slice(6).trim();
-      if (!encoded) return null;
+    const DB_KEY = 'eclipse_hub_shared_db_v1';
+    const SESSION_KEY = 'eclipse_hub_logged_in_user';
+    const REWARD_AMOUNT = 1000;
+    const INITIAL_CODE_COUNT = 50000;
 
-      try {
-        // Hỗ trợ cả base64 chuẩn và base64url
-        const normalized = encoded.replace(/-/g, "+").replace(/_/g, "/");
-        const padded = normalized + "=".repeat((4 - (normalized.length % 4)) % 4);
-        const binary = atob(padded);
-        const bytes = new Uint8Array(binary.length);
-        for (let i = 0; i < binary.length; i++) {
-          bytes[i] = binary.charCodeAt(i);
-        }
-        return new TextDecoder("utf-8", { fatal: false }).decode(bytes);
-      } catch (err) {
-        console.error("Lỗi giải mã #site=:", err);
-        return null;
-      }
+    let authMode = 'login';
+
+    function showToast(text) {
+      const el = document.getElementById('toast');
+      el.textContent = text;
+      el.style.display = 'block';
+      clearTimeout(window._t);
+      window._t = setTimeout(() => { el.style.display = 'none'; }, 2600);
     }
 
-    function renderSharedPageIfNeeded() {
-      const sharedHtml = decodeSharedHtmlFromHash();
-      if (sharedHtml === null) return false;
-
-      document.open();
-      document.write(sharedHtml);
-      document.close();
-      return true;
+    function randomCode(len = 12) {
+      const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+      let out = 'ECH-';
+      for (let i = 0; i < len; i++) {
+        out += chars[Math.floor(Math.random() * chars.length)];
+      }
+      return out;
     }
 
-    if (!renderSharedPageIfNeeded()) {
-      window.addEventListener("hashchange", () => {
-        renderSharedPageIfNeeded();
-      });
+    function ensureDb() {
+      let db = null;
+      try { db = JSON.parse(localStorage.getItem(DB_KEY)); } catch (e) {}
+      if (!db || typeof db !== 'object') {
+        db = { users: {}, codes: {} };
+      }
+      if (!db.users) db.users = {};
+      if (!db.codes) db.codes = {};
 
-      const dropZone = document.getElementById("dropZone");
-      const fileInput = document.getElementById("fileInput");
-      const resultCard = document.getElementById("resultCard");
-      const fileChip = document.getElementById("fileChip");
-      const sizeTag = document.getElementById("sizeTag");
-      const urlOutput = document.getElementById("urlOutput");
-      const btnCopy = document.getElementById("btnCopy");
-      const btnLaunch = document.getElementById("btnLaunch");
-      const btnClear = document.getElementById("btnClear");
-      const previewFrame = document.getElementById("previewFrame");
-      const toast = document.getElementById("toast");
-
-      let currentHtml = "";
-      let currentBlobUrl = "";
-
-      function revokeCurrentBlob() {
-        if (currentBlobUrl) {
-          URL.revokeObjectURL(currentBlobUrl);
-          currentBlobUrl = "";
+      if (Object.keys(db.codes).length < INITIAL_CODE_COUNT) {
+        const needed = INITIAL_CODE_COUNT - Object.keys(db.codes).length;
+        for (let i = 0; i < needed; i++) {
+          let c = randomCode(12);
+          while (db.codes[c]) c = randomCode(12);
+          db.codes[c] = { used: false, usedBy: null, usedAt: null };
         }
       }
+      localStorage.setItem(DB_KEY, JSON.stringify(db));
+      return db;
+    }
 
-      function showToast(msg, isError = false) {
-        toast.textContent = msg;
-        toast.className = isError ? "toast err" : "toast";
-      }
+    function setAuthMode(mode) {
+      authMode = mode;
+      document.getElementById('btnShowLogin').classList.toggle('active', mode === 'login');
+      document.getElementById('btnShowRegister').classList.toggle('active', mode === 'register');
+      document.getElementById('authSubmitBtn').textContent = mode === 'login' ? 'Đăng nhập' : 'Đăng ký';
+      document.getElementById('authMsg').textContent = '';
+    }
 
-      function encodeUtf8Base64(str) {
-        const bytes = new TextEncoder().encode(str);
-        const chunkSize = 0x8000;
-        let binary = "";
-        for (let i = 0; i < bytes.length; i += chunkSize) {
-          const slice = bytes.subarray(i, i + chunkSize);
-          binary += String.fromCharCode.apply(null, slice);
-        }
-        return btoa(binary);
-      }
+    document.getElementById('authForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const username = document.getElementById('authUser').value.trim();
+      const password = document.getElementById('authPass').value;
+      const msg = document.getElementById('authMsg');
+      if (!username || !password) return;
 
-      function formatSize(bytes) {
-        if (bytes < 1024) return `${bytes} B`;
-        if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
-        return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
-      }
+      const db = ensureDb();
 
-      function handleIncomingFile(file) {
-        if (!file) return;
-        if (!/\.(html|htm)$/i.test(file.name) && file.type !== "text/html") {
-          showToast("Vui lòng chỉ thả file .html hoặc .htm", true);
+      if (authMode === 'register') {
+        if (db.users[username]) {
+          msg.className = 'msg err';
+          msg.textContent = 'Tên tài khoản đã tồn tại!';
           return;
         }
-
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          currentHtml = String(e.target.result || "");
-          revokeCurrentBlob();
-
-          const blob = new Blob([currentHtml], { type: "text/html;charset=utf-8" });
-          currentBlobUrl = URL.createObjectURL(blob);
-
-          const isHosted = window.location.protocol === "http:" || window.location.protocol === "https:";
-          let shareLink = currentBlobUrl;
-
-          if (isHosted) {
-            const base64 = encodeUtf8Base64(currentHtml);
-            shareLink = `${window.location.origin}${window.location.pathname}#site=${base64}`;
-          }
-
-          fileChip.textContent = file.name;
-          sizeTag.textContent = formatSize(file.size);
-          urlOutput.value = shareLink;
-          btnLaunch.href = currentBlobUrl;
-          previewFrame.srcdoc = currentHtml;
-
-          btnCopy.textContent = "Copy link";
-          btnCopy.classList.remove("copied");
-          resultCard.classList.add("show");
-
-          if (isHosted && shareLink.length > 65000) {
-            showToast("Đã tạo link (file hơi dài, một số trình duyệt có thể hạn chế link quá dài).", false);
-          } else {
-            showToast("Đã tạo link thành công!");
-          }
+        db.users[username] = {
+          password: password,
+          balance: 0,
+          createdAt: new Date().toLocaleString('vi-VN')
         };
-        reader.onerror = () => showToast("Không đọc được file này.", true);
-        reader.readAsText(file, "utf-8");
+        localStorage.setItem(DB_KEY, JSON.stringify(db));
+        localStorage.setItem(SESSION_KEY, username);
+        this.reset();
+        renderSession();
+        showToast('Đăng ký và đăng nhập thành công!');
+      } else {
+        const u = db.users[username];
+        if (!u || u.password !== password) {
+          msg.className = 'msg err';
+          msg.textContent = 'Sai tên tài khoản hoặc mật khẩu!';
+          return;
+        }
+        localStorage.setItem(SESSION_KEY, username);
+        this.reset();
+        renderSession();
+        showToast('Đăng nhập thành công!');
+      }
+    });
+
+    function logout() {
+      localStorage.removeItem(SESSION_KEY);
+      renderSession();
+    }
+
+    function renderSession() {
+      const db = ensureDb();
+      const username = localStorage.getItem(SESSION_KEY);
+      const authCard = document.getElementById('authCard');
+      const userCard = document.getElementById('userCard');
+
+      if (username && db.users[username]) {
+        authCard.style.display = 'none';
+        userCard.style.display = 'block';
+        document.getElementById('currentUsername').textContent = username;
+        document.getElementById('currentBalance').textContent = Number(db.users[username].balance || 0).toLocaleString('vi-VN');
+      } else {
+        localStorage.removeItem(SESSION_KEY);
+        authCard.style.display = 'block';
+        userCard.style.display = 'none';
+      }
+    }
+
+    document.getElementById('redeemForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const username = localStorage.getItem(SESSION_KEY);
+      const code = document.getElementById('giftCodeInput').value.trim().toUpperCase();
+      const msg = document.getElementById('redeemMsg');
+      const db = ensureDb();
+
+      if (!username || !db.users[username]) {
+        msg.className = 'msg err';
+        msg.textContent = 'Vui lòng đăng nhập trước!';
+        return;
       }
 
-      dropZone.addEventListener("click", () => fileInput.click());
-      dropZone.addEventListener("keydown", (e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          fileInput.click();
-        }
-      });
+      if (!db.codes[code]) {
+        msg.className = 'msg err';
+        msg.textContent = 'Giftcode không tồn tại!';
+        return;
+      }
 
-      fileInput.addEventListener("change", (e) => {
-        if (e.target.files[0]) handleIncomingFile(e.target.files[0]);
-        fileInput.value = "";
-      });
+      if (db.codes[code].used) {
+        msg.className = 'msg err';
+        msg.textContent = 'Giftcode này đã được sử dụng!';
+        return;
+      }
 
-      ["dragenter", "dragover"].forEach((ev) => {
-        dropZone.addEventListener(ev, (e) => {
-          e.preventDefault();
-          dropZone.classList.add("active");
-        });
-      });
+      db.codes[code].used = true;
+      db.codes[code].usedBy = username;
+      db.codes[code].usedAt = new Date().toLocaleString('vi-VN');
+      db.users[username].balance = Number(db.users[username].balance || 0) + REWARD_AMOUNT;
 
-      ["dragleave", "drop"].forEach((ev) => {
-        dropZone.addEventListener(ev, (e) => {
-          e.preventDefault();
-          dropZone.classList.remove("active");
-        });
-      });
+      localStorage.setItem(DB_KEY, JSON.stringify(db));
+      document.getElementById('giftCodeInput').value = '';
+      renderSession();
+      msg.className = 'msg ok';
+      msg.textContent = 'Nhập code thành công! Bạn được cộng +1,000.';
+      showToast('+1,000 vào tài khoản!');
+    });
 
-      dropZone.addEventListener("drop", (e) => {
-        const file = e.dataTransfer && e.dataTransfer.files[0];
-        if (file) handleIncomingFile(file);
-      });
-
-      btnCopy.addEventListener("click", async () => {
-        if (!urlOutput.value) return;
-        try {
-          await navigator.clipboard.writeText(urlOutput.value);
-        } catch {
-          urlOutput.select();
-          document.execCommand("copy");
-        }
-        btnCopy.textContent = "Đã copy ✓";
-        btnCopy.classList.add("copied");
-        showToast("Đã sao chép đường link!");
-      });
-
-      btnClear.addEventListener("click", () => {
-        currentHtml = "";
-        revokeCurrentBlob();
-        urlOutput.value = "";
-        btnLaunch.href = "#";
-        previewFrame.srcdoc = "";
-        resultCard.classList.remove("show");
-        showToast("");
-      });
+    function exportSync() {
+      const db = ensureDb();
+      const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(db))));
+      document.getElementById('syncBox').value = encoded;
+      navigator.clipboard?.writeText(encoded).catch(() => {});
+      showToast('Đã xuất và copy gói đồng bộ!');
     }
+
+    function importSync() {
+      const raw = document.getElementById('syncBox').value.trim();
+      if (!raw) return showToast('Hãy dán gói đồng bộ vào ô trước!');
+      try {
+        const parsed = JSON.parse(decodeURIComponent(escape(atob(raw))));
+        if (!parsed.users || !parsed.codes) throw new Error('Sai cấu trúc');
+        localStorage.setItem(DB_KEY, JSON.stringify(parsed));
+        renderSession();
+        showToast('Đã nhập dữ liệu đồng bộ thành công!');
+      } catch (err) {
+        showToast('Gói dữ liệu không hợp lệ!');
+      }
+    }
+
+    ensureDb();
+    renderSession();
   </script>
 </body>
 </html>
