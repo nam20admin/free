@@ -17,6 +17,7 @@
       --violet: #a855f7;
       --pink: #ec4899;
       --emerald: #10b981;
+      --discord: #5865f2;
       --danger: #fb7185;
     }
 
@@ -109,7 +110,9 @@
 
     .top-bar {
       display: flex;
-      justify-content: center;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
     }
 
     .pill-badge {
@@ -133,6 +136,34 @@
       border-radius: 50%;
       background: var(--emerald);
       box-shadow: 0 0 10px var(--emerald);
+    }
+
+    .discord-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 6px 13px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #ffffff;
+      background: rgba(88, 101, 242, 0.22);
+      border: 1px solid rgba(88, 101, 242, 0.55);
+      transition: all 0.2s ease;
+    }
+
+    .discord-btn:hover {
+      background: var(--discord);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 20px rgba(88, 101, 242, 0.4);
+    }
+
+    .discord-btn svg {
+      width: 17px;
+      height: 17px;
+      fill: currentColor;
+      flex-shrink: 0;
     }
 
     .hero {
@@ -272,10 +303,11 @@
     .url-group {
       display: flex;
       gap: 8px;
+      flex-wrap: wrap;
     }
 
     .url-field {
-      flex: 1;
+      flex: 1 1 220px;
       min-width: 0;
       background: #050811;
       border: 1px solid rgba(148, 163, 184, 0.22);
@@ -307,13 +339,33 @@
       transition: all 0.18s ease;
     }
 
-    .btn:hover {
+    .btn:hover:not(:disabled) {
       transform: translateY(-1px);
       filter: brightness(1.07);
     }
 
-    .btn:active {
+    .btn:active:not(:disabled) {
       transform: translateY(0);
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .btn-shorten {
+      background: rgba(56, 189, 248, 0.16);
+      color: #bae6fd;
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      padding: 10px 14px;
+      font-size: 0.84rem;
+      white-space: nowrap;
+    }
+
+    .btn-shorten.shortened {
+      background: rgba(168, 85, 247, 0.2);
+      border-color: rgba(168, 85, 247, 0.5);
+      color: #e9d5ff;
     }
 
     .btn-copy {
@@ -420,6 +472,18 @@
   <main id="studioApp" class="container">
     <div class="top-bar">
       <span class="pill-badge"><span class="dot-live"></span>Instant HTML Link Studio</span>
+      <a
+        class="discord-btn"
+        href="https://discord.com/users/1473671927976562689"
+        target="_blank"
+        rel="noopener noreferrer"
+        title="Mở hồ sơ Discord"
+      >
+        <svg viewBox="0 0 127.14 96.36" aria-hidden="true">
+          <path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,46,96.12,53,91.08,65.69,84.69,65.69Z"/>
+        </svg>
+        <span>Discord</span>
+      </a>
     </div>
 
     <header class="hero">
@@ -442,6 +506,7 @@
 
       <div class="url-group">
         <input id="urlOutput" class="url-field" type="text" readonly />
+        <button id="btnShorten" class="btn btn-shorten" type="button">Rút gọn link</button>
         <button id="btnCopy" class="btn btn-copy" type="button">Copy link</button>
       </div>
 
@@ -472,7 +537,6 @@
       if (!encoded) return null;
 
       try {
-        // Hỗ trợ cả base64 chuẩn và base64url
         const normalized = encoded.replace(/-/g, "+").replace(/_/g, "/");
         const padded = normalized + "=".repeat((4 - (normalized.length % 4)) % 4);
         const binary = atob(padded);
@@ -491,7 +555,15 @@
       const sharedHtml = decodeSharedHtmlFromHash();
       if (sharedHtml === null) return false;
 
-      document.open();
+      // Xóa mọi style/layout cũ để chỉ hiển thị duy nhất trang được chia sẻ
+      document.documentElement.removeAttribute("style");
+      document.documentElement.className = "";
+      if (document.body) {
+        document.body.removeAttribute("style");
+        document.body.className = "";
+      }
+
+      document.open("text/html", "replace");
       document.write(sharedHtml);
       document.close();
       return true;
@@ -508,6 +580,7 @@
       const fileChip = document.getElementById("fileChip");
       const sizeTag = document.getElementById("sizeTag");
       const urlOutput = document.getElementById("urlOutput");
+      const btnShorten = document.getElementById("btnShorten");
       const btnCopy = document.getElementById("btnCopy");
       const btnLaunch = document.getElementById("btnLaunch");
       const btnClear = document.getElementById("btnClear");
@@ -546,6 +619,63 @@
         return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
       }
 
+      function resetActionStates() {
+        btnCopy.textContent = "Copy link";
+        btnCopy.classList.remove("copied");
+        btnShorten.textContent = "Rút gọn link";
+        btnShorten.classList.remove("shortened");
+        btnShorten.disabled = false;
+      }
+
+      async function shortenUrl(longUrl) {
+        if (longUrl.startsWith("blob:")) {
+          throw new Error("Link blob chỉ dùng nội bộ trên trình duyệt hiện tại, hãy mở qua http/https để rút gọn.");
+        }
+
+        // Thử rút gọn qua is.gd (JSONP để tránh lỗi CORS trên trình duyệt)
+        const shortFromIsGd = await new Promise((resolve) => {
+          const cbName = "__isgd_cb_" + Date.now() + "_" + Math.floor(Math.random() * 10000);
+          const script = document.createElement("script");
+          const timer = setTimeout(() => {
+            cleanup();
+            resolve(null);
+          }, 6500);
+
+          function cleanup() {
+            clearTimeout(timer);
+            delete window[cbName];
+            if (script.parentNode) script.parentNode.removeChild(script);
+          }
+
+          window[cbName] = (data) => {
+            cleanup();
+            if (data && data.shorturl) {
+              resolve(data.shorturl);
+            } else {
+              resolve(null);
+            }
+          };
+
+          script.src = `https://is.gd/create.php?format=json&callback=${cbName}&url=${encodeURIComponent(longUrl)}`;
+          script.onerror = () => {
+            cleanup();
+            resolve(null);
+          };
+          document.body.appendChild(script);
+        });
+
+        if (shortFromIsGd) return shortFromIsGd;
+
+        // Dự phòng qua TinyURL API
+        const tinyRes = await fetch(`https://tinyurl.com/api-create.php?url=${encodeURIComponent(longUrl)}`);
+        if (tinyRes.ok) {
+          const tinyText = (await tinyRes.text()).trim();
+          if (tinyText.startsWith("http")) return tinyText;
+        }
+
+        throw new Error("Không thể rút gọn link lúc này (có thể do link quá dài hoặc bị chặn mạng).");
+      }
+
       function handleIncomingFile(file) {
         if (!file) return;
         if (!/\.(html|htm)$/i.test(file.name) && file.type !== "text/html") {
@@ -572,22 +702,44 @@
           fileChip.textContent = file.name;
           sizeTag.textContent = formatSize(file.size);
           urlOutput.value = shareLink;
-          btnLaunch.href = currentBlobUrl;
+          btnLaunch.href = shareLink;
           previewFrame.srcdoc = currentHtml;
 
-          btnCopy.textContent = "Copy link";
-          btnCopy.classList.remove("copied");
+          resetActionStates();
           resultCard.classList.add("show");
 
           if (isHosted && shareLink.length > 65000) {
             showToast("Đã tạo link (file hơi dài, một số trình duyệt có thể hạn chế link quá dài).", false);
           } else {
-            showToast("Đã tạo link thành công!");
+            showToast("Đã tạo link thành công! Bạn có thể bấm Rút gọn link.");
           }
         };
         reader.onerror = () => showToast("Không đọc được file này.", true);
         reader.readAsText(file, "utf-8");
       }
+
+      btnShorten.addEventListener("click", async () => {
+        const rawUrl = urlOutput.value.trim();
+        if (!rawUrl) return;
+
+        btnShorten.disabled = true;
+        btnShorten.textContent = "Đang rút gọn...";
+        showToast("Đang tạo link rút gọn...");
+
+        try {
+          const shortUrl = await shortenUrl(rawUrl);
+          urlOutput.value = shortUrl;
+          btnShorten.textContent = "Đã rút gọn ✓";
+          btnShorten.classList.add("shortened");
+          btnCopy.textContent = "Copy link";
+          btnCopy.classList.remove("copied");
+          showToast("Đã rút gọn link thành công!");
+        } catch (err) {
+          btnShorten.disabled = false;
+          btnShorten.textContent = "Rút gọn link";
+          showToast(err && err.message ? err.message : "Rút gọn link thất bại.", true);
+        }
+      });
 
       dropZone.addEventListener("click", () => fileInput.click());
       dropZone.addEventListener("keydown", (e) => {
@@ -640,6 +792,7 @@
         urlOutput.value = "";
         btnLaunch.href = "#";
         previewFrame.srcdoc = "";
+        resetActionStates();
         resultCard.classList.remove("show");
         showToast("");
       });
