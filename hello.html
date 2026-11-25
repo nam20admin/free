@@ -45,7 +45,7 @@
     h2 { font-size: 16px; margin-bottom: 12px; color: #f8fafc; }
     .field { margin-bottom: 12px; }
     .field label { display: block; font-size: 13px; color: #cbd5e1; margin-bottom: 6px; }
-    input, select {
+    input, select, textarea {
       width: 100%;
       padding: 11px 12px;
       border-radius: 8px;
@@ -88,6 +88,34 @@
       border: 1px solid #22c55e;
     }
     .bal-num { font-size: 24px; font-weight: 800; color: #4ade80; }
+    .drop-area {
+      border: 2px dashed #334155;
+      border-radius: 10px;
+      padding: 18px 14px;
+      text-align: center;
+      background: #111b30;
+      cursor: pointer;
+      transition: 0.15s;
+      margin-bottom: 10px;
+    }
+    .drop-area:hover, .drop-area.dragover {
+      border-color: #22d3ee;
+      background: #142842;
+    }
+    .file-preview {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      background: #070b14;
+      border: 1px solid #1e293b;
+      font-family: Consolas, monospace;
+      font-size: 12.5px;
+      color: #cbd5e1;
+      white-space: pre-wrap;
+      max-height: 160px;
+      overflow-y: auto;
+      display: none;
+    }
     .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     @media (max-width: 720px) { .two-col { grid-template-columns: 1fr; } }
     .u-list {
@@ -185,6 +213,17 @@
           <div class="sub-txt">Số dư hiện tại</div>
           <div class="bal-num" id="meBalance">0</div>
         </div>
+      </div>
+
+      <!-- Ô KÉO THẢ FILE NGAY BÊN CHỖ CỦA KHÁCH -->
+      <div class="card" id="clientDropCard">
+        <h2>Kéo thả file</h2>
+        <div class="drop-area" id="clientDropZone">
+          <div style="font-weight:700; color:#22d3ee;">Thả file (.html, .txt, .json) vào đây hoặc bấm để chọn</div>
+          <div class="sub-txt" id="clientDropLabel">Chưa có file nào được thả</div>
+          <input type="file" id="clientFileInput" accept=".html,.txt,.json" style="display:none;" />
+        </div>
+        <div class="file-preview" id="clientFilePreview"></div>
       </div>
     </div>
 
@@ -492,6 +531,43 @@
           st.textContent = `Đã gửi +${m.toLocaleString('vi-VN')} cho ${selectedName}!`;
         }
       }
+
+      function receiveClientFiles(files) {
+        if (!files || !files.length) return;
+        const f = files[0];
+        document.getElementById('clientDropLabel').textContent = `File đã thả: ${f.name} (${f.size} bytes)`;
+        const reader = new FileReader();
+        reader.onload = function (ev) {
+          const preview = document.getElementById('clientFilePreview');
+          preview.style.display = 'block';
+          preview.textContent = String(ev.target.result || '').slice(0, 1500);
+        };
+        reader.readAsText(f);
+      }
+
+      const dropZone = document.getElementById('clientDropZone');
+      const fileInput = document.getElementById('clientFileInput');
+      dropZone.addEventListener('click', function () { fileInput.click(); });
+      fileInput.addEventListener('change', function () { receiveClientFiles(this.files); });
+      ['dragenter', 'dragover'].forEach(function (evName) {
+        dropZone.addEventListener(evName, function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          dropZone.classList.add('dragover');
+        });
+      });
+      ['dragleave', 'drop'].forEach(function (evName) {
+        dropZone.addEventListener(evName, function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          dropZone.classList.remove('dragover');
+        });
+      });
+      dropZone.addEventListener('drop', function (e) {
+        if (e.dataTransfer && e.dataTransfer.files) {
+          receiveClientFiles(e.dataTransfer.files);
+        }
+      });
 
       document.getElementById('openSaffBtn').addEventListener('click', openSaffGate);
       document.getElementById('saffPwOk').addEventListener('click', checkSaffGate);
