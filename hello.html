@@ -3,425 +3,235 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ECLIPSE // HUB</title>
+  <title>ECLIPSE HUB</title>
   <style>
-    :root {
-      --bg: #070612;
-      --panel: #110f24;
-      --panel-2: #191636;
-      --border: #2c2659;
-      --border-hi: #7c3aed;
-      --neon-pink: #ec4899;
-      --neon-cyan: #22d3ee;
-      --neon-violet: #8b5cf6;
-      --mint: #34d399;
-      --rose: #fb7185;
-      --ink: #f5f3ff;
-      --sub: #a5a3c2;
-    }
-
     * { box-sizing: border-box; margin: 0; padding: 0; }
-
     body {
-      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #060a12;
+      color: #eef2ff;
       min-height: 100vh;
-      color: var(--ink);
-      background:
-        linear-gradient(135deg, rgba(124, 58, 237, 0.14) 0%, transparent 45%),
-        linear-gradient(225deg, rgba(34, 211, 238, 0.11) 0%, transparent 45%),
-        repeating-linear-gradient(
-          0deg,
-          rgba(255, 255, 255, 0.015) 0px,
-          rgba(255, 255, 255, 0.015) 1px,
-          transparent 1px,
-          transparent 28px
-        ),
-        var(--bg);
-      padding: 20px 14px 64px;
+      padding: 24px 16px 60px;
     }
-
-    .shell {
-      max-width: 960px;
-      margin: 0 auto;
-      position: relative;
-      z-index: 2;
-    }
-
-    .nav-bar {
+    .box-wrap { max-width: 920px; margin: 0 auto; }
+    .bar {
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 12px;
       flex-wrap: wrap;
-      padding: 14px 18px;
-      border-radius: 14px;
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-left: 4px solid var(--neon-cyan);
+      background: #0d1526;
+      border: 1px solid #1e3a5f;
+      border-top: 3px solid #06b6d4;
+      border-radius: 12px;
+      padding: 16px 20px;
       margin-bottom: 16px;
     }
-
-    .logo-wrap {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .logo-badge {
-      padding: 6px 10px;
-      border-radius: 8px;
-      font-family: Consolas, monospace;
-      font-size: 12px;
-      font-weight: 800;
-      color: var(--bg);
-      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-pink));
-    }
-
-    .logo-name {
-      font-size: 18px;
-      font-weight: 800;
-      letter-spacing: 0.06em;
-    }
-
-    .status-pill {
-      font-size: 12px;
-      color: var(--neon-cyan);
-      font-family: Consolas, monospace;
-    }
-
-    .box {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 14px;
+    .brand-txt { font-size: 20px; font-weight: 800; letter-spacing: 1px; color: #22d3ee; }
+    .sub-txt { font-size: 12px; color: #94a3b8; margin-top: 2px; }
+    .card {
+      background: #0d1526;
+      border: 1px solid #1e293b;
+      border-radius: 12px;
       padding: 20px;
       margin-bottom: 16px;
     }
-
-    .topup-strip {
-      border-color: rgba(236, 72, 153, 0.45);
-      background: linear-gradient(90deg, rgba(236, 72, 153, 0.12), rgba(17, 15, 36, 0.96) 55%, rgba(34, 211, 238, 0.1));
+    .nap-box {
+      border-color: #f59e0b;
+      background: #171618;
     }
-
-    .topup-strip p {
-      font-size: 14.5px;
-      margin-bottom: 8px;
-    }
-
-    .topup-strip a {
-      color: var(--neon-cyan);
-      font-weight: 700;
-      text-decoration: none;
-      word-break: break-all;
-    }
-
-    .topup-strip a:hover {
-      text-decoration: underline;
-    }
-
-    .box-head {
-      font-size: 15px;
-      font-weight: 700;
-      color: #fff;
-      margin-bottom: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-    }
-
-    .hint {
-      font-size: 12.5px;
-      color: var(--sub);
-      margin-bottom: 14px;
-    }
-
-    .mode-row {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 14px;
-    }
-
-    .btn {
-      padding: 10px 16px;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      background: var(--panel-2);
-      color: var(--ink);
-      font-size: 13.5px;
-      font-weight: 700;
-      cursor: pointer;
-      pointer-events: auto;
-    }
-
-    .btn:hover {
-      border-color: var(--neon-cyan);
-    }
-
-    .btn-go {
-      background: linear-gradient(135deg, var(--neon-violet), var(--neon-pink));
-      border-color: transparent;
-      color: #fff;
-    }
-
-    .btn-saff {
-      background: rgba(34, 211, 238, 0.12);
-      border-color: var(--neon-cyan);
-      color: var(--neon-cyan);
-      letter-spacing: 0.05em;
-    }
-
-    .btn-loop {
-      background: #059669;
-      border-color: transparent;
-      color: #fff;
-    }
-
-    .row {
-      margin-bottom: 12px;
-    }
-
-    .row label {
-      display: block;
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--sub);
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      margin-bottom: 5px;
-    }
-
+    .nap-box p { font-size: 15px; margin-bottom: 8px; }
+    .nap-box a { color: #fbbf24; font-weight: 700; text-decoration: underline; word-break: break-all; }
+    h2 { font-size: 16px; margin-bottom: 12px; color: #f8fafc; }
+    .field { margin-bottom: 12px; }
+    .field label { display: block; font-size: 13px; color: #cbd5e1; margin-bottom: 6px; }
     input, select {
       width: 100%;
-      padding: 11px 13px;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      background: var(--panel-2);
-      color: var(--ink);
+      padding: 11px 12px;
+      border-radius: 8px;
+      border: 1px solid #334155;
+      background: #162036;
+      color: #fff;
       font-size: 14px;
-      outline: none;
     }
-
-    input:focus, select:focus {
-      border-color: var(--neon-pink);
+    button {
+      padding: 10px 16px;
+      border-radius: 8px;
+      border: 1px solid #334155;
+      background: #1e293b;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
     }
-
-    .id-pill {
+    button:hover { border-color: #22d3ee; }
+    .btn-main { background: #0891b2; border-color: #22d3ee; }
+    .btn-saff { background: #b45309; border-color: #fbbf24; color: #fef3c7; }
+    .btn-on { background: #15803d; border-color: #4ade80; }
+    .row-btns { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+    .id-box {
       display: inline-block;
       margin-top: 6px;
-      padding: 4px 11px;
+      padding: 5px 10px;
       border-radius: 6px;
-      background: rgba(34, 211, 238, 0.14);
-      border: 1px solid rgba(34, 211, 238, 0.45);
-      color: var(--neon-cyan);
+      background: #132a44;
+      border: 1px solid #22d3ee;
+      color: #67e8f9;
       font-family: Consolas, monospace;
-      font-size: 13px;
       font-weight: 700;
     }
-
-    .bal-card {
+    .bal-box {
       margin-top: 14px;
-      padding: 14px 16px;
-      border-radius: 10px;
-      background: rgba(52, 211, 153, 0.1);
-      border: 1px solid rgba(52, 211, 153, 0.35);
+      padding: 14px;
+      border-radius: 8px;
+      background: #0f291e;
+      border: 1px solid #22c55e;
     }
-
-    .bal-val {
-      font-size: 25px;
-      font-weight: 800;
-      color: var(--mint);
-      font-family: Consolas, monospace;
-    }
-
-    .cols {
-      display: grid;
-      grid-template-columns: 1.1fr 1fr;
-      gap: 16px;
-    }
-
-    @media (max-width: 780px) {
-      .cols { grid-template-columns: 1fr; }
-    }
-
-    .member-box {
+    .bal-num { font-size: 24px; font-weight: 800; color: #4ade80; }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 720px) { .two-col { grid-template-columns: 1fr; } }
+    .u-list {
       margin-top: 10px;
-      max-height: 320px;
+      max-height: 300px;
       overflow-y: auto;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      background: var(--bg);
+      border: 1px solid #334155;
+      border-radius: 8px;
     }
-
-    .member-row {
-      padding: 11px 13px;
-      border-bottom: 1px solid var(--border);
+    .u-row {
+      padding: 10px 12px;
+      border-bottom: 1px solid #1e293b;
       display: flex;
       justify-content: space-between;
       align-items: center;
       cursor: pointer;
     }
-
-    .member-row:last-child { border-bottom: none; }
-    .member-row:hover { background: rgba(139, 92, 246, 0.16); }
-    .member-row.active {
-      background: rgba(236, 72, 153, 0.18);
-      border-left: 3px solid var(--neon-pink);
-    }
-
-    .log-box {
+    .u-row.picked { background: #173354; border-left: 4px solid #22d3ee; }
+    .code-out {
       margin-top: 12px;
       padding: 12px;
-      border-radius: 10px;
-      background: var(--bg);
-      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #070b14;
+      border: 1px solid #334155;
       font-family: Consolas, monospace;
-      font-size: 12.5px;
-      color: #f9a8d4;
+      font-size: 13px;
+      color: #fde68a;
       white-space: pre-wrap;
       max-height: 170px;
       overflow-y: auto;
     }
-
-    .picked-panel {
-      padding: 12px 14px;
-      border-radius: 10px;
-      background: var(--panel-2);
-      border: 1px solid var(--border);
-      margin-bottom: 12px;
-      line-height: 1.6;
-      font-size: 13.5px;
-    }
-
-    .say {
-      margin-top: 10px;
-      font-size: 13px;
-      font-weight: 700;
-    }
-    .say.good { color: var(--mint); }
-    .say.bad { color: var(--rose); }
+    .note { margin-top: 10px; font-size: 13px; font-weight: 700; }
+    .ok { color: #4ade80; }
+    .err { color: #f87171; }
   </style>
 </head>
 <body>
-  <div class="shell">
-    <div class="nav-bar">
-      <div class="logo-wrap">
-        <span class="logo-badge">⏣ HUB</span>
-        <div>
-          <div class="logo-name">ECLIPSE HUB</div>
-          <div class="status-pill" id="liveState">Đang tải script...</div>
-        </div>
+  <div class="box-wrap">
+    <div class="bar">
+      <div>
+        <div class="brand-txt">ECLIPSE HUB</div>
+        <div class="sub-txt" id="appState">Đang khởi động...</div>
       </div>
-      <div style="display:flex; gap:8px; flex-wrap:wrap;">
-        <button type="button" class="btn" id="btnToClient" data-action="to-client" style="display:none;">Về khách hàng</button>
-        <button type="button" class="btn btn-saff" id="btnSaff" data-action="open-saff">SAFF</button>
+      <div class="row-btns" style="margin-bottom:0;">
+        <button type="button" id="goClientBtn" style="display:none;">Trang khách hàng</button>
+        <button type="button" class="btn-saff" id="openSaffBtn">SAFF</button>
       </div>
     </div>
 
-    <!-- MỞ KHÓA SAFF -->
-    <div class="box" id="saffGate" style="display:none; border-color: var(--neon-cyan);">
-      <div class="box-head"><span>XÁC THỰC SAFF</span></div>
-      <div style="display:flex; gap:8px; flex-wrap:wrap;">
-        <input type="password" id="saffSecret" placeholder="Nhập mật khẩu..." style="flex:1; min-width:180px;" />
-        <button type="button" class="btn btn-go" data-action="unlock-saff">Vào SAFF</button>
-        <button type="button" class="btn" data-action="close-gate">Ẩn</button>
+    <div class="card" id="saffAuthPanel" style="display:none; border-color:#fbbf24;">
+      <h2>Nhập mật khẩu SAFF</h2>
+      <div class="row-btns">
+        <input type="password" id="saffPwInput" placeholder="Nhập mật khẩu..." style="flex:1; min-width:180px;" />
+        <button type="button" class="btn-main" id="saffPwOk">Mở</button>
+        <button type="button" id="saffPwHide">Đóng</button>
       </div>
-      <div class="say bad" id="gateErr"></div>
+      <div class="note err" id="saffPwErr"></div>
     </div>
 
-    <!-- KHU KHÁCH HÀNG -->
-    <div id="clientArea">
-      <div class="box topup-strip">
+    <div id="clientSection">
+      <div class="card nap-box">
         <p>hãy nhắn cho người dùng discord này để nạp thẻ nhé Z</p>
         <a href="https://discord.com/users/1473671927976562689" target="_blank" rel="noopener noreferrer">
           link: https://discord.com/users/1473671927976562689
         </a>
       </div>
 
-      <div class="box" id="loginArea">
-        <div class="box-head"><span>TÀI KHOẢN KHÁCH HÀNG</span></div>
-        <div class="hint">Đăng ký hoặc đăng nhập để lưu tài khoản vĩnh viễn và lấy mã ID riêng.</div>
-
-        <div class="mode-row">
-          <button type="button" class="btn btn-go" id="btnTabLogin" data-action="tab-login">Đăng nhập</button>
-          <button type="button" class="btn" id="btnTabReg" data-action="tab-reg">Đăng ký</button>
+      <div class="card" id="authSection">
+        <h2>Đăng ký / Đăng nhập</h2>
+        <div class="row-btns">
+          <button type="button" class="btn-main" id="tabLogin">Đăng nhập</button>
+          <button type="button" id="tabRegister">Đăng ký</button>
         </div>
-
-        <div class="row">
+        <div class="field">
           <label>Tên tài khoản</label>
-          <input type="text" id="accName" placeholder="Nhập tên tài khoản..." />
+          <input type="text" id="loginUser" placeholder="Nhập tên tài khoản..." />
         </div>
-        <div class="row">
+        <div class="field">
           <label>Mật khẩu</label>
-          <input type="password" id="accPass" placeholder="Nhập mật khẩu..." />
+          <input type="password" id="loginPass" placeholder="Nhập mật khẩu..." />
         </div>
-        <button type="button" class="btn btn-go" id="btnAuthGo" data-action="do-auth">Đăng nhập</button>
-        <div class="say" id="authSay"></div>
+        <button type="button" class="btn-main" id="submitAuthBtn">Đăng nhập</button>
+        <div class="note" id="authStatus"></div>
       </div>
 
-      <div class="box" id="meArea" style="display:none;">
+      <div class="card" id="meSection" style="display:none;">
         <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px; flex-wrap:wrap;">
           <div>
-            <div class="box-head" style="margin-bottom:2px;"><span id="meTitle"></span></div>
-            <div class="id-pill" id="meIdTag"></div>
+            <h2 id="meGreeting" style="margin-bottom:4px;"></h2>
+            <div class="id-box" id="meIdBox"></div>
           </div>
-          <button type="button" class="btn" data-action="do-logout">Đăng xuất</button>
+          <button type="button" id="logoutBtn">Đăng xuất</button>
         </div>
-        <div class="bal-card">
-          <div class="hint" style="margin-bottom:2px;">SỐ DƯ HIỆN TẠI</div>
-          <div class="bal-val" id="meBal">0</div>
+        <div class="bal-box">
+          <div class="sub-txt">Số dư hiện tại</div>
+          <div class="bal-num" id="meBalance">0</div>
         </div>
       </div>
     </div>
 
-    <!-- KHU SAFF -->
-    <div id="saffArea" style="display:none;">
-      <div class="box">
-        <div class="box-head">
-          <span>BẢNG ĐIỀU KHIỂN SAFF</span>
-          <button type="button" class="btn" data-action="lock-saff">Khóa lại</button>
+    <div id="saffSection" style="display:none;">
+      <div class="card">
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;">
+          <div>
+            <h2 style="margin-bottom:2px;">Quản trị SAFF</h2>
+            <div class="sub-txt" id="saffCounts"></div>
+          </div>
+          <button type="button" id="lockSaffBtn">Khóa</button>
         </div>
-        <div class="hint" id="saffSummary"></div>
-
-        <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
-          <button type="button" class="btn btn-go" data-action="gen-10">Tạo 10 code & gửi Webhook</button>
-          <button type="button" class="btn" id="btnLoop" data-action="toggle-loop">Tự động tạo 10 code liên tục: TẮT</button>
-          <span class="hint" style="margin:0;" id="hookState">Webhook sẵn sàng</span>
+        <div class="row-btns" style="margin-top:12px;">
+          <button type="button" class="btn-main" id="btnGen10">Tạo 10 code & gửi Webhook</button>
+          <button type="button" id="btnLoop10">Tự động tạo 10 code liên tục: TẮT</button>
         </div>
-
-        <div class="log-box" id="codeLog">Chưa có lô code nào.</div>
+        <div class="sub-txt" id="hookStatus">Webhook sẵn sàng</div>
+        <div class="code-out" id="codeOutput">Chưa có lô code nào.</div>
       </div>
 
-      <div class="cols">
-        <div class="box">
-          <div class="box-head"><span>TÌM NGƯỜI DÙNG THEO MÃ ID</span></div>
-          <input type="text" id="findIdBox" placeholder="Nhập mã ID (VD: ID-123456) hoặc tên..." />
-          <div class="member-box" id="memberList"></div>
+      <div class="two-col">
+        <div class="card">
+          <h2>Tìm người dùng theo mã ID</h2>
+          <input type="text" id="searchId" placeholder="Nhập mã ID (VD: ID-123456) hoặc tên..." />
+          <div class="u-list" id="usersBox"></div>
         </div>
 
-        <div class="box">
-          <div class="box-head"><span>NẠP CHO NGƯỜI DÙNG</span></div>
-          <div class="picked-panel" id="pickedInfo">Chưa bấm chọn người dùng nào.</div>
-
-          <div class="row">
-            <label>Chọn cách nạp</label>
-            <select id="payMode">
-              <option value="giftcode">1. Nhập giftcode (+1,000)</option>
-              <option value="cash">2. Nhập số tiền muốn gửi</option>
+        <div class="card">
+          <h2>Nạp cho người dùng</h2>
+          <div class="card" id="pickedCard" style="padding:12px; background:#162036;">Chưa chọn người dùng.</div>
+          <div class="field">
+            <label>Lựa chọn nạp</label>
+            <select id="topupChoice">
+              <option value="code">1. Nhập giftcode (+1,000)</option>
+              <option value="money">2. Nhập số tiền muốn gửi</option>
             </select>
           </div>
-
-          <div class="row" id="rowCode">
+          <div class="field" id="boxCode">
             <label>Mã giftcode</label>
-            <input type="text" id="inputGift" placeholder="Ví dụ: ECH-XXXXXXXXXXXX" />
+            <input type="text" id="valCode" placeholder="ECH-XXXXXXXXXXXX" />
           </div>
-
-          <div class="row" id="rowCash" style="display:none;">
+          <div class="field" id="boxMoney" style="display:none;">
             <label>Số tiền muốn gửi</label>
-            <input type="number" id="inputCash" min="1" placeholder="Nhập số tiền..." />
+            <input type="number" id="valMoney" min="1" placeholder="Nhập số tiền..." />
           </div>
-
-          <button type="button" class="btn btn-go" data-action="do-pay">Nạp</button>
-          <div class="say" id="paySay"></div>
+          <button type="button" class="btn-main" id="doTopupBtn">Nạp</button>
+          <div class="note" id="topupStatus"></div>
         </div>
       </div>
     </div>
@@ -429,377 +239,285 @@
 
   <script>
     (function () {
-      const STORAGE_DB = 'eclipse_hub_v3_db';
-      const STORAGE_USER = 'eclipse_hub_v3_user';
-      const SAFF_PW = 'Owner';
-      const CODE_BONUS = 1000;
-      const HOOK_URL = 'https://discord.com/api/webhooks/1575059628700467271/kS-S68wgHYMYlrTUqly9FvwgxEqaacyNd60wL8cuy_kUpHZJVunuv8hKS4QI-_H-EHFY';
+      const KEY_DB = 'eclipse_hub_final_db';
+      const KEY_USER = 'eclipse_hub_final_user';
+      const PASS_SAFF = 'Owner';
+      const HOOK = 'https://discord.com/api/webhooks/1575059628700467271/kS-S68wgHYMYlrTUqly9FvwgxEqaacyNd60wL8cuy_kUpHZJVunuv8hKS4QI-_H-EHFY';
 
-      const ram = { db: { users: {}, codes: {} }, user: null, open: false };
-      let authTab = 'login';
-      let chosenUser = null;
-      let timer = null;
-      let batchNo = 0;
+      const store = { db: { users: {}, codes: {} }, user: null, saff: false };
+      let authMode = 'login';
+      let selectedName = null;
+      let loopId = null;
+      let batchNum = 0;
 
-      function readProp(k) {
-        try { return localStorage.getItem(k); } catch (e) { return null; }
-      }
-      function writeProp(k, v) {
-        try { localStorage.setItem(k, v); } catch (e) {}
-      }
-      function dropProp(k) {
-        try { localStorage.removeItem(k); } catch (e) {}
-      }
+      function readLS(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+      function writeLS(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+      function clearLS(k) { try { localStorage.removeItem(k); } catch (e) {} }
 
-      function createId(users) {
+      function genId(users) {
         const used = new Set(Object.values(users).map(x => x.id));
-        let candidate = '';
-        do {
-          candidate = 'ID-' + Math.floor(100000 + Math.random() * 900000);
-        } while (used.has(candidate));
-        return candidate;
+        let id = '';
+        do { id = 'ID-' + Math.floor(100000 + Math.random() * 900000); } while (used.has(id));
+        return id;
       }
 
-      function createCode() {
-        const alphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-        let out = 'ECH-';
-        for (let i = 0; i < 12; i++) {
-          out += alphabet[Math.floor(Math.random() * alphabet.length)];
+      function genCode() {
+        const ch = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+        let r = 'ECH-';
+        for (let i = 0; i < 12; i++) r += ch[Math.floor(Math.random() * ch.length)];
+        return r;
+      }
+
+      function loadDB() {
+        let d = null;
+        const raw = readLS(KEY_DB);
+        if (raw) { try { d = JSON.parse(raw); } catch (e) { d = null; } }
+        if (!d || typeof d !== 'object') d = store.db;
+        if (!d.users) d.users = {};
+        if (!d.codes) d.codes = {};
+        for (const u of Object.keys(d.users)) {
+          if (!d.users[u].id) d.users[u].id = genId(d.users);
         }
-        return out;
+        store.db = d;
+        writeLS(KEY_DB, JSON.stringify(d));
+        return d;
       }
 
-      function getDb() {
-        let data = null;
-        const raw = readProp(STORAGE_DB);
-        if (raw) {
-          try { data = JSON.parse(raw); } catch (e) { data = null; }
-        }
-        if (!data || typeof data !== 'object') data = ram.db;
-        if (!data.users || typeof data.users !== 'object') data.users = {};
-        if (!data.codes || typeof data.codes !== 'object') data.codes = {};
-        for (const k of Object.keys(data.users)) {
-          if (!data.users[k].id) data.users[k].id = createId(data.users);
-        }
-        ram.db = data;
-        writeProp(STORAGE_DB, JSON.stringify(data));
-        return data;
+      function saveDB(d) {
+        store.db = d;
+        writeLS(KEY_DB, JSON.stringify(d));
       }
 
-      function putDb(data) {
-        ram.db = data;
-        writeProp(STORAGE_DB, JSON.stringify(data));
-      }
-
-      function syncClient() {
-        const d = getDb();
-        const cur = readProp(STORAGE_USER) || ram.user;
-        const loginArea = document.getElementById('loginArea');
-        const meArea = document.getElementById('meArea');
+      function renderClient() {
+        const d = loadDB();
+        const cur = readLS(KEY_USER) || store.user;
         if (cur && d.users[cur]) {
-          ram.user = cur;
-          loginArea.style.display = 'none';
-          meArea.style.display = 'block';
-          document.getElementById('meTitle').textContent = 'Xin chào, ' + cur;
-          document.getElementById('meIdTag').textContent = 'ID riêng: ' + d.users[cur].id;
-          document.getElementById('meBal').textContent = Number(d.users[cur].balance || 0).toLocaleString('vi-VN');
+          store.user = cur;
+          document.getElementById('authSection').style.display = 'none';
+          document.getElementById('meSection').style.display = 'block';
+          document.getElementById('meGreeting').textContent = 'Xin chào, ' + cur;
+          document.getElementById('meIdBox').textContent = 'Mã ID: ' + d.users[cur].id;
+          document.getElementById('meBalance').textContent = Number(d.users[cur].balance || 0).toLocaleString('vi-VN');
         } else {
-          loginArea.style.display = 'block';
-          meArea.style.display = 'none';
+          document.getElementById('authSection').style.display = 'block';
+          document.getElementById('meSection').style.display = 'none';
         }
       }
 
-      function switchTab(nextTab) {
-        authTab = nextTab;
-        document.getElementById('btnTabLogin').className = nextTab === 'login' ? 'btn btn-go' : 'btn';
-        document.getElementById('btnTabReg').className = nextTab === 'register' ? 'btn btn-go' : 'btn';
-        document.getElementById('btnAuthGo').textContent = nextTab === 'login' ? 'Đăng nhập' : 'Đăng ký';
-        document.getElementById('authSay').textContent = '';
+      function setMode(m) {
+        authMode = m;
+        document.getElementById('tabLogin').className = m === 'login' ? 'btn-main' : '';
+        document.getElementById('tabRegister').className = m === 'register' ? 'btn-main' : '';
+        document.getElementById('submitAuthBtn').textContent = m === 'login' ? 'Đăng nhập' : 'Đăng ký';
+        document.getElementById('authStatus').textContent = '';
       }
 
-      function runAuth() {
-        const name = document.getElementById('accName').value.trim();
-        const pass = document.getElementById('accPass').value;
-        const say = document.getElementById('authSay');
-        if (!name || !pass) {
-          say.className = 'say bad';
-          say.textContent = 'Vui lòng nhập đầy đủ tên tài khoản và mật khẩu!';
-          return;
-        }
-        const d = getDb();
-        if (authTab === 'register') {
-          if (d.users[name]) {
-            say.className = 'say bad';
-            say.textContent = 'Tên tài khoản đã tồn tại!';
-            return;
-          }
-          const uid = createId(d.users);
-          d.users[name] = { id: uid, password: pass, balance: 0 };
-          putDb(d);
-          ram.user = name;
-          writeProp(STORAGE_USER, name);
-          document.getElementById('accName').value = '';
-          document.getElementById('accPass').value = '';
-          syncClient();
-          if (ram.open) syncMembers();
+      function handleAuth() {
+        const u = document.getElementById('loginUser').value.trim();
+        const p = document.getElementById('loginPass').value;
+        const st = document.getElementById('authStatus');
+        if (!u || !p) { st.className = 'note err'; st.textContent = 'Nhập đủ tên tài khoản và mật khẩu!'; return; }
+        const d = loadDB();
+        if (authMode === 'register') {
+          if (d.users[u]) { st.className = 'note err'; st.textContent = 'Tên tài khoản đã tồn tại!'; return; }
+          d.users[u] = { id: genId(d.users), password: p, balance: 0 };
+          saveDB(d);
+          store.user = u;
+          writeLS(KEY_USER, u);
+          document.getElementById('loginUser').value = '';
+          document.getElementById('loginPass').value = '';
+          renderClient();
+          if (store.saff) renderUsers();
         } else {
-          if (!d.users[name] || d.users[name].password !== pass) {
-            say.className = 'say bad';
-            say.textContent = 'Sai tên tài khoản hoặc mật khẩu!';
-            return;
-          }
-          ram.user = name;
-          writeProp(STORAGE_USER, name);
-          document.getElementById('accName').value = '';
-          document.getElementById('accPass').value = '';
-          syncClient();
-          if (ram.open) syncMembers();
+          if (!d.users[u] || d.users[u].password !== p) { st.className = 'note err'; st.textContent = 'Sai tên tài khoản hoặc mật khẩu!'; return; }
+          store.user = u;
+          writeLS(KEY_USER, u);
+          document.getElementById('loginUser').value = '';
+          document.getElementById('loginPass').value = '';
+          renderClient();
+          if (store.saff) renderUsers();
         }
       }
 
-      function openGate() {
-        if (ram.open) { showSaffArea(); return; }
-        const gate = document.getElementById('saffGate');
-        gate.style.display = gate.style.display === 'none' ? 'block' : 'none';
-        document.getElementById('gateErr').textContent = '';
-        document.getElementById('saffSecret').value = '';
-        document.getElementById('saffSecret').focus();
+      function openSaffGate() {
+        if (store.saff) { enterSaff(); return; }
+        const p = document.getElementById('saffAuthPanel');
+        p.style.display = p.style.display === 'none' ? 'block' : 'none';
+        document.getElementById('saffPwErr').textContent = '';
+        document.getElementById('saffPwInput').value = '';
+        document.getElementById('saffPwInput').focus();
       }
 
-      function unlockGate() {
-        const pw = document.getElementById('saffSecret').value;
-        if (pw === SAFF_PW) {
-          ram.open = true;
-          document.getElementById('saffGate').style.display = 'none';
-          document.getElementById('gateErr').textContent = '';
-          showSaffArea();
+      function checkSaffGate() {
+        if (document.getElementById('saffPwInput').value === PASS_SAFF) {
+          store.saff = true;
+          document.getElementById('saffAuthPanel').style.display = 'none';
+          document.getElementById('saffPwErr').textContent = '';
+          enterSaff();
         } else {
-          document.getElementById('gateErr').textContent = 'Mật khẩu không đúng!';
+          document.getElementById('saffPwErr').textContent = 'Mật khẩu không đúng!';
         }
       }
 
-      function showSaffArea() {
-        document.getElementById('saffGate').style.display = 'none';
-        document.getElementById('clientArea').style.display = 'none';
-        document.getElementById('saffArea').style.display = 'block';
-        document.getElementById('btnToClient').style.display = 'inline-block';
-        syncSaffArea();
+      function enterSaff() {
+        document.getElementById('saffAuthPanel').style.display = 'none';
+        document.getElementById('clientSection').style.display = 'none';
+        document.getElementById('saffSection').style.display = 'block';
+        document.getElementById('goClientBtn').style.display = 'inline-block';
+        renderSaff();
       }
 
-      function showClientArea() {
-        document.getElementById('saffArea').style.display = 'none';
-        document.getElementById('clientArea').style.display = 'block';
-        document.getElementById('btnToClient').style.display = 'none';
-        syncClient();
+      function backClient() {
+        document.getElementById('saffSection').style.display = 'none';
+        document.getElementById('clientSection').style.display = 'block';
+        document.getElementById('goClientBtn').style.display = 'none';
+        renderClient();
       }
 
-      async function pushHook(codes, idx) {
-        const note = document.getElementById('hookState');
-        const msg = `LÔ #${idx} — 10 GIFTCODE (+1,000)\n` + codes.map((c, i) => `${i + 1}. \`${c}\``).join('\n');
+      async function sendHook(list, n) {
+        const st = document.getElementById('hookStatus');
+        const txt = `LÔ #${n} - 10 GIFTCODE (+1,000)\n` + list.map((c, i) => `${i + 1}. \`${c}\``).join('\n');
         try {
-          const resp = await fetch(HOOK_URL, {
+          const res = await fetch(HOOK, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ content: msg })
+            body: JSON.stringify({ content: txt })
           });
-          if (!resp.ok) throw new Error('HTTP ' + resp.status);
-          note.style.color = '#34d399';
-          note.textContent = `Đã gửi lô #${idx} lên Webhook`;
-        } catch (err) {
-          note.style.color = '#fb7185';
-          note.textContent = `Lỗi gửi Webhook (${err.message})`;
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          st.style.color = '#4ade80';
+          st.textContent = `Đã gửi lô #${n} lên Webhook`;
+        } catch (e) {
+          st.style.color = '#f87171';
+          st.textContent = `Lỗi Webhook (${e.message})`;
         }
       }
 
-      async function makeTenCodes() {
-        const d = getDb();
-        const list = [];
+      async function create10() {
+        const d = loadDB();
+        const arr = [];
         for (let i = 0; i < 10; i++) {
-          let code = createCode();
-          while (d.codes[code]) code = createCode();
-          d.codes[code] = { used: false, usedBy: null };
-          list.push(code);
+          let c = genCode();
+          while (d.codes[c]) c = genCode();
+          d.codes[c] = { used: false, usedBy: null };
+          arr.push(c);
         }
-        putDb(d);
-        batchNo += 1;
-        document.getElementById('codeLog').textContent = list.join('\n');
-        syncSaffArea();
-        await pushHook(list, batchNo);
+        saveDB(d);
+        batchNum += 1;
+        document.getElementById('codeOutput').textContent = arr.join('\n');
+        renderSaff();
+        await sendHook(arr, batchNum);
       }
 
-      function switchLoop() {
-        const btn = document.getElementById('btnLoop');
-        if (timer) {
-          clearInterval(timer);
-          timer = null;
-          btn.textContent = 'Tự động tạo 10 code liên tục: TẮT';
-          btn.className = 'btn';
+      function toggleLoop() {
+        const b = document.getElementById('btnLoop10');
+        if (loopId) {
+          clearInterval(loopId);
+          loopId = null;
+          b.textContent = 'Tự động tạo 10 code liên tục: TẮT';
+          b.className = '';
           return;
         }
-        btn.textContent = 'Đang tự động tạo 10 code liên tục (Bấm dừng)';
-        btn.className = 'btn btn-loop';
-        makeTenCodes();
-        timer = setInterval(makeTenCodes, 2500);
+        b.textContent = 'Đang tự động tạo 10 code liên tục (Bấm dừng)';
+        b.className = 'btn-on';
+        create10();
+        loopId = setInterval(create10, 2500);
       }
 
-      function syncSaffArea() {
-        const d = getDb();
-        const uCount = Object.keys(d.users).length;
-        const cCount = Object.keys(d.codes).length;
-        document.getElementById('saffSummary').textContent = `Tài khoản: ${uCount} • Tổng code: ${cCount.toLocaleString('vi-VN')}`;
-        syncMembers();
-        syncPicked();
+      function renderSaff() {
+        const d = loadDB();
+        document.getElementById('saffCounts').textContent =
+          `Người dùng: ${Object.keys(d.users).length} • Tổng code: ${Object.keys(d.codes).length.toLocaleString('vi-VN')}`;
+        renderUsers();
+        renderPicked();
       }
 
-      function syncMembers() {
-        const d = getDb();
-        const q = (document.getElementById('findIdBox').value || '').trim().toLowerCase();
-        const wrap = document.getElementById('memberList');
-        const found = Object.entries(d.users).filter(([uname, info]) =>
-          String(info.id || '').toLowerCase().includes(q) || uname.toLowerCase().includes(q)
+      function renderUsers() {
+        const d = loadDB();
+        const q = (document.getElementById('searchId').value || '').trim().toLowerCase();
+        const box = document.getElementById('usersBox');
+        const list = Object.entries(d.users).filter(([u, info]) =>
+          String(info.id || '').toLowerCase().includes(q) || u.toLowerCase().includes(q)
         );
-        if (!found.length) {
-          wrap.innerHTML = '<div style="padding:14px; color:#a5a3c2;">Không tìm thấy người dùng nào.</div>';
-          return;
-        }
-        wrap.innerHTML = '';
-        found.forEach(([uname, info]) => {
+        if (!list.length) { box.innerHTML = '<div style="padding:12px; color:#94a3b8;">Không tìm thấy.</div>'; return; }
+        box.innerHTML = '';
+        list.forEach(([u, info]) => {
           const row = document.createElement('div');
-          row.className = chosenUser === uname ? 'member-row active' : 'member-row';
-          row.innerHTML = `
-            <div>
-              <span class="id-pill" style="margin-top:0;">${info.id}</span>
-              <div style="margin-top:5px; font-weight:700;">${uname}</div>
-            </div>
-            <div style="color:#34d399; font-weight:800; font-family:Consolas,monospace;">${Number(info.balance || 0).toLocaleString('vi-VN')}</div>
-          `;
+          row.className = selectedName === u ? 'u-row picked' : 'u-row';
+          row.innerHTML = `<div><b>${info.id}</b> — ${u}</div><div style="color:#4ade80; font-weight:700;">${Number(info.balance || 0).toLocaleString('vi-VN')}</div>`;
           row.addEventListener('click', function () {
-            chosenUser = uname;
-            document.getElementById('paySay').textContent = '';
-            syncMembers();
-            syncPicked();
+            selectedName = u;
+            document.getElementById('topupStatus').textContent = '';
+            renderUsers();
+            renderPicked();
           });
-          wrap.appendChild(row);
+          box.appendChild(row);
         });
       }
 
-      function syncPicked() {
-        const box = document.getElementById('pickedInfo');
-        const d = getDb();
-        if (!chosenUser || !d.users[chosenUser]) {
-          chosenUser = null;
-          box.textContent = 'Chưa bấm chọn người dùng nào.';
-          return;
-        }
-        const info = d.users[chosenUser];
-        box.innerHTML = `
-          <div><b>Mã ID:</b> ${info.id}</div>
-          <div><b>Tài khoản:</b> ${chosenUser}</div>
-          <div><b>Số dư:</b> ${Number(info.balance || 0).toLocaleString('vi-VN')}</div>
-        `;
+      function renderPicked() {
+        const card = document.getElementById('pickedCard');
+        const d = loadDB();
+        if (!selectedName || !d.users[selectedName]) { selectedName = null; card.textContent = 'Chưa chọn người dùng.'; return; }
+        const info = d.users[selectedName];
+        card.innerHTML = `<div><b>Mã ID:</b> ${info.id}</div><div><b>Tài khoản:</b> ${selectedName}</div><div><b>Số dư:</b> ${Number(info.balance || 0).toLocaleString('vi-VN')}</div>`;
       }
 
-      function runPay() {
-        const say = document.getElementById('paySay');
-        const d = getDb();
-        if (!chosenUser || !d.users[chosenUser]) {
-          say.className = 'say bad';
-          say.textContent = 'Hãy tìm mã ID và bấm chọn người dùng trước!';
-          return;
-        }
-        const mode = document.getElementById('payMode').value;
-        if (mode === 'giftcode') {
-          const gc = document.getElementById('inputGift').value.trim().toUpperCase();
-          if (!d.codes[gc]) {
-            say.className = 'say bad';
-            say.textContent = 'Giftcode không tồn tại!';
-            return;
-          }
-          if (d.codes[gc].used) {
-            say.className = 'say bad';
-            say.textContent = 'Giftcode đã được sử dụng!';
-            return;
-          }
+      function handleTopup() {
+        const st = document.getElementById('topupStatus');
+        const d = loadDB();
+        if (!selectedName || !d.users[selectedName]) { st.className = 'note err'; st.textContent = 'Tìm và bấm chọn người dùng trước!'; return; }
+        const choice = document.getElementById('topupChoice').value;
+        if (choice === 'code') {
+          const gc = document.getElementById('valCode').value.trim().toUpperCase();
+          if (!d.codes[gc]) { st.className = 'note err'; st.textContent = 'Giftcode không tồn tại!'; return; }
+          if (d.codes[gc].used) { st.className = 'note err'; st.textContent = 'Giftcode đã dùng!'; return; }
           d.codes[gc].used = true;
-          d.codes[gc].usedBy = chosenUser;
-          d.users[chosenUser].balance = Number(d.users[chosenUser].balance || 0) + CODE_BONUS;
-          putDb(d);
-          document.getElementById('inputGift').value = '';
-          syncSaffArea();
-          syncClient();
-          say.className = 'say good';
-          say.textContent = `Đã nạp giftcode ${gc} (+1,000) cho ${chosenUser}!`;
+          d.codes[gc].usedBy = selectedName;
+          d.users[selectedName].balance = Number(d.users[selectedName].balance || 0) + 1000;
+          saveDB(d);
+          document.getElementById('valCode').value = '';
+          renderSaff();
+          renderClient();
+          st.className = 'note ok';
+          st.textContent = `Đã nạp giftcode ${gc} (+1,000) cho ${selectedName}!`;
         } else {
-          const cash = parseInt(document.getElementById('inputCash').value, 10);
-          if (isNaN(cash) || cash <= 0) {
-            say.className = 'say bad';
-            say.textContent = 'Nhập số tiền muốn gửi lớn hơn 0!';
-            return;
-          }
-          d.users[chosenUser].balance = Number(d.users[chosenUser].balance || 0) + cash;
-          putDb(d);
-          document.getElementById('inputCash').value = '';
-          syncSaffArea();
-          syncClient();
-          say.className = 'say good';
-          say.textContent = `Đã gửi +${cash.toLocaleString('vi-VN')} cho ${chosenUser}!`;
+          const m = parseInt(document.getElementById('valMoney').value, 10);
+          if (isNaN(m) || m <= 0) { st.className = 'note err'; st.textContent = 'Nhập số tiền > 0!'; return; }
+          d.users[selectedName].balance = Number(d.users[selectedName].balance || 0) + m;
+          saveDB(d);
+          document.getElementById('valMoney').value = '';
+          renderSaff();
+          renderClient();
+          st.className = 'note ok';
+          st.textContent = `Đã gửi +${m.toLocaleString('vi-VN')} cho ${selectedName}!`;
         }
       }
 
-      const actions = {
-        'open-saff': openGate,
-        'unlock-saff': unlockGate,
-        'close-gate': function () { document.getElementById('saffGate').style.display = 'none'; },
-        'to-client': showClientArea,
-        'lock-saff': function () {
-          ram.open = false;
-          if (timer) { clearInterval(timer); timer = null; }
-          showClientArea();
-        },
-        'tab-login': function () { switchTab('login'); },
-        'tab-reg': function () { switchTab('register'); },
-        'do-auth': runAuth,
-        'do-logout': function () {
-          ram.user = null;
-          dropProp(STORAGE_USER);
-          syncClient();
-        },
-        'gen-10': makeTenCodes,
-        'toggle-loop': switchLoop,
-        'do-pay': runPay
-      };
+      document.getElementById('openSaffBtn').addEventListener('click', openSaffGate);
+      document.getElementById('saffPwOk').addEventListener('click', checkSaffGate);
+      document.getElementById('saffPwHide').addEventListener('click', function () { document.getElementById('saffAuthPanel').style.display = 'none'; });
+      document.getElementById('goClientBtn').addEventListener('click', backClient);
+      document.getElementById('lockSaffBtn').addEventListener('click', function () {
+        store.saff = false;
+        if (loopId) { clearInterval(loopId); loopId = null; }
+        backClient();
+      });
+      document.getElementById('tabLogin').addEventListener('click', function () { setMode('login'); });
+      document.getElementById('tabRegister').addEventListener('click', function () { setMode('register'); });
+      document.getElementById('submitAuthBtn').addEventListener('click', handleAuth);
+      document.getElementById('logoutBtn').addEventListener('click', function () { store.user = null; clearLS(KEY_USER); renderClient(); });
+      document.getElementById('btnGen10').addEventListener('click', create10);
+      document.getElementById('btnLoop10').addEventListener('click', toggleLoop);
+      document.getElementById('searchId').addEventListener('input', renderUsers);
+      document.getElementById('topupChoice').addEventListener('change', function () {
+        const isC = this.value === 'code';
+        document.getElementById('boxCode').style.display = isC ? 'block' : 'none';
+        document.getElementById('boxMoney').style.display = isC ? 'none' : 'block';
+      });
+      document.getElementById('doTopupBtn').addEventListener('click', handleTopup);
 
-      document.addEventListener('click', function (ev) {
-        const target = ev.target.closest('[data-action]');
-        if (!target) return;
-        const fn = actions[target.getAttribute('data-action')];
-        if (fn) fn();
-      });
-
-      document.getElementById('findIdBox').addEventListener('input', syncMembers);
-      document.getElementById('payMode').addEventListener('change', function () {
-        const isGc = this.value === 'giftcode';
-        document.getElementById('rowCode').style.display = isGc ? 'block' : 'none';
-        document.getElementById('rowCash').style.display = isGc ? 'none' : 'block';
-      });
-      document.getElementById('saffSecret').addEventListener('keydown', function (ev) {
-        if (ev.key === 'Enter') unlockGate();
-      });
-      document.getElementById('accPass').addEventListener('keydown', function (ev) {
-        if (ev.key === 'Enter') runAuth();
-      });
-
-      window.addEventListener('error', function (ev) {
-        const el = document.getElementById('liveState');
-        if (el) {
-          el.style.color = '#fb7185';
-          el.textContent = 'Lỗi JS: ' + (ev.message || 'không rõ');
-        }
-      });
-
-      syncClient();
-      const stateEl = document.getElementById('liveState');
-      if (stateEl) stateEl.textContent = 'JS ONLINE • SẴN SÀNG';
+      renderClient();
+      document.getElementById('appState').textContent = 'Sẵn sàng';
     })();
   </script>
 </body>
