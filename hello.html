@@ -3,1013 +3,681 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>⏣ ECLIPSE HUB</title>
+  <title>ECLIPSE HUB</title>
   <style>
     :root {
-      --bg-base: #050711;
-      --bg-glow-1: rgba(99, 102, 241, 0.22);
-      --bg-glow-2: rgba(168, 85, 247, 0.18);
-      --surface: rgba(13, 18, 38, 0.78);
-      --surface-elevated: rgba(20, 28, 58, 0.85);
-      --border: rgba(129, 140, 248, 0.18);
-      --border-strong: rgba(56, 189, 248, 0.42);
-      --text-main: #f8fafc;
-      --text-sub: #94a3b8;
-      --accent-indigo: #6366f1;
-      --accent-purple: #a855f7;
-      --accent-cyan: #38bdf8;
-      --accent-gold: #f59e0b;
-      --success: #22c55e;
-      --danger: #f43f5e;
-      --radius-lg: 20px;
-      --radius-md: 12px;
+      --bg: #050711;
+      --card: rgba(15, 21, 44, 0.9);
+      --card-2: rgba(24, 34, 70, 0.92);
+      --line: rgba(129, 140, 248, 0.24);
+      --cyan: #38bdf8;
+      --indigo: #6366f1;
+      --purple: #a855f7;
+      --gold: #f59e0b;
+      --green: #22c55e;
+      --red: #f43f5e;
+      --text: #f8fafc;
+      --muted: #94a3b8;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
-      background-color: var(--bg-base);
-      background-image:
-        radial-gradient(ellipse 80% 50% at 12% -5%, var(--bg-glow-1), transparent 65%),
-        radial-gradient(ellipse 70% 50% at 92% 8%, var(--bg-glow-2), transparent 65%);
-      color: var(--text-main);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background:
+        radial-gradient(circle at 15% 0%, rgba(99, 102, 241, 0.24), transparent 50%),
+        radial-gradient(circle at 85% 5%, rgba(168, 85, 247, 0.2), transparent 50%),
+        var(--bg);
+      color: var(--text);
       min-height: 100vh;
-      padding: 28px 16px 72px;
-      line-height: 1.5;
+      padding: 24px 16px 60px;
     }
 
-    .app-shell {
-      max-width: 1020px;
-      margin: 0 auto;
-    }
+    .wrap { max-width: 980px; margin: 0 auto; }
 
-    /* Header */
-    .header {
+    .topbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 14px;
-      flex-wrap: wrap;
-      padding: 16px 22px;
-      border-radius: var(--radius-lg);
-      background: var(--surface);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-      border: 1px solid var(--border);
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
-      margin-bottom: 20px;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
       gap: 12px;
+      flex-wrap: wrap;
+      padding: 16px 20px;
+      border-radius: 18px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      margin-bottom: 18px;
     }
 
-    .brand-mark {
-      width: 40px;
-      height: 40px;
-      border-radius: 12px;
-      display: grid;
-      place-items: center;
+    .title {
       font-size: 20px;
-      background: linear-gradient(135deg, rgba(99, 102, 241, 0.25), rgba(168, 85, 247, 0.25));
-      border: 1px solid rgba(168, 85, 247, 0.45);
-      box-shadow: inset 0 0 14px rgba(99, 102, 241, 0.25);
-    }
-
-    .brand-title {
-      font-size: 19px;
       font-weight: 800;
-      letter-spacing: 0.08em;
-      background: linear-gradient(90deg, #e0e7ff, #93c5fd, #d8b4fe);
+      letter-spacing: 0.06em;
+      background: linear-gradient(90deg, #93c5fd, #d8b4fe);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
-    .brand-sub {
-      font-size: 12px;
-      color: var(--text-sub);
-      letter-spacing: 0.02em;
-    }
+    .sub { font-size: 12px; color: var(--muted); }
 
-    .header-actions {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    /* Glass Panels */
-    .panel {
-      background: var(--surface);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 24px;
-      margin-bottom: 18px;
-      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
-    }
-
-    .panel-title {
-      font-size: 16px;
-      font-weight: 700;
-      letter-spacing: 0.01em;
-      color: #f1f5f9;
-      margin-bottom: 6px;
-    }
-
-    .panel-desc {
-      font-size: 13px;
-      color: var(--text-sub);
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 22px;
       margin-bottom: 16px;
     }
 
-    /* Topup Notice */
-    .topup-card {
-      position: relative;
-      overflow: hidden;
-      border-color: var(--border-strong);
-      background: linear-gradient(135deg, rgba(15, 23, 52, 0.9), rgba(35, 24, 72, 0.78));
+    .banner {
+      border-color: rgba(56, 189, 248, 0.45);
+      background: linear-gradient(135deg, rgba(16, 25, 58, 0.95), rgba(36, 25, 74, 0.85));
     }
 
-    .topup-card::before {
-      content: "";
-      position: absolute;
-      inset: 0 0 auto 0;
-      height: 2px;
-      background: linear-gradient(90deg, var(--accent-cyan), var(--accent-indigo), var(--accent-purple));
-    }
-
-    .topup-text {
-      font-size: 14.5px;
-      font-weight: 500;
-      color: #e2e8f0;
-      margin-bottom: 8px;
-    }
-
-    .topup-link {
-      display: inline-block;
-      font-size: 13.5px;
+    .banner p { font-size: 14.5px; margin-bottom: 8px; }
+    .banner a {
+      color: var(--cyan);
       font-weight: 600;
-      color: var(--accent-cyan);
       text-decoration: none;
       word-break: break-all;
-      padding: 6px 12px;
-      border-radius: 10px;
-      background: rgba(56, 189, 248, 0.09);
-      border: 1px solid rgba(56, 189, 248, 0.25);
-      transition: all 0.2s ease;
     }
+    .banner a:hover { text-decoration: underline; }
 
-    .topup-link:hover {
-      background: rgba(56, 189, 248, 0.16);
-      border-color: rgba(56, 189, 248, 0.5);
-    }
-
-    /* Segmented Tabs */
-    .segmented {
-      display: inline-flex;
-      padding: 4px;
-      border-radius: 12px;
-      background: rgba(8, 12, 26, 0.85);
-      border: 1px solid var(--border);
-      margin-bottom: 18px;
-    }
-
-    .seg-btn {
-      padding: 8px 18px;
-      border-radius: 9px;
-      border: none;
-      background: transparent;
-      color: var(--text-sub);
-      font-size: 13.5px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.18s ease;
-    }
-
-    .seg-btn.active {
-      background: linear-gradient(135deg, var(--accent-indigo), var(--accent-purple));
-      color: #fff;
-      box-shadow: 0 6px 18px rgba(99, 102, 241, 0.35);
-    }
-
-    /* Inputs & Buttons */
-    .field {
-      margin-bottom: 14px;
-    }
-
-    .field label {
-      display: block;
-      font-size: 12.5px;
-      font-weight: 600;
-      color: #cbd5e1;
-      margin-bottom: 6px;
-    }
-
-    input, select {
-      width: 100%;
-      padding: 12px 14px;
-      border-radius: var(--radius-md);
-      border: 1px solid var(--border);
-      background: var(--surface-elevated);
-      color: var(--text-main);
-      font-size: 14px;
-      outline: none;
-      transition: border-color 0.18s ease, box-shadow 0.18s ease;
-    }
-
-    input:focus, select:focus {
-      border-color: var(--accent-cyan);
-      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.14);
-    }
+    .tabs { display: flex; gap: 8px; margin-bottom: 14px; }
 
     .btn {
-      padding: 10px 18px;
-      border-radius: var(--radius-md);
-      border: 1px solid transparent;
-      font-size: 13.5px;
+      padding: 10px 16px;
+      border-radius: 11px;
+      border: 1px solid var(--line);
+      background: var(--card-2);
+      color: var(--text);
+      font-size: 14px;
       font-weight: 600;
       cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 7px;
-      transition: transform 0.14s ease, box-shadow 0.18s ease, background 0.18s ease;
+      user-select: none;
     }
 
-    .btn:active {
-      transform: translateY(1px);
-    }
+    .btn:hover { border-color: var(--cyan); }
 
     .btn-primary {
-      background: linear-gradient(135deg, var(--accent-indigo), var(--accent-purple));
+      background: linear-gradient(135deg, var(--indigo), var(--purple));
+      border-color: transparent;
       color: #fff;
-      box-shadow: 0 8px 22px rgba(99, 102, 241, 0.32);
-    }
-
-    .btn-primary:hover {
-      box-shadow: 0 10px 26px rgba(168, 85, 247, 0.42);
-    }
-
-    .btn-ghost {
-      background: var(--surface-elevated);
-      color: #e2e8f0;
-      border-color: var(--border);
-    }
-
-    .btn-ghost:hover {
-      border-color: rgba(148, 163, 184, 0.45);
-      background: rgba(30, 41, 82, 0.9);
     }
 
     .btn-saff {
-      background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(236, 72, 153, 0.22));
-      border-color: rgba(245, 158, 11, 0.45);
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.25), rgba(236, 72, 153, 0.25));
+      border-color: rgba(245, 158, 11, 0.55);
       color: #fde68a;
-      letter-spacing: 0.04em;
     }
 
-    .btn-saff:hover {
-      background: linear-gradient(135deg, rgba(245, 158, 11, 0.32), rgba(236, 72, 153, 0.34));
-      box-shadow: 0 0 20px rgba(245, 158, 11, 0.22);
-    }
-
-    .btn-loop-active {
+    .btn-active {
       background: linear-gradient(135deg, #16a34a, #059669);
+      border-color: transparent;
       color: #fff;
-      box-shadow: 0 0 22px rgba(34, 197, 94, 0.35);
     }
 
-    /* Account Info */
-    .account-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 12px;
-      flex-wrap: wrap;
+    .group { margin-bottom: 12px; }
+    .group label { display: block; font-size: 12.5px; color: #cbd5e1; margin-bottom: 6px; font-weight: 600; }
+
+    input, select {
+      width: 100%;
+      padding: 11px 13px;
+      border-radius: 11px;
+      border: 1px solid var(--line);
+      background: var(--card-2);
+      color: var(--text);
+      font-size: 14px;
+      outline: none;
     }
 
-    .id-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      margin-top: 8px;
-      padding: 5px 12px;
+    input:focus, select:focus { border-color: var(--cyan); }
+
+    .id-tag {
+      display: inline-block;
+      margin-top: 6px;
+      padding: 4px 10px;
       border-radius: 999px;
-      background: rgba(56, 189, 248, 0.12);
-      border: 1px solid rgba(56, 189, 248, 0.35);
+      background: rgba(56, 189, 248, 0.14);
+      border: 1px solid rgba(56, 189, 248, 0.4);
       color: #7dd3fc;
-      font-family: 'JetBrains Mono', Consolas, monospace;
+      font-family: Consolas, monospace;
       font-size: 12.5px;
       font-weight: 700;
     }
 
-    .wallet-box {
-      margin-top: 16px;
-      padding: 16px 20px;
-      border-radius: 14px;
-      background: linear-gradient(135deg, rgba(34, 197, 94, 0.12), rgba(16, 185, 129, 0.05));
-      border: 1px solid rgba(34, 197, 94, 0.32);
+    .bal-box {
+      margin-top: 14px;
+      padding: 14px 18px;
+      border-radius: 12px;
+      background: rgba(34, 197, 94, 0.12);
+      border: 1px solid rgba(34, 197, 94, 0.35);
     }
 
-    .wallet-label {
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: #86efac;
-      font-weight: 700;
+    .bal-num { font-size: 24px; font-weight: 800; color: #4ade80; }
+
+    .grid2 { display: grid; grid-template-columns: 1.15fr 1fr; gap: 16px; }
+    @media (max-width: 780px) { .grid2 { grid-template-columns: 1fr; } }
+
+    .list {
+      margin-top: 10px;
+      max-height: 340px;
+      overflow-y: auto;
+      border: 1px solid var(--line);
+      border-radius: 12px;
     }
 
-    .wallet-value {
-      font-size: 26px;
-      font-weight: 800;
-      color: #4ade80;
-      margin-top: 2px;
-      font-variant-numeric: tabular-nums;
-    }
-
-    /* SAFF Layout */
-    .saff-auth-card {
-      border-color: rgba(245, 158, 11, 0.45);
-      background: linear-gradient(145deg, rgba(20, 24, 48, 0.9), rgba(38, 25, 48, 0.78));
-    }
-
-    .saff-controls {
+    .item {
+      padding: 12px 14px;
+      border-bottom: 1px solid rgba(129, 140, 248, 0.14);
       display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
+      justify-content: space-between;
       align-items: center;
-      margin-top: 14px;
+      cursor: pointer;
     }
 
-    .code-console {
-      margin-top: 14px;
-      padding: 14px 16px;
-      border-radius: var(--radius-md);
-      background: rgba(6, 9, 20, 0.88);
-      border: 1px solid var(--border);
-      font-family: 'JetBrains Mono', Consolas, monospace;
+    .item:last-child { border-bottom: none; }
+    .item:hover { background: rgba(99, 102, 241, 0.14); }
+    .item.picked { background: rgba(168, 85, 247, 0.24); border-left: 3px solid var(--purple); }
+
+    .console {
+      margin-top: 12px;
+      padding: 12px 14px;
+      border-radius: 11px;
+      background: rgba(6, 9, 20, 0.9);
+      border: 1px solid var(--line);
+      font-family: Consolas, monospace;
       font-size: 12.5px;
       color: #c4b5fd;
       white-space: pre-wrap;
-      max-height: 190px;
+      max-height: 180px;
       overflow-y: auto;
     }
 
-    .grid-split {
-      display: grid;
-      grid-template-columns: 1.15fr 1fr;
-      gap: 18px;
-    }
-
-    @media (max-width: 800px) {
-      .grid-split {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .user-directory {
-      margin-top: 12px;
-      max-height: 360px;
-      overflow-y: auto;
-      border-radius: var(--radius-md);
-      border: 1px solid var(--border);
-      background: rgba(8, 12, 26, 0.65);
-    }
-
-    .user-row {
-      padding: 13px 15px;
-      border-bottom: 1px solid rgba(129, 140, 248, 0.12);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      cursor: pointer;
-      transition: background 0.15s ease;
-    }
-
-    .user-row:last-child {
-      border-bottom: none;
-    }
-
-    .user-row:hover {
-      background: rgba(99, 102, 241, 0.12);
-    }
-
-    .user-row.selected {
-      background: linear-gradient(90deg, rgba(168, 85, 247, 0.22), rgba(99, 102, 241, 0.1));
-      box-shadow: inset 3px 0 0 var(--accent-purple);
-    }
-
-    .target-card {
-      padding: 14px 16px;
-      border-radius: var(--radius-md);
-      background: var(--surface-elevated);
-      border: 1px solid var(--border);
-      margin-bottom: 14px;
+    .target-box {
+      padding: 12px 14px;
+      border-radius: 11px;
+      background: var(--card-2);
+      border: 1px solid var(--line);
+      margin-bottom: 12px;
+      line-height: 1.6;
       font-size: 13.5px;
     }
 
-    .target-card > div + div {
-      margin-top: 5px;
-    }
-
-    .feedback {
-      margin-top: 10px;
-      font-size: 13px;
-      font-weight: 600;
-    }
-
-    .feedback.ok { color: var(--success); }
-    .feedback.err { color: var(--danger); }
-
-    .toast {
-      position: fixed;
-      bottom: 22px;
-      right: 22px;
-      padding: 12px 18px;
-      border-radius: 12px;
-      background: rgba(15, 23, 42, 0.95);
-      border: 1px solid var(--border-strong);
-      color: #f8fafc;
-      font-size: 13px;
-      font-weight: 600;
-      box-shadow: 0 14px 32px rgba(0, 0, 0, 0.5);
-      display: none;
-      z-index: 999;
-      pointer-events: none;
-    }
+    .msg { margin-top: 10px; font-size: 13px; font-weight: 600; }
+    .ok { color: var(--green); }
+    .err { color: var(--red); }
   </style>
 </head>
 <body>
-  <div class="app-shell">
-    <header class="header">
-      <div class="brand">
-        <div class="brand-mark">⏣</div>
-        <div>
-          <div class="brand-title">ECLIPSE HUB</div>
-          <div class="brand-sub">Member Portal & Control Suite</div>
-        </div>
+  <div class="wrap">
+    <div class="topbar">
+      <div>
+        <div class="title">ECLIPSE HUB</div>
+        <div class="sub" id="jsStatus">Đang khởi tạo...</div>
       </div>
-
-      <div class="header-actions">
-        <button type="button" class="btn btn-ghost" id="btnBackClient" style="display:none;" onclick="switchToClient()">← Trang khách hàng</button>
-        <button type="button" class="btn btn-saff" id="btnSaffMain" onclick="toggleSaffLoginBox()">SAFF</button>
+      <div style="display:flex; gap:8px; flex-wrap:wrap;">
+        <button type="button" class="btn" id="backClientBtn" style="display:none;">Trang khách hàng</button>
+        <button type="button" class="btn btn-saff" id="saffOpenBtn">SAFF</button>
       </div>
-    </header>
+    </div>
 
-    <!-- MỞ KHÓA SAFF -->
-    <section class="panel saff-auth-card" id="saffAuthCard" style="display:none;">
-      <div class="panel-title">Xác thực SAFF</div>
-      <div class="panel-desc">Nhập mật khẩu để truy cập bảng điều khiển SAFF.</div>
-      <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
-        <input type="password" id="saffPassInput" placeholder="Nhập mật khẩu..." style="flex:1; min-width:210px;" onkeydown="if(event.key==='Enter') submitSaffPass();" />
-        <button type="button" class="btn btn-primary" onclick="submitSaffPass()">Xác nhận</button>
-        <button type="button" class="btn btn-ghost" onclick="hideSaffLoginBox()">Đóng</button>
+    <!-- KHUNG NHẬP MẬT KHẨU SAFF -->
+    <div class="card" id="saffPassBox" style="display:none; border-color: rgba(245, 158, 11, 0.5);">
+      <h3 style="margin-bottom:8px;">Mở khóa SAFF</h3>
+      <div style="display:flex; gap:8px; flex-wrap:wrap;">
+        <input type="password" id="saffPassInput" placeholder="Nhập mật khẩu..." style="flex:1; min-width:180px;" />
+        <button type="button" class="btn btn-primary" id="saffPassSubmit">Xác nhận</button>
+        <button type="button" class="btn" id="saffPassClose">Đóng</button>
       </div>
-      <div class="feedback err" id="saffPassErr"></div>
-    </section>
+      <div class="msg err" id="saffPassMsg"></div>
+    </div>
 
-    <!-- GIAO DIỆN KHÁCH HÀNG -->
-    <main id="clientView">
-      <section class="panel topup-card">
-        <p class="topup-text">hãy nhắn cho người dùng discord này để nạp thẻ nhé Z</p>
-        <a class="topup-link" href="https://discord.com/users/1473671927976562689" target="_blank" rel="noopener noreferrer">
+    <!-- PHẦN KHÁCH HÀNG -->
+    <div id="clientPanel">
+      <div class="card banner">
+        <p>hãy nhắn cho người dùng discord này để nạp thẻ nhé Z</p>
+        <a href="https://discord.com/users/1473671927976562689" target="_blank" rel="noopener noreferrer">
           link: https://discord.com/users/1473671927976562689
         </a>
-      </section>
-
-      <section class="panel" id="authCard">
-        <div class="panel-title">Tài khoản thành viên</div>
-        <div class="panel-desc">Đăng ký hoặc đăng nhập để lưu tài khoản vĩnh viễn và nhận mã ID riêng.</div>
-
-        <div class="segmented">
-          <button type="button" class="seg-btn active" id="tabLogin" onclick="setAuthMode('login')">Đăng nhập</button>
-          <button type="button" class="seg-btn" id="tabRegister" onclick="setAuthMode('register')">Đăng ký</button>
-        </div>
-
-        <div class="field">
-          <label for="authUser">Tên tài khoản</label>
-          <input type="text" id="authUser" placeholder="Nhập tên tài khoản..." />
-        </div>
-        <div class="field">
-          <label for="authPass">Mật khẩu</label>
-          <input type="password" id="authPass" placeholder="Nhập mật khẩu..." onkeydown="if(event.key==='Enter') submitAuth();" />
-        </div>
-
-        <button type="button" class="btn btn-primary" id="authSubmitBtn" onclick="submitAuth()">Đăng nhập</button>
-        <div class="feedback" id="authMsg"></div>
-      </section>
-
-      <section class="panel" id="userCard" style="display:none;">
-        <div class="account-header">
-          <div>
-            <div class="panel-title" style="margin-bottom:2px;">Xin chào, <span id="clientName"></span></div>
-            <div class="id-badge">ID: <span id="clientUniqueId"></span></div>
-          </div>
-          <button type="button" class="btn btn-ghost" onclick="logoutClient()">Đăng xuất</button>
-        </div>
-
-        <div class="wallet-box">
-          <div class="wallet-label">Số dư hiện tại</div>
-          <div class="wallet-value" id="clientBalance">0</div>
-        </div>
-      </section>
-    </main>
-
-    <!-- GIAO DIỆN SAFF -->
-    <section id="saffView" style="display:none;">
-      <div class="panel">
-        <div class="account-header">
-          <div>
-            <div class="panel-title">SAFF — Giftcode Webhook & Nạp Tài Khoản</div>
-            <div class="panel-desc" style="margin-bottom:0;" id="saffStats">Đang tải...</div>
-          </div>
-          <button type="button" class="btn btn-ghost" onclick="lockSaff()">Khóa SAFF</button>
-        </div>
-
-        <div class="saff-controls">
-          <button type="button" class="btn btn-primary" onclick="generateAndSend10Codes()">Tạo 10 code & gửi Webhook</button>
-          <button type="button" class="btn btn-ghost" id="autoLoopBtn" onclick="toggleAuto10Codes()">Tự động tạo 10 code liên tục: TẮT</button>
-          <span class="panel-desc" style="margin:0;" id="webhookStatus">Webhook sẵn sàng</span>
-        </div>
-
-        <div class="code-console" id="latestCodesBox">Chưa có lô code nào được tạo.</div>
       </div>
 
-      <div class="grid-split">
-        <div class="panel">
-          <div class="panel-title">Tìm người dùng theo mã ID</div>
-          <div class="panel-desc">Nhập mã ID riêng hoặc tên tài khoản rồi bấm chọn.</div>
-          <input type="text" id="searchIdInput" placeholder="VD: ID-123456 hoặc tên tài khoản..." oninput="renderAdminUsers()" />
-          <div class="user-directory" id="adminUserList"></div>
+      <div class="card" id="authBox">
+        <h3 style="margin-bottom:10px;">Đăng ký / Đăng nhập</h3>
+        <div class="tabs">
+          <button type="button" class="btn btn-primary" id="modeLoginBtn">Đăng nhập</button>
+          <button type="button" class="btn" id="modeRegisterBtn">Đăng ký</button>
+        </div>
+        <div class="group">
+          <label>Tên tài khoản</label>
+          <input type="text" id="userInput" placeholder="Nhập tên tài khoản..." />
+        </div>
+        <div class="group">
+          <label>Mật khẩu</label>
+          <input type="password" id="passInput" placeholder="Nhập mật khẩu..." />
+        </div>
+        <button type="button" class="btn btn-primary" id="authSubmitBtn">Đăng nhập</button>
+        <div class="msg" id="authMsg"></div>
+      </div>
+
+      <div class="card" id="profileBox" style="display:none;">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px; flex-wrap:wrap;">
+          <div>
+            <h3 id="profileName"></h3>
+            <div class="id-tag" id="profileId"></div>
+          </div>
+          <button type="button" class="btn" id="logoutBtn">Đăng xuất</button>
+        </div>
+        <div class="bal-box">
+          <div class="sub">Số dư hiện tại</div>
+          <div class="bal-num" id="profileBalance">0</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHẦN SAFF -->
+    <div id="saffPanel" style="display:none;">
+      <div class="card">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+          <div>
+            <h3>SAFF — Webhook & Nạp Tài Khoản</h3>
+            <div class="sub" id="saffStats"></div>
+          </div>
+          <button type="button" class="btn" id="saffLockBtn">Khóa SAFF</button>
         </div>
 
-        <div class="panel">
-          <div class="panel-title">Nạp cho người dùng</div>
-          <div class="panel-desc">Chọn 1 trong 2 hình thức nạp sau khi bấm chọn người dùng.</div>
+        <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-top:12px;">
+          <button type="button" class="btn btn-primary" id="gen10Btn">Tạo 10 code & gửi Webhook</button>
+          <button type="button" class="btn" id="loop10Btn">Tự động tạo 10 code liên tục: TẮT</button>
+          <span class="sub" id="webhookNote">Webhook sẵn sàng</span>
+        </div>
 
-          <div class="target-card" id="selectedTargetBox">
-            <span class="panel-desc" style="margin:0;">Chưa chọn người dùng nào.</span>
-          </div>
+        <div class="console" id="codeConsole">Chưa có lô code nào.</div>
+      </div>
 
-          <div class="field">
-            <label for="topupModeSelect">Lựa chọn nạp</label>
-            <select id="topupModeSelect" onchange="toggleTopupInputs()">
-              <option value="giftcode">1. Nhập giftcode (+1,000)</option>
+      <div class="grid2">
+        <div class="card">
+          <h3 style="margin-bottom:8px;">Tìm người dùng theo mã ID</h3>
+          <input type="text" id="searchInput" placeholder="Nhập mã ID (VD: ID-123456) hoặc tên..." />
+          <div class="list" id="userList"></div>
+        </div>
+
+        <div class="card">
+          <h3 style="margin-bottom:8px;">Nạp cho người dùng</h3>
+          <div class="target-box" id="targetBox">Chưa chọn người dùng nào.</div>
+
+          <div class="group">
+            <label>Lựa chọn nạp</label>
+            <select id="topupType">
+              <option value="code">1. Nhập giftcode (+1,000)</option>
               <option value="money">2. Nhập số tiền muốn gửi</option>
             </select>
           </div>
 
-          <div class="field" id="giftcodeField">
-            <label for="saffGiftcodeInput">Mã giftcode</label>
-            <input type="text" id="saffGiftcodeInput" placeholder="Ví dụ: ECH-XXXXXXXXXXXX" />
+          <div class="group" id="codeInputWrap">
+            <label>Mã giftcode</label>
+            <input type="text" id="codeInput" placeholder="Ví dụ: ECH-XXXXXXXXXXXX" />
           </div>
 
-          <div class="field" id="moneyField" style="display:none;">
-            <label for="saffMoneyInput">Số tiền muốn gửi</label>
-            <input type="number" id="saffMoneyInput" min="1" step="1" placeholder="Nhập số tiền..." />
+          <div class="group" id="moneyInputWrap" style="display:none;">
+            <label>Số tiền muốn gửi</label>
+            <input type="number" id="moneyInput" min="1" placeholder="Nhập số tiền..." />
           </div>
 
-          <button type="button" class="btn btn-primary" onclick="submitSaffTopup()">Nạp</button>
-          <div class="feedback" id="saffTopupMsg"></div>
+          <button type="button" class="btn btn-primary" id="topupSubmitBtn">Nạp</button>
+          <div class="msg" id="topupMsg"></div>
         </div>
       </div>
-    </section>
+    </div>
   </div>
 
-  <div class="toast" id="toast"></div>
-
   <script>
-    const DB_KEY = 'eclipse_hub_linked_db_v1';
-    const SESSION_KEY = 'eclipse_hub_current_user_v1';
-    const SAFF_PASSWORD = 'Owner';
-    const GIFTCODE_REWARD = 1000;
-    const WEBHOOK_URL = 'https://discord.com/api/webhooks/1575059628700467271/kS-S68wgHYMYlrTUqly9FvwgxEqaacyNd60wL8cuy_kUpHZJVunuv8hKS4QI-_H-EHFY';
+    (function () {
+      const DB_KEY = 'eclipse_hub_db_v2';
+      const SESSION_KEY = 'eclipse_hub_user_v2';
+      const SAFF_PASS = 'Owner';
+      const REWARD = 1000;
+      const WEBHOOK = 'https://discord.com/api/webhooks/1575059628700467271/kS-S68wgHYMYlrTUqly9FvwgxEqaacyNd60wL8cuy_kUpHZJVunuv8hKS4QI-_H-EHFY';
 
-    const memoryStore = {
-      db: { users: {}, codes: {} },
-      currentUser: null,
-      saffUnlocked: false
-    };
+      const mem = { db: { users: {}, codes: {} }, user: null, unlocked: false };
+      let mode = 'login';
+      let pickedUser = null;
+      let loopTimer = null;
+      let batchCount = 0;
 
-    let authMode = 'login';
-    let selectedUserKey = null;
-    let autoTimer = null;
-    let batchCounter = 0;
-
-    function safeGetItem(key) {
-      try { return localStorage.getItem(key); } catch (e) { return null; }
-    }
-    function safeSetItem(key, val) {
-      try { localStorage.setItem(key, val); } catch (e) {}
-    }
-    function safeRemoveItem(key) {
-      try { localStorage.removeItem(key); } catch (e) {}
-    }
-
-    function showToast(msg) {
-      const el = document.getElementById('toast');
-      if (!el) return;
-      el.textContent = msg;
-      el.style.display = 'block';
-      clearTimeout(window._toastT);
-      window._toastT = setTimeout(() => { el.style.display = 'none'; }, 2500);
-    }
-
-    function generateUniqueUserId(existingUsers) {
-      const usedIds = new Set(Object.values(existingUsers).map(u => u.userId));
-      let id = '';
-      do {
-        const num = Math.floor(100000 + Math.random() * 900000);
-        id = 'ID-' + num;
-      } while (usedIds.has(id));
-      return id;
-    }
-
-    function randomCode(len = 12) {
-      const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-      let out = 'ECH-';
-      for (let i = 0; i < len; i++) {
-        out += chars[Math.floor(Math.random() * chars.length)];
+      function getStore(k) {
+        try { return localStorage.getItem(k); } catch (e) { return null; }
       }
-      return out;
-    }
-
-    function loadDb() {
-      let db = null;
-      const raw = safeGetItem(DB_KEY);
-      if (raw) {
-        try { db = JSON.parse(raw); } catch (e) { db = null; }
+      function setStore(k, v) {
+        try { localStorage.setItem(k, v); } catch (e) {}
       }
-      if (!db || typeof db !== 'object') {
-        db = memoryStore.db;
+      function delStore(k) {
+        try { localStorage.removeItem(k); } catch (e) {}
       }
-      if (!db.users || typeof db.users !== 'object') db.users = {};
-      if (!db.codes || typeof db.codes !== 'object') db.codes = {};
 
-      let changed = false;
-      for (const uname of Object.keys(db.users)) {
-        if (!db.users[uname].userId) {
-          db.users[uname].userId = generateUniqueUserId(db.users);
-          changed = true;
+      function makeId(users) {
+        const seen = new Set(Object.values(users).map(u => u.id));
+        let id = '';
+        do {
+          id = 'ID-' + Math.floor(100000 + Math.random() * 900000);
+        } while (seen.has(id));
+        return id;
+      }
+
+      function makeCode() {
+        const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+        let s = 'ECH-';
+        for (let i = 0; i < 12; i++) s += chars[Math.floor(Math.random() * chars.length)];
+        return s;
+      }
+
+      function readDb() {
+        let d = null;
+        const raw = getStore(DB_KEY);
+        if (raw) {
+          try { d = JSON.parse(raw); } catch (e) { d = null; }
+        }
+        if (!d || typeof d !== 'object') d = mem.db;
+        if (!d.users) d.users = {};
+        if (!d.codes) d.codes = {};
+        for (const u of Object.keys(d.users)) {
+          if (!d.users[u].id) d.users[u].id = makeId(d.users);
+        }
+        mem.db = d;
+        setStore(DB_KEY, JSON.stringify(d));
+        return d;
+      }
+
+      function writeDb(d) {
+        mem.db = d;
+        setStore(DB_KEY, JSON.stringify(d));
+      }
+
+      function renderClient() {
+        const d = readDb();
+        const cur = getStore(SESSION_KEY) || mem.user;
+        const authBox = document.getElementById('authBox');
+        const profileBox = document.getElementById('profileBox');
+        if (cur && d.users[cur]) {
+          mem.user = cur;
+          authBox.style.display = 'none';
+          profileBox.style.display = 'block';
+          document.getElementById('profileName').textContent = 'Xin chào, ' + cur;
+          document.getElementById('profileId').textContent = 'Mã ID: ' + d.users[cur].id;
+          document.getElementById('profileBalance').textContent = Number(d.users[cur].balance || 0).toLocaleString('vi-VN');
+        } else {
+          authBox.style.display = 'block';
+          profileBox.style.display = 'none';
         }
       }
-      memoryStore.db = db;
-      if (changed) saveDb(db);
-      return db;
-    }
 
-    function saveDb(db) {
-      memoryStore.db = db;
-      safeSetItem(DB_KEY, JSON.stringify(db));
-    }
-
-    function setAuthMode(mode) {
-      authMode = mode;
-      document.getElementById('tabLogin').classList.toggle('active', mode === 'login');
-      document.getElementById('tabRegister').classList.toggle('active', mode === 'register');
-      document.getElementById('authSubmitBtn').textContent = mode === 'login' ? 'Đăng nhập' : 'Đăng ký';
-      document.getElementById('authMsg').textContent = '';
-    }
-
-    function submitAuth() {
-      const username = document.getElementById('authUser').value.trim();
-      const password = document.getElementById('authPass').value;
-      const msgEl = document.getElementById('authMsg');
-      if (!username || !password) {
-        msgEl.className = 'feedback err';
-        msgEl.textContent = 'Vui lòng nhập đầy đủ tên tài khoản và mật khẩu!';
-        return;
+      function setMode(m) {
+        mode = m;
+        document.getElementById('modeLoginBtn').className = m === 'login' ? 'btn btn-primary' : 'btn';
+        document.getElementById('modeRegisterBtn').className = m === 'register' ? 'btn btn-primary' : 'btn';
+        document.getElementById('authSubmitBtn').textContent = m === 'login' ? 'Đăng nhập' : 'Đăng ký';
+        document.getElementById('authMsg').textContent = '';
       }
 
-      const db = loadDb();
-
-      if (authMode === 'register') {
-        if (db.users[username]) {
-          msgEl.className = 'feedback err';
-          msgEl.textContent = 'Tên tài khoản đã tồn tại!';
+      function doAuth() {
+        const u = document.getElementById('userInput').value.trim();
+        const p = document.getElementById('passInput').value;
+        const msg = document.getElementById('authMsg');
+        if (!u || !p) {
+          msg.className = 'msg err';
+          msg.textContent = 'Nhập đủ tên tài khoản và mật khẩu!';
           return;
         }
-        const uniqueId = generateUniqueUserId(db.users);
-        db.users[username] = {
-          userId: uniqueId,
-          password: password,
-          balance: 0,
-          createdAt: new Date().toLocaleString('vi-VN')
-        };
-        saveDb(db);
-        memoryStore.currentUser = username;
-        safeSetItem(SESSION_KEY, username);
-        document.getElementById('authUser').value = '';
-        document.getElementById('authPass').value = '';
-        renderClientView();
-        if (memoryStore.saffUnlocked) renderAdminUsers();
-        showToast(`Đăng ký thành công • ${uniqueId}`);
-      } else {
-        const u = db.users[username];
-        if (!u || u.password !== password) {
-          msgEl.className = 'feedback err';
-          msgEl.textContent = 'Sai tên tài khoản hoặc mật khẩu!';
-          return;
+        const d = readDb();
+        if (mode === 'register') {
+          if (d.users[u]) {
+            msg.className = 'msg err';
+            msg.textContent = 'Tài khoản đã tồn tại!';
+            return;
+          }
+          const uid = makeId(d.users);
+          d.users[u] = { id: uid, password: p, balance: 0 };
+          writeDb(d);
+          mem.user = u;
+          setStore(SESSION_KEY, u);
+          document.getElementById('userInput').value = '';
+          document.getElementById('passInput').value = '';
+          renderClient();
+          if (mem.unlocked) renderUsers();
+        } else {
+          if (!d.users[u] || d.users[u].password !== p) {
+            msg.className = 'msg err';
+            msg.textContent = 'Sai tên tài khoản hoặc mật khẩu!';
+            return;
+          }
+          mem.user = u;
+          setStore(SESSION_KEY, u);
+          document.getElementById('userInput').value = '';
+          document.getElementById('passInput').value = '';
+          renderClient();
+          if (mem.unlocked) renderUsers();
         }
-        memoryStore.currentUser = username;
-        safeSetItem(SESSION_KEY, username);
-        document.getElementById('authUser').value = '';
-        document.getElementById('authPass').value = '';
-        renderClientView();
-        if (memoryStore.saffUnlocked) renderAdminUsers();
-        showToast('Đăng nhập thành công');
       }
-    }
 
-    function logoutClient() {
-      memoryStore.currentUser = null;
-      safeRemoveItem(SESSION_KEY);
-      renderClientView();
-    }
-
-    function renderClientView() {
-      const db = loadDb();
-      const currentUser = safeGetItem(SESSION_KEY) || memoryStore.currentUser;
-      const authCard = document.getElementById('authCard');
-      const userCard = document.getElementById('userCard');
-
-      if (currentUser && db.users[currentUser]) {
-        memoryStore.currentUser = currentUser;
-        authCard.style.display = 'none';
-        userCard.style.display = 'block';
-        document.getElementById('clientName').textContent = currentUser;
-        document.getElementById('clientUniqueId').textContent = db.users[currentUser].userId;
-        document.getElementById('clientBalance').textContent = Number(db.users[currentUser].balance || 0).toLocaleString('vi-VN');
-      } else {
-        authCard.style.display = 'block';
-        userCard.style.display = 'none';
-      }
-    }
-
-    function toggleSaffLoginBox() {
-      if (memoryStore.saffUnlocked) {
-        switchToSaff();
-        return;
-      }
-      const box = document.getElementById('saffAuthCard');
-      const isOpen = box.style.display === 'block';
-      box.style.display = isOpen ? 'none' : 'block';
-      document.getElementById('saffPassErr').textContent = '';
-      if (!isOpen) {
+      function openSaff() {
+        if (mem.unlocked) { showSaff(); return; }
+        const box = document.getElementById('saffPassBox');
+        box.style.display = box.style.display === 'none' ? 'block' : 'none';
+        document.getElementById('saffPassMsg').textContent = '';
         document.getElementById('saffPassInput').value = '';
         document.getElementById('saffPassInput').focus();
       }
-    }
 
-    function hideSaffLoginBox() {
-      document.getElementById('saffAuthCard').style.display = 'none';
-    }
-
-    function submitSaffPass() {
-      const val = document.getElementById('saffPassInput').value;
-      if (val === SAFF_PASSWORD) {
-        memoryStore.saffUnlocked = true;
-        document.getElementById('saffAuthCard').style.display = 'none';
-        document.getElementById('saffPassErr').textContent = '';
-        switchToSaff();
-      } else {
-        document.getElementById('saffPassErr').textContent = 'Mật khẩu không đúng!';
-      }
-    }
-
-    function switchToSaff() {
-      document.getElementById('saffAuthCard').style.display = 'none';
-      document.getElementById('clientView').style.display = 'none';
-      document.getElementById('saffView').style.display = 'block';
-      document.getElementById('btnBackClient').style.display = 'inline-flex';
-      refreshSaff();
-    }
-
-    function switchToClient() {
-      document.getElementById('saffView').style.display = 'none';
-      document.getElementById('clientView').style.display = 'block';
-      document.getElementById('btnBackClient').style.display = 'none';
-      renderClientView();
-    }
-
-    function lockSaff() {
-      memoryStore.saffUnlocked = false;
-      if (autoTimer) {
-        clearInterval(autoTimer);
-        autoTimer = null;
-        document.getElementById('autoLoopBtn').textContent = 'Tự động tạo 10 code liên tục: TẮT';
-        document.getElementById('autoLoopBtn').className = 'btn btn-ghost';
-      }
-      switchToClient();
-      showToast('Đã khóa SAFF');
-    }
-
-    async function postCodesToWebhook(codes, batchNum) {
-      const statusEl = document.getElementById('webhookStatus');
-      const bodyText =
-        `🎁 **LÔ #${batchNum} — 10 GIFTCODE MỚI (⏣ ECLIPSE HUB)**\n` +
-        `• **Mỗi code:** +1,000\n` +
-        codes.map((c, i) => `${i + 1}. \`${c}\``).join('\n');
-
-      try {
-        const res = await fetch(WEBHOOK_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ content: bodyText })
-        });
-        if (!res.ok) throw new Error('HTTP ' + res.status);
-        statusEl.style.color = '#4ade80';
-        statusEl.textContent = `Đã gửi lô #${batchNum} lên Webhook`;
-      } catch (err) {
-        statusEl.style.color = '#fb7185';
-        statusEl.textContent = `Lỗi gửi Webhook (${err.message})`;
-      }
-    }
-
-    async function generateAndSend10Codes() {
-      const db = loadDb();
-      const created = [];
-      for (let i = 0; i < 10; i++) {
-        let code = randomCode(12);
-        while (db.codes[code]) code = randomCode(12);
-        db.codes[code] = { used: false, usedBy: null, usedAt: null };
-        created.push(code);
-      }
-      saveDb(db);
-      batchCounter += 1;
-      document.getElementById('latestCodesBox').textContent = created.join('\n');
-      refreshSaff();
-      await postCodesToWebhook(created, batchCounter);
-    }
-
-    function toggleAuto10Codes() {
-      const btn = document.getElementById('autoLoopBtn');
-      if (autoTimer) {
-        clearInterval(autoTimer);
-        autoTimer = null;
-        btn.textContent = 'Tự động tạo 10 code liên tục: TẮT';
-        btn.className = 'btn btn-ghost';
-        showToast('Đã dừng tự động tạo 10 code');
-        return;
-      }
-      btn.textContent = 'Đang tự động tạo 10 code liên tục (Bấm dừng)';
-      btn.className = 'btn btn-loop-active';
-      showToast('Đang tự động tạo 10 code liên tục');
-      generateAndSend10Codes();
-      autoTimer = setInterval(() => {
-        generateAndSend10Codes();
-      }, 2500);
-    }
-
-    function refreshSaff() {
-      const db = loadDb();
-      const userCount = Object.keys(db.users).length;
-      const codeCount = Object.keys(db.codes).length;
-      const unusedCount = Object.values(db.codes).filter(c => !c.used).length;
-      document.getElementById('saffStats').textContent =
-        `Người dùng: ${userCount} • Tổng code: ${codeCount.toLocaleString('vi-VN')} • Khả dụng: ${unusedCount.toLocaleString('vi-VN')}`;
-      renderAdminUsers();
-      renderSelectedTarget();
-    }
-
-    function renderAdminUsers() {
-      const db = loadDb();
-      const q = (document.getElementById('searchIdInput')?.value || '').trim().toLowerCase();
-      const listEl = document.getElementById('adminUserList');
-
-      const entries = Object.entries(db.users).filter(([uname, info]) => {
-        const uid = String(info.userId || '').toLowerCase();
-        return uid.includes(q) || uname.toLowerCase().includes(q);
-      });
-
-      if (!entries.length) {
-        listEl.innerHTML = '<div style="padding:16px; color:#94a3b8; font-size:13px;">Không tìm thấy người dùng nào.</div>';
-        return;
+      function checkSaffPass() {
+        const val = document.getElementById('saffPassInput').value;
+        if (val === SAFF_PASS) {
+          mem.unlocked = true;
+          document.getElementById('saffPassBox').style.display = 'none';
+          document.getElementById('saffPassMsg').textContent = '';
+          showSaff();
+        } else {
+          document.getElementById('saffPassMsg').textContent = 'Mật khẩu không đúng!';
+        }
       }
 
-      listEl.innerHTML = entries.map(([uname, info]) => {
-        const active = selectedUserKey === uname ? 'user-row selected' : 'user-row';
-        const bal = Number(info.balance || 0).toLocaleString('vi-VN');
-        return `
-          <div class="${active}" onclick="pickAdminUser('${escapeAttr(uname)}')">
+      function showSaff() {
+        document.getElementById('saffPassBox').style.display = 'none';
+        document.getElementById('clientPanel').style.display = 'none';
+        document.getElementById('saffPanel').style.display = 'block';
+        document.getElementById('backClientBtn').style.display = 'inline-block';
+        renderSaff();
+      }
+
+      function showClient() {
+        document.getElementById('saffPanel').style.display = 'none';
+        document.getElementById('clientPanel').style.display = 'block';
+        document.getElementById('backClientBtn').style.display = 'none';
+        renderClient();
+      }
+
+      async function sendWebhook(codes, n) {
+        const note = document.getElementById('webhookNote');
+        const txt = `LÔ #${n} - 10 GIFTCODE (+1,000)\n` + codes.map((c, i) => `${i + 1}. \`${c}\``).join('\n');
+        try {
+          const r = await fetch(WEBHOOK, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ content: txt })
+          });
+          if (!r.ok) throw new Error('HTTP ' + r.status);
+          note.style.color = '#4ade80';
+          note.textContent = `Đã gửi lô #${n} lên Webhook`;
+        } catch (e) {
+          note.style.color = '#fb7185';
+          note.textContent = `Lỗi gửi Webhook (${e.message})`;
+        }
+      }
+
+      async function gen10() {
+        const d = readDb();
+        const arr = [];
+        for (let i = 0; i < 10; i++) {
+          let c = makeCode();
+          while (d.codes[c]) c = makeCode();
+          d.codes[c] = { used: false, usedBy: null };
+          arr.push(c);
+        }
+        writeDb(d);
+        batchCount += 1;
+        document.getElementById('codeConsole').textContent = arr.join('\n');
+        renderSaff();
+        await sendWebhook(arr, batchCount);
+      }
+
+      function toggleLoop() {
+        const btn = document.getElementById('loop10Btn');
+        if (loopTimer) {
+          clearInterval(loopTimer);
+          loopTimer = null;
+          btn.textContent = 'Tự động tạo 10 code liên tục: TẮT';
+          btn.className = 'btn';
+          return;
+        }
+        btn.textContent = 'Đang tự động tạo 10 code liên tục (Bấm dừng)';
+        btn.className = 'btn btn-active';
+        gen10();
+        loopTimer = setInterval(gen10, 2500);
+      }
+
+      function renderSaff() {
+        const d = readDb();
+        const uLen = Object.keys(d.users).length;
+        const cLen = Object.keys(d.codes).length;
+        document.getElementById('saffStats').textContent = `Người dùng: ${uLen} • Tổng code: ${cLen.toLocaleString('vi-VN')}`;
+        renderUsers();
+        renderTarget();
+      }
+
+      function renderUsers() {
+        const d = readDb();
+        const q = (document.getElementById('searchInput').value || '').trim().toLowerCase();
+        const list = document.getElementById('userList');
+        const rows = Object.entries(d.users).filter(([uname, info]) =>
+          String(info.id || '').toLowerCase().includes(q) || uname.toLowerCase().includes(q)
+        );
+        if (!rows.length) {
+          list.innerHTML = '<div style="padding:14px; color:#94a3b8;">Không tìm thấy người dùng.</div>';
+          return;
+        }
+        list.innerHTML = '';
+        rows.forEach(([uname, info]) => {
+          const div = document.createElement('div');
+          div.className = pickedUser === uname ? 'item picked' : 'item';
+          div.innerHTML = `
             <div>
-              <span class="id-badge" style="margin-top:0;">${escapeHtml(info.userId)}</span>
-              <div style="margin-top:6px; font-weight:600; color:#f1f5f9;">${escapeHtml(uname)}</div>
+              <span class="id-tag" style="margin-top:0;">${info.id}</span>
+              <div style="margin-top:5px; font-weight:700;">${uname}</div>
             </div>
-            <div style="color:#4ade80; font-weight:700; font-variant-numeric:tabular-nums;">${bal}</div>
-          </div>
+            <div style="color:#4ade80; font-weight:700;">${Number(info.balance || 0).toLocaleString('vi-VN')}</div>
+          `;
+          div.addEventListener('click', function () {
+            pickedUser = uname;
+            document.getElementById('topupMsg').textContent = '';
+            renderUsers();
+            renderTarget();
+          });
+          list.appendChild(div);
+        });
+      }
+
+      function renderTarget() {
+        const box = document.getElementById('targetBox');
+        const d = readDb();
+        if (!pickedUser || !d.users[pickedUser]) {
+          pickedUser = null;
+          box.textContent = 'Chưa chọn người dùng nào.';
+          return;
+        }
+        const info = d.users[pickedUser];
+        box.innerHTML = `
+          <div><b>Mã ID:</b> ${info.id}</div>
+          <div><b>Tài khoản:</b> ${pickedUser}</div>
+          <div><b>Số dư:</b> ${Number(info.balance || 0).toLocaleString('vi-VN')}</div>
         `;
-      }).join('');
-    }
-
-    function pickAdminUser(uname) {
-      selectedUserKey = uname;
-      renderAdminUsers();
-      renderSelectedTarget();
-      document.getElementById('saffTopupMsg').textContent = '';
-    }
-
-    function renderSelectedTarget() {
-      const box = document.getElementById('selectedTargetBox');
-      const db = loadDb();
-      if (!selectedUserKey || !db.users[selectedUserKey]) {
-        selectedUserKey = null;
-        box.innerHTML = '<span class="panel-desc" style="margin:0;">Chưa chọn người dùng nào.</span>';
-        return;
-      }
-      const info = db.users[selectedUserKey];
-      box.innerHTML = `
-        <div><strong>Mã ID:</strong> <span style="color:#7dd3fc; font-family:Consolas,monospace; font-weight:700;">${escapeHtml(info.userId)}</span></div>
-        <div><strong>Tài khoản:</strong> <strong>${escapeHtml(selectedUserKey)}</strong></div>
-        <div><strong>Số dư hiện tại:</strong> <strong style="color:#4ade80;">${Number(info.balance || 0).toLocaleString('vi-VN')}</strong></div>
-      `;
-    }
-
-    function toggleTopupInputs() {
-      const mode = document.getElementById('topupModeSelect').value;
-      document.getElementById('giftcodeField').style.display = mode === 'giftcode' ? 'block' : 'none';
-      document.getElementById('moneyField').style.display = mode === 'money' ? 'block' : 'none';
-    }
-
-    function submitSaffTopup() {
-      const msgEl = document.getElementById('saffTopupMsg');
-      const db = loadDb();
-
-      if (!selectedUserKey || !db.users[selectedUserKey]) {
-        msgEl.className = 'feedback err';
-        msgEl.textContent = 'Hãy tìm và bấm chọn người dùng trước!';
-        return;
       }
 
-      const mode = document.getElementById('topupModeSelect').value;
-
-      if (mode === 'giftcode') {
-        const code = document.getElementById('saffGiftcodeInput').value.trim().toUpperCase();
-        if (!db.codes[code]) {
-          msgEl.className = 'feedback err';
-          msgEl.textContent = 'Giftcode không tồn tại!';
+      function doTopup() {
+        const msg = document.getElementById('topupMsg');
+        const d = readDb();
+        if (!pickedUser || !d.users[pickedUser]) {
+          msg.className = 'msg err';
+          msg.textContent = 'Hãy tìm và bấm chọn người dùng trước!';
           return;
         }
-        if (db.codes[code].used) {
-          msgEl.className = 'feedback err';
-          msgEl.textContent = `Giftcode này đã được dùng bởi ${db.codes[code].usedBy || 'người khác'}!`;
-          return;
+        const t = document.getElementById('topupType').value;
+        if (t === 'code') {
+          const code = document.getElementById('codeInput').value.trim().toUpperCase();
+          if (!d.codes[code]) {
+            msg.className = 'msg err';
+            msg.textContent = 'Giftcode không tồn tại!';
+            return;
+          }
+          if (d.codes[code].used) {
+            msg.className = 'msg err';
+            msg.textContent = 'Giftcode đã được sử dụng!';
+            return;
+          }
+          d.codes[code].used = true;
+          d.codes[code].usedBy = pickedUser;
+          d.users[pickedUser].balance = Number(d.users[pickedUser].balance || 0) + REWARD;
+          writeDb(d);
+          document.getElementById('codeInput').value = '';
+          renderSaff();
+          renderClient();
+          msg.className = 'msg ok';
+          msg.textContent = `Đã nạp code ${code} (+1,000) cho ${pickedUser}!`;
+        } else {
+          const amt = parseInt(document.getElementById('moneyInput').value, 10);
+          if (isNaN(amt) || amt <= 0) {
+            msg.className = 'msg err';
+            msg.textContent = 'Nhập số tiền hợp lệ!';
+            return;
+          }
+          d.users[pickedUser].balance = Number(d.users[pickedUser].balance || 0) + amt;
+          writeDb(d);
+          document.getElementById('moneyInput').value = '';
+          renderSaff();
+          renderClient();
+          msg.className = 'msg ok';
+          msg.textContent = `Đã gửi +${amt.toLocaleString('vi-VN')} cho ${pickedUser}!`;
         }
-        db.codes[code].used = true;
-        db.codes[code].usedBy = selectedUserKey;
-        db.codes[code].usedAt = new Date().toLocaleString('vi-VN');
-        db.users[selectedUserKey].balance = Number(db.users[selectedUserKey].balance || 0) + GIFTCODE_REWARD;
-        saveDb(db);
-        document.getElementById('saffGiftcodeInput').value = '';
-        refreshSaff();
-        renderClientView();
-        msgEl.className = 'feedback ok';
-        msgEl.textContent = `Đã nạp code ${code} (+1,000) cho ${selectedUserKey} (${db.users[selectedUserKey].userId})`;
-        showToast('Đã cộng +1,000');
-      } else {
-        const amount = parseInt(document.getElementById('saffMoneyInput').value, 10);
-        if (isNaN(amount) || amount <= 0) {
-          msgEl.className = 'feedback err';
-          msgEl.textContent = 'Vui lòng nhập số tiền lớn hơn 0!';
-          return;
-        }
-        db.users[selectedUserKey].balance = Number(db.users[selectedUserKey].balance || 0) + amount;
-        saveDb(db);
-        document.getElementById('saffMoneyInput').value = '';
-        refreshSaff();
-        renderClientView();
-        msgEl.className = 'feedback ok';
-        msgEl.textContent = `Đã gửi +${amount.toLocaleString('vi-VN')} cho ${selectedUserKey} (${db.users[selectedUserKey].userId})`;
-        showToast(`Đã gửi +${amount.toLocaleString('vi-VN')}`);
       }
-    }
 
-    function escapeHtml(str) {
-      return String(str).replace(/[&<>"']/g, m => ({'&':'&','<':'<','>':'>','"':'"',"'":'''}[m]));
-    }
-    function escapeAttr(str) {
-      return String(str).replace(/\\/g, '\\\\').replace(/'/g, "\\'");
-    }
+      document.getElementById('saffOpenBtn').addEventListener('click', openSaff);
+      document.getElementById('saffPassSubmit').addEventListener('click', checkSaffPass);
+      document.getElementById('saffPassClose').addEventListener('click', function () {
+        document.getElementById('saffPassBox').style.display = 'none';
+      });
+      document.getElementById('backClientBtn').addEventListener('click', showClient);
+      document.getElementById('saffLockBtn').addEventListener('click', function () {
+        mem.unlocked = false;
+        if (loopTimer) { clearInterval(loopTimer); loopTimer = null; }
+        showClient();
+      });
+      document.getElementById('modeLoginBtn').addEventListener('click', function () { setMode('login'); });
+      document.getElementById('modeRegisterBtn').addEventListener('click', function () { setMode('register'); });
+      document.getElementById('authSubmitBtn').addEventListener('click', doAuth);
+      document.getElementById('logoutBtn').addEventListener('click', function () {
+        mem.user = null;
+        delStore(SESSION_KEY);
+        renderClient();
+      });
+      document.getElementById('gen10Btn').addEventListener('click', gen10);
+      document.getElementById('loop10Btn').addEventListener('click', toggleLoop);
+      document.getElementById('searchInput').addEventListener('input', renderUsers);
+      document.getElementById('topupType').addEventListener('change', function () {
+        const isCode = this.value === 'code';
+        document.getElementById('codeInputWrap').style.display = isCode ? 'block' : 'none';
+        document.getElementById('moneyInputWrap').style.display = isCode ? 'none' : 'block';
+      });
+      document.getElementById('topupSubmitBtn').addEventListener('click', doTopup);
 
-    window.addEventListener('storage', function(e) {
-      if (e.key === DB_KEY || e.key === SESSION_KEY) {
-        renderClientView();
-        if (memoryStore.saffUnlocked) refreshSaff();
-      }
-    });
-
-    loadDb();
-    renderClientView();
+      renderClient();
+      document.getElementById('jsStatus').textContent = 'JS sẵn sàng';
+    })();
   </script>
 </body>
 </html>
